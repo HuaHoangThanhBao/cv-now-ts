@@ -1,0 +1,16 @@
+<svg id="publications-t" xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48">
+    <defs>
+        <style>
+            .cls-2{fill:#FFFFFF}
+        </style>
+    </defs>
+    <g id="Group_687" data-name="Group 687">
+        <path id="Path_2798" data-name="Path 2798" class="cls-2" d="M18 15.134h-6a1.5 1.5 0 0 0 0 3h6a1.5 1.5 0 0 0 0-3z"/>
+        <path id="Path_2799" data-name="Path 2799" class="cls-2" d="M18 21.134h-6a1.5 1.5 0 0 0 0 3h6a1.5 1.5 0 0 0 0-3z"/>
+        <path id="Path_2800" data-name="Path 2800" class="cls-2" d="M18 27.133h-6a1.5 1.5 0 1 0 0 3h6a1.5 1.5 0 0 0 0-3z"/>
+        <path id="Path_2801" data-name="Path 2801" class="cls-2" d="M40 9.134H28.24A5.722 5.722 0 0 0 24 11.018a5.722 5.722 0 0 0-4.24-1.884H8a3.5 3.5 0 0 0-3.5 3.5v21.79a3.5 3.5 0 0 0 3.5 3.5h14.5v-1.5a1.5 1.5 0 0 1 3 0v1.5H40a3.5 3.5 0 0 0 3.5-3.5v-21.79a3.5 3.5 0 0 0-3.5-3.5zm-20.243 25.79H8a.5.5 0 0 1-.5-.5v-21.79a.5.5 0 0 1 .5-.5h11.76a2.743 2.743 0 0 1 2.74 2.739v17.308a4.523 4.523 0 0 0-2.743 2.743zm20.743-.5a.5.5 0 0 1-.5.5H28.243a4.528 4.528 0 0 0-2.743-2.743V14.873a2.743 2.743 0 0 1 2.74-2.739H40a.5.5 0 0 1 .5.5z"/>
+        <path id="Path_2802" data-name="Path 2802" class="cls-2" d="M36 15.134h-6a1.5 1.5 0 0 0 0 3h6a1.5 1.5 0 0 0 0-3z"/>
+        <path id="Path_2803" data-name="Path 2803" class="cls-2" d="M36 21.134h-6a1.5 1.5 0 0 0 0 3h6a1.5 1.5 0 0 0 0-3z"/>
+        <path id="Path_2804" data-name="Path 2804" class="cls-2" d="M36 27.133h-6a1.5 1.5 0 0 0 0 3h6a1.5 1.5 0 0 0 0-3z"/>
+    </g>
+</svg>

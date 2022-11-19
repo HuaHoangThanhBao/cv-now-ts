@@ -1,0 +1,44 @@
+.btn {
+  display: flex;
+  align-items: center;
+  padding: 0.3rem 0.5rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  text-transform: capitalize;
+  position: relative;
+  background: transparent;
+  border-radius: 0.5rem;
+  border: none;
+  cursor: pointer;
+  color: currentColor;
+  &.add {
+    border-radius: 1.2rem;
+    padding-top: 0.45rem;
+    padding-bottom: 0.45rem;
+    background-color: currentColor;
+    svg {
+      margin-right: 0;
+    }
+  }
+  &.download {
+    background-color: #00c8aa;
+    color: white;
+    border-radius: 1.2rem;
+    padding-right: 1rem;
+    padding-left: 1rem;
+    svg,
+    path {
+      fill: currentColor;
+    }
+  }
+  path {
+    fill: currentColor;
+  }
+  svg {
+    position: relative;
+    height: 1.3rem;
+    width: 1.3rem;
+    fill: currentColor;
+    margin-right: 0.2rem;
+  }
+}

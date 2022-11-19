@@ -1,0 +1,46 @@
+.field {
+  word-break: break-word;
+  display: none !important;
+  font-size: 1.2rem;
+  &.visible {
+    display: block !important;
+    .date {
+      &-divider {
+        margin-top: 15px;
+      }
+    }
+  }
+  &.isDisplayWhenHasInformation {
+    display: block !important;
+  }
+  &-input {
+    display: block;
+    border: none;
+    outline: none;
+    width: 100%;
+    word-break: break-word;
+    &:focus {
+      border-bottom: 1px solid #00c8aa;
+    }
+    u {
+      text-decoration: none;
+      border-bottom: 1px solid currentColor;
+    }
+  }
+  &-icon {
+    margin-right: 0.4rem;
+    height: 0.5rem;
+    width: 0.5rem;
+    float: left;
+    background-color: currentColor;
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  &-bullet {
+    display: flex;
+    align-items: center;
+    position: relative;
+  }
+}
