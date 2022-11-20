@@ -17,27 +17,41 @@ import { ReactComponent as PublicationIcon } from '../../assets/publication.svg'
 import { ReactComponent as SkillIcon } from '../../assets/skill.svg';
 import { ReactComponent as ReferenceIcon } from '../../assets/reference.svg';
 
-import { ReactComponent as MailIconWhite } from '../../assets//mail.svg';
-import { ReactComponent as PhoneIconWhite } from '../../assets//phone.svg';
-import { ReactComponent as LocationIconWhite } from '../../assets//location.svg';
-import { ReactComponent as WebsiteIconWhite } from '../../assets//website.svg';
-import { ReactComponent as LinkedinIconWhite } from '../../assets//linkedin.svg';
-import { ReactComponent as TwitterIconWhite } from '../../assets//twitter.svg';
-import { ReactComponent as SkypeIconWhite } from '../../assets//skype.svg';
-import { ReactComponent as FacebookIconWhite } from '../../assets//facebook.svg';
-import { ReactComponent as GithubIconWhite } from '../../assets//github.svg';
-import { ReactComponent as StackOverFlowIconWhite } from '../../assets//stackoverflow.svg';
-import { ReactComponent as MediumIconWhite } from '../../assets//medium.svg';
-import { ReactComponent as InstagramIconWhite } from '../../assets//instagram.svg';
+import { ReactComponent as AddIcon } from '../../assets/add.svg';
+import { ReactComponent as FontIcon } from '../../assets/font.svg';
+import { ReactComponent as BoldIcon } from '../../assets/text-bold.svg';
+import { ReactComponent as ItalicIcon } from '../../assets/text-italic.svg';
+import { ReactComponent as UnderlineIcon } from '../../assets/text-underline.svg';
+import { ReactComponent as MoveUpIcon } from '../../assets/move-up.svg';
+import { ReactComponent as MoveDownIcon } from '../../assets/move-down.svg';
+import { ReactComponent as TrashIcon } from '../../assets/trash.svg';
+import { ReactComponent as ThemeIcon } from '../../assets/theme.svg';
+import { ReactComponent as TemplateIcon } from '../../assets/template-switch.svg';
+import { ReactComponent as LayoutIcon } from '../../assets/layout.svg';
+import { ReactComponent as SettingIcon } from '../../assets/settings.svg';
+import { ReactComponent as DownloadIcon } from '../../assets/download.svg';
+import { ReactComponent as MailIconWhite } from '../../assets/mail.svg';
+import { ReactComponent as PhoneIconWhite } from '../../assets/phone.svg';
+import { ReactComponent as LocationIconWhite } from '../../assets/location.svg';
+import { ReactComponent as WebsiteIconWhite } from '../../assets/website.svg';
+import { ReactComponent as LinkedinIconWhite } from '../../assets/linkedin.svg';
+import { ReactComponent as TwitterIconWhite } from '../../assets/twitter.svg';
+import { ReactComponent as SkypeIconWhite } from '../../assets/skype.svg';
+import { ReactComponent as FacebookIconWhite } from '../../assets/facebook.svg';
+import { ReactComponent as GithubIconWhite } from '../../assets/github.svg';
+import { ReactComponent as StackOverFlowIconWhite } from '../../assets/stackoverflow.svg';
+import { ReactComponent as MediumIconWhite } from '../../assets/medium.svg';
+import { ReactComponent as InstagramIconWhite } from '../../assets/instagram.svg';
 import './icon.scss';
 
 interface IconProps {
+  className?: string;
   iconType: number | string;
-  iconColorHex: string;
+  iconColorHex?: string;
 }
 
 export const Icon = (props: IconProps) => {
-  const { iconType, iconColorHex } = props;
+  const { className, iconType, iconColorHex } = props;
 
   const renderIcon = (type: number | string) => {
     if (typeof type === 'number') {
@@ -81,6 +95,32 @@ export const Icon = (props: IconProps) => {
       }
     } else {
       switch (type) {
+        case 'add':
+          return <AddIcon />;
+        case 'download':
+          return <DownloadIcon />;
+        case 'bold':
+          return <BoldIcon />;
+        case 'italic':
+          return <ItalicIcon />;
+        case 'underline':
+          return <UnderlineIcon />;
+        case 'move-up':
+          return <MoveUpIcon />;
+        case 'move-down':
+          return <MoveDownIcon />;
+        case 'trash':
+          return <TrashIcon />;
+        case 'font':
+          return <FontIcon />;
+        case 'theme':
+          return <ThemeIcon />;
+        case 'template':
+          return <TemplateIcon />;
+        case 'layout':
+          return <LayoutIcon />;
+        case 'setting':
+          return <SettingIcon />;
         case 'email':
           return <MailIconWhite />;
         case 'address':
@@ -113,7 +153,9 @@ export const Icon = (props: IconProps) => {
 
   return (
     <div
-      className={`icon ${typeof iconType === 'string' ? 'social' : ''}`}
+      className={`icon ${iconType} ${typeof iconType === 'string' ? 'social' : ''} ${
+        className || ''
+      }`}
       style={{ backgroundColor: `${iconColorHex}` }}
     >
       {renderIcon(iconType)}

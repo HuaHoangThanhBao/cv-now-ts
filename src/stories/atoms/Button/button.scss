@@ -9,10 +9,10 @@
   background: transparent;
   border-radius: 0.5rem;
   border: none;
-  cursor: pointer;
   color: currentColor;
+  cursor: pointer;
   &.add {
-    border-radius: 1.2rem;
+    border-radius: 50%;
     padding-top: 0.45rem;
     padding-bottom: 0.45rem;
     background-color: currentColor;
@@ -23,7 +23,7 @@
   &.download {
     background-color: #00c8aa;
     color: white;
-    border-radius: 1.2rem;
+    border-radius: 1.5rem;
     padding-right: 1rem;
     padding-left: 1rem;
     svg,

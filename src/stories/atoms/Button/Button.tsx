@@ -5,7 +5,7 @@ interface ButtonProps {
   icon?: ReactComponentElement<any>;
   className?: string;
   backgroundColor?: string;
-  text: string;
+  text?: string;
   onClick?: () => void;
 }
 

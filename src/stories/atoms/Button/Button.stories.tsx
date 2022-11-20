@@ -1,13 +1,7 @@
 import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import { ReactComponent as FontIcon } from '../../assets/font.svg';
-import { ReactComponent as ThemeIcon } from '../../assets/theme.svg';
-import { ReactComponent as TemplateIcon } from '../../assets/template-switch.svg';
-import { ReactComponent as LayoutIcon } from '../../assets/layout.svg';
-import { ReactComponent as SettingIcon } from '../../assets/settings.svg';
-import { ReactComponent as AddIcon } from '../../assets/add.svg';
-import { ReactComponent as DownloadIcon } from '../../assets/download.svg';
 import { Button } from './Button';
+import { Icon } from '../Icon/Icon';
 
 export default {
   title: 'Atoms/Button',
@@ -25,42 +19,42 @@ const Template: ComponentStory<typeof Button> = (args) => <Button {...args} />;
 export const Fonts = Template.bind({});
 Fonts.args = {
   text: 'Font',
-  icon: <FontIcon />,
+  icon: <Icon iconType={'font'} />,
 };
 
 export const Themes = Template.bind({});
 Themes.args = {
-  icon: <ThemeIcon />,
+  icon: <Icon iconType={'theme'} />,
   text: 'Theme',
 };
 
 export const Templates = Template.bind({});
 Templates.args = {
-  icon: <TemplateIcon />,
+  icon: <Icon iconType={'template'} />,
   text: 'Template',
 };
 
 export const Layouts = Template.bind({});
 Layouts.args = {
-  icon: <LayoutIcon />,
+  icon: <Icon iconType={'layout'} />,
   text: 'Layout',
 };
 
 export const Settings = Template.bind({});
 Settings.args = {
-  icon: <SettingIcon />,
+  icon: <Icon iconType={'setting'} />,
   text: 'Setting',
 };
 
 export const Add = Template.bind({});
 Add.args = {
-  icon: <AddIcon />,
+  icon: <Icon iconType={'add'} />,
   className: 'add',
 };
 
 export const Download = Template.bind({});
 Download.args = {
-  icon: <DownloadIcon />,
+  icon: <Icon iconType={'download'} />,
   text: 'Download',
   className: 'download',
 };

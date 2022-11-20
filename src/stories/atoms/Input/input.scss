@@ -1,24 +1,15 @@
 .field {
   word-break: break-word;
-  display: none !important;
+  // display: none !important;
   font-size: 1.2rem;
-  &.visible {
-    display: block !important;
-    .date {
-      &-divider {
-        margin-top: 15px;
-      }
-    }
-  }
-  &.isDisplayWhenHasInformation {
-    display: block !important;
-  }
   &-input {
     display: block;
     border: none;
     outline: none;
     width: 100%;
     word-break: break-word;
+    border-bottom: 1px solid lightgray;
+    border-bottom-style: dashed;
     &:focus {
       border-bottom: 1px solid #00c8aa;
     }
@@ -26,21 +17,45 @@
       text-decoration: none;
       border-bottom: 1px solid currentColor;
     }
+    /*Content Editable placeholder for input*/
+    &.date[placeholder]:empty:before {
+      content: attr(placeholder);
+      position: absolute;
+      background-color: transparent;
+    }
+    &[placeholder]:empty:before {
+      content: attr(placeholder);
+      color: #888;
+      font-style: italic;
+    }
+    &.detail {
+      margin-left: 1rem;
+    }
   }
-  &-icon {
+  &-bullet {
     margin-right: 0.4rem;
     height: 0.5rem;
     width: 0.5rem;
     float: left;
     background-color: currentColor;
     border-radius: 50%;
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-  }
-  &-bullet {
-    display: flex;
-    align-items: center;
+    top: 0.6rem;
     position: relative;
+  }
+  .icon {
+    float: left;
+    margin-right: 0.5rem;
+  }
+  &.title {
+    font-size: 1.4rem;
+    .field-input {
+      float: left;
+      width: calc(100% - 3.2rem);
+    }
+  }
+  &::after {
+    content: '';
+    display: block;
+    clear: left;
   }
 }
