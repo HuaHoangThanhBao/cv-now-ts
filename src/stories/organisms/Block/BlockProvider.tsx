@@ -1,5 +1,6 @@
-import { createContext, useContext, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { createContext, useCallback, useContext, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../../store';
 import { Input, InputProps } from '../../atoms/Input/Input';
 import { BlockBar } from '../../molecules/BlockBar';
 import { BlockBarProps } from '../../molecules/BlockBar/BlockBar';
@@ -8,18 +9,20 @@ import { BlockContent, BlockContentProps } from '../../molecules/BlockContent/Bl
 import { BlockHeader } from '../../molecules/BlockHeader';
 import { BlockHeaderProps } from '../../molecules/BlockHeader/BlockHeader';
 import './block.scss';
-import { updateSelectedBlock } from './block.slice';
+import { BlockSelectState, updateSelectedBlock } from './block.slice';
 
 interface IBlockContext {
   showBlockContentBar: boolean;
   showBlockHeaderBar: boolean;
-  handleShowBlockContentBar: (blockId: number) => void;
+  selectedBlock: BlockSelectState;
+  handleShowBlockContentBar: (type: string, blockId: number, childIndex: number) => void;
   handleDisableBlockContentBar: () => void;
-  handleShowBlockHeaderBar: (blockId: number) => void;
+  handleShowBlockHeaderBar: (type: string, blockId: number, childIndex: number) => void;
   handleDisableBlockHeaderBar: () => void;
 }
 
 interface BlockComposition {
+  clasName?: string;
   Header?: React.FC<BlockHeaderProps>;
   Content?: React.FC<BlockContentProps>;
   Bottom?: React.FC<BlockBottomProps>;
@@ -31,6 +34,14 @@ interface BlockComposition {
 const BlockContext = createContext<IBlockContext>({
   showBlockContentBar: false,
   showBlockHeaderBar: false,
+  selectedBlock: {
+    selectedBlock: {
+      blockType: '',
+      blockId: -1,
+      blockChildIndex: -1,
+      selectedElement: '',
+    },
+  },
   handleShowBlockContentBar: () => {},
   handleDisableBlockContentBar: () => {},
   handleShowBlockHeaderBar: () => {},
@@ -39,25 +50,37 @@ const BlockContext = createContext<IBlockContext>({
 
 const BlockProvider = (props: BlockComposition) => {
   const dispatch = useDispatch();
+  const selectedBlock = useSelector((state: RootState) => state.block.selectedBlock);
   const [showBlockContentBar, setShowBlockContentBar] = useState(false);
   const [showBlockHeaderBar, setShowBlockHeaderBar] = useState(false);
-  const handleShowBlockContentBar = (blockId: number) => {
-    dispatch(updateSelectedBlock(blockId));
+  const handleShowBlockContentBar = (type: string, blockId: number, childIndex: number) => {
+    dispatch(
+      updateSelectedBlock({
+        selectedBlock: { ...selectedBlock, blockId, blockChildIndex: childIndex, blockType: type },
+      })
+    );
     setShowBlockHeaderBar(false);
     setShowBlockContentBar(true);
   };
-  const handleDisableBlockContentBar = () => {
+  const handleDisableBlockContentBar = useCallback(() => {
     setShowBlockContentBar(false);
-  };
-  const handleShowBlockHeaderBar = (blockId: number) => {
-    dispatch(updateSelectedBlock(blockId));
+  }, []);
+  const handleShowBlockHeaderBar = (type: string, blockId: number, childIndex: number) => {
+    dispatch(
+      updateSelectedBlock({
+        selectedBlock: { ...selectedBlock, blockId, blockType: type, blockChildIndex: childIndex },
+      })
+    );
     setShowBlockHeaderBar(true);
     setShowBlockContentBar(false);
   };
-  const handleDisableBlockHeaderBar = () => {
+  const handleDisableBlockHeaderBar = useCallback(() => {
     setShowBlockHeaderBar(false);
-  };
+  }, []);
   const value = {
+    selectedBlock: {
+      selectedBlock: selectedBlock,
+    },
     showBlockContentBar,
     showBlockHeaderBar,
     handleShowBlockContentBar,
@@ -66,9 +89,22 @@ const BlockProvider = (props: BlockComposition) => {
     handleDisableBlockHeaderBar,
   };
 
+  useEffect(() => {
+    const selectElement = selectedBlock.selectedElement;
+    if (
+      !selectElement.includes('field-input') &&
+      !selectElement.includes('block-bar') &&
+      !selectElement.includes('block-bar-icon') &&
+      !selectElement.includes('block-bottom')
+    ) {
+      handleDisableBlockContentBar();
+      handleDisableBlockHeaderBar();
+    }
+  }, [selectedBlock.selectedElement, handleDisableBlockContentBar, handleDisableBlockHeaderBar]);
+
   return (
     <BlockContext.Provider value={value} {...props}>
-      <div className="block">{props.children}</div>
+      <div className={`block ${props.clasName || ''}`}>{props.children}</div>
     </BlockContext.Provider>
   );
 };

@@ -4,12 +4,17 @@ import { Icon } from '../../atoms/Icon/Icon';
 import { useBlock } from '../../organisms/Block/BlockProvider';
 
 export interface BlockBarProps {
-  isUnActive?: boolean;
+  data?: any;
+  blockChildIndex?: number;
 }
 
-export const BlockBar = ({ isUnActive }: BlockBarProps) => {
-  const { showBlockContentBar, showBlockHeaderBar } = useBlock();
-  if (isUnActive) return null;
+export const BlockBar = ({ data, blockChildIndex }: BlockBarProps) => {
+  const { showBlockContentBar, showBlockHeaderBar, selectedBlock } = useBlock();
+  if (
+    data.id !== selectedBlock.selectedBlock.blockId ||
+    blockChildIndex !== selectedBlock.selectedBlock.blockChildIndex
+  )
+    return null;
   if (showBlockContentBar) {
     return (
       <div className="block-bar">

@@ -1,21 +1,18 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../../store';
 import { Icon } from '../../atoms/Icon/Icon';
 import { BlockProvider } from './BlockProvider';
 
 interface BlockProps {
   data: any;
+  className?: string;
   blockChildIndex: number;
 }
 
 export const Block = React.memo((props: BlockProps) => {
-  const { data, blockChildIndex } = props;
-  const currentSelectedBlock = useSelector((state: RootState) => state.block.selectedBlock);
-  const selectedBlockChild = useSelector((state: RootState) => state.block.selectedBlockChild);
-  // console.log(data);
+  const { className, data, blockChildIndex } = props;
+  console.log('render block');
   return (
-    <BlockProvider>
+    <BlockProvider clasName={className}>
       <BlockProvider.Header>
         {data?.uid}
         <BlockProvider.Input
@@ -26,9 +23,7 @@ export const Block = React.memo((props: BlockProps) => {
         />
       </BlockProvider.Header>
       <BlockProvider.Input type="title" data={data} blockChildIndex={blockChildIndex} />
-      <BlockProvider.Content
-        isUnActive={data.id !== currentSelectedBlock || blockChildIndex !== selectedBlockChild}
-      >
+      <BlockProvider.Content blockChildIndex={blockChildIndex} data={data}>
         {data.desc && (
           <BlockProvider.Input type="desc" data={data} blockChildIndex={blockChildIndex} />
         )}
@@ -96,18 +91,8 @@ export const Block = React.memo((props: BlockProps) => {
           </>
         )}
       </BlockProvider.Content>
-      <BlockProvider.Bottom>
-        <Icon iconType={'add'} />
-        <div className="block-bottom-box line">
-          <div className="block-bottom-line"></div>
-        </div>
-        <div className="block-bottom-box circle">
-          <div className="block-bottom-small-circle"></div>
-        </div>
-      </BlockProvider.Bottom>
-      <BlockProvider.Bar
-        isUnActive={data.id !== currentSelectedBlock || blockChildIndex !== selectedBlockChild}
-      ></BlockProvider.Bar>
+      <BlockProvider.Bottom blockChildIndex={blockChildIndex} data={data} />
+      <BlockProvider.Bar blockChildIndex={blockChildIndex} data={data}></BlockProvider.Bar>
     </BlockProvider>
   );
 });

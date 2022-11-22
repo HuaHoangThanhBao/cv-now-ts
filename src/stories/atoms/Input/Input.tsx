@@ -1,15 +1,10 @@
 import { createRef, useState, useMemo, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import ContentEditable from 'react-contenteditable';
 import { InputType } from '../../../types/Input';
 import { useBlock } from '../../organisms/Block/BlockProvider';
 import './input.scss';
-import {
-  BlockUpdateState,
-  updateBlock,
-  updateSelectedBlockChild,
-} from '../../organisms/Block/block.slice';
-import { RootState } from '../../../store';
+import { BlockUpdateState, updateBlock } from '../../organisms/Block/block.slice';
 
 export interface InputProps {
   className?: string;
@@ -40,36 +35,13 @@ export const Input = ({
   const contentEditable = createRef<any>();
   const [html, setHTML] = useState(textVal);
   const [placeHolder, setPlaceHolder] = useState('');
-  const {
-    handleShowBlockContentBar,
-    handleShowBlockHeaderBar,
-    handleDisableBlockContentBar,
-    handleDisableBlockHeaderBar,
-  } = useBlock();
+  const { handleShowBlockContentBar, handleShowBlockHeaderBar } = useBlock();
 
   const dispatch = useDispatch();
-  const currentSelectedClass = useSelector((state: RootState) => state.block.selectedElement);
 
   useEffect(() => {
     setPlaceHolder(placeHolderVal);
   }, [placeHolderVal]);
-
-  useEffect(() => {
-    if (currentSelectedClass) {
-      const fieldType = currentSelectedClass.split(' ')[1];
-      const _type = InputType[fieldType as keyof typeof InputType];
-      if (
-        !currentSelectedClass.includes('field-input') &&
-        !currentSelectedClass.includes('block-bar') &&
-        !currentSelectedClass.includes('block-bar-icon') &&
-        !currentSelectedClass.includes('block-bottom') &&
-        _type !== InputType.header
-      ) {
-        handleDisableBlockContentBar();
-        handleDisableBlockHeaderBar();
-      }
-    }
-  }, [currentSelectedClass, handleDisableBlockContentBar, handleDisableBlockHeaderBar]);
 
   const handleChange = (evt: any) => {
     const value = evt.target.value;
@@ -84,15 +56,10 @@ export const Input = ({
   };
 
   const onFocus = () => {
-    if (type === InputType.header) handleShowBlockHeaderBar(data.id);
+    if (type === InputType.header) handleShowBlockHeaderBar(type, data.id, blockChildIndex);
     else {
-      dispatch(updateSelectedBlockChild(blockChildIndex));
-      handleShowBlockContentBar(data.id);
+      handleShowBlockContentBar(type, data.id, blockChildIndex);
     }
-  };
-
-  const onBlur = () => {
-    if (type === InputType.header) handleDisableBlockHeaderBar();
   };
 
   return (
@@ -108,7 +75,6 @@ export const Input = ({
         placeholder={placeHolder}
         onChange={handleChange}
         onFocus={onFocus}
-        onBlur={onBlur}
       />
     </div>
   );

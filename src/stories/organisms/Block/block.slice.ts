@@ -29,10 +29,13 @@ import {
 import { InputType } from '../../../types/Input';
 import { convert } from '../../../utils';
 
-interface BlockSelectState {
-  selectedBlock: number;
-  selectedBlockChild: number;
-  selectedElement: string;
+export interface BlockSelectState {
+  selectedBlock: {
+    blockType?: string;
+    blockId?: number;
+    blockChildIndex?: number;
+    selectedElement: string;
+  };
 }
 
 export interface BlockState {
@@ -63,9 +66,12 @@ export interface BlockUpdateState {
 }
 
 const initialState: BlockState & BlockSelectState = {
-  selectedBlock: -1,
-  selectedBlockChild: -1,
-  selectedElement: '',
+  selectedBlock: {
+    blockType: '',
+    blockId: -1,
+    blockChildIndex: -1,
+    selectedElement: '',
+  },
   education: [educationMetaData],
   workExperience: [workExperienceMetaData],
   organization: [organizationMetaData],
@@ -85,21 +91,13 @@ const initialState: BlockState & BlockSelectState = {
   reference: [referenceMetaData],
 };
 
-export const updateSelectedBlock = createAction<number>('block/updateSelectedBlock');
-export const updateSelectedBlockChild = createAction<number>('block/updateSelectedBlockChild');
-export const updateSelectedElement = createAction<string>('block/updateSelectedElement');
+export const updateSelectedBlock = createAction<BlockSelectState>('block/updateSelectedBlock');
 export const updateBlock = createAction<BlockUpdateState>('block/updateBlock');
 export const createBlock = createAction('block/createBlock');
 
 const blogSlice = createReducer(initialState, (builder) => {
   builder.addCase(updateSelectedBlock, (state, action) => {
-    state.selectedBlock = action.payload;
-  });
-  builder.addCase(updateSelectedBlockChild, (state, action) => {
-    state.selectedBlockChild = action.payload;
-  });
-  builder.addCase(updateSelectedElement, (state, action) => {
-    state.selectedElement = action.payload;
+    state.selectedBlock = { ...state.selectedBlock, ...action.payload.selectedBlock };
   });
   builder.addCase(createBlock, (state) => {
     const newData = { ...educationMetaData };
