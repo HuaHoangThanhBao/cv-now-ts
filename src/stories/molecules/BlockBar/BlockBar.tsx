@@ -4,7 +4,7 @@ import { Icon } from '../../atoms/Icon/Icon';
 import { useBlock } from '../../organisms/Block/BlockProvider';
 
 export interface BlockBarProps {
-  blockId: number;
+  blockId: string;
   blockChildIndex?: number;
 }
 

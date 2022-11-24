@@ -23,6 +23,7 @@ export const Input = ({
   data,
   blockChildIndex,
 }: InputProps) => {
+  const id = data.id.split('/')[0];
   const textVal = useMemo(() => {
     if (type !== InputType.contentBullet) return data[type].text;
     else return detailChild.text;
@@ -55,16 +56,16 @@ export const Input = ({
   };
 
   const onFocus = () => {
-    if (type === InputType.header) handleShowBlockHeaderBar(type, data.id, blockChildIndex);
+    if (type === InputType.header) handleShowBlockHeaderBar(type, id, blockChildIndex);
     else {
-      handleShowBlockContentBar(type, data.id, blockChildIndex);
+      handleShowBlockContentBar(type, id, blockChildIndex);
     }
   };
 
   const getFieldStatus = () => {
     if (textVal === '') {
       if (
-        data.id !== selectedBlock.selectedBlock.blockId ||
+        id !== selectedBlock.selectedBlock.blockId ||
         blockChildIndex !== selectedBlock.selectedBlock.blockChildIndex
       ) {
         return ' disable';

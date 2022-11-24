@@ -32,14 +32,14 @@ import { convert } from '../../../utils';
 export interface BlockSelectState {
   selectedBlock: {
     blockType?: string;
-    blockId?: number;
+    blockId?: string;
     blockChildIndex?: number;
     selectedElement: string;
   };
 }
 
 export interface PageState {
-  pages: number[][][];
+  pages: string[][][];
 }
 
 export interface BlockState {
@@ -70,23 +70,23 @@ export interface BlockUpdateState {
 }
 
 export interface BlockCreateState {
-  blockCreateId: number;
+  blockCreateId: string;
 }
 
 const initialState: BlockState & BlockCreateState & BlockSelectState & PageState = {
   pages: [
     [
-      [2, 3, 4, 1],
-      [5, 6, 7, 8],
+      ['2', '3', '4', '1'],
+      ['5', '6', '7', '8'],
     ],
-    [[9, 10, 11], [13]],
-    [[16], [14]],
-    [[12], []],
+    [['9', '10', '11'], ['13']],
+    [['16'], ['14']],
+    [['12'], []],
   ],
-  blockCreateId: -1,
+  blockCreateId: '-1',
   selectedBlock: {
     blockType: '',
-    blockId: -1,
+    blockId: '-1',
     blockChildIndex: -1,
     selectedElement: '',
   },
@@ -125,84 +125,83 @@ const blogSlice = createReducer(initialState, (builder) => {
     const blockCreateId = action.payload.blockCreateId;
     let newData: any = initialState.education;
     switch (blockCreateId) {
-      case 1:
+      case '1':
         newData = { ...educationMetaData };
         break;
-      case 2:
+      case '2':
         newData = { ...workExperienceMetaData };
         break;
-      case 3:
+      case '3':
         newData = { ...organizationMetaData };
         break;
-      case 4:
+      case '4':
         newData = { ...certificateMetaData };
         break;
-      case 5:
+      case '5':
         newData = { ...personalProjectMetaData };
         break;
-      case 6:
+      case '6':
         newData = { ...achievementMetaData };
         break;
-      case 7:
+      case '7':
         newData = { ...conferenceMetaData };
         break;
-      case 8:
+      case '8':
         newData = { ...awardMetaData };
         break;
-      case 9:
+      case '9':
         newData = { ...teachingExperienceMetaData };
         break;
-      case 10:
+      case '10':
         newData = { ...volunteerMetaData };
         break;
-      case 11:
+      case '11':
         newData = { ...supportMetaData };
         break;
-      case 12:
+      case '12':
         newData = { ...languageMetaData };
         break;
-      case 13:
+      case '13':
         newData = { ...publicationMetaData };
         break;
-      case 14:
+      case '14':
         newData = { ...skillMetaData };
         break;
-      case 15:
+      case '15':
         newData = { ...interestMetaData };
         break;
-      case 16:
+      case '16':
         newData = { ...softSkillMetaData };
         break;
-      case 17:
+      case '17':
         newData = { ...referenceMetaData };
         break;
     }
     newData.uid = uuidv4();
-    let newBlockId = 0;
     const blocks: Common[] = convert(blockCreateId, state);
+    let newBlockId = '';
     if (blocks.length >= 1) {
-      newBlockId = newData.id + blocks.length * 0.1;
+      newBlockId += blocks[0].id + '/' + blocks.length;
       newData.id = newBlockId;
     }
     blocks.push(newData);
 
     /*push block to page*/
     const blockId = action.payload.blockCreateId;
-    const blockIdFormat = Math.floor(blockId);
+    // console.log('blockId:', blockId);
     const pages = JSON.parse(JSON.stringify(state.pages));
     let blockOldIndex = -1;
     let columnOldIndex = -1;
     let pageOldIndex = -1;
     for (let i = 0; i < pages.length; i++) {
       for (let j = 0; j < pages[i].length; j++) {
-        const clone = pages[i][j].map((column: any) => Math.floor(column));
-        const _blockOldIndex = clone.lastIndexOf(blockIdFormat);
+        const clone = pages[i][j].map((column: any) => column.split('/')[0]);
+        const _blockOldIndex = clone.lastIndexOf(blockId);
         if (_blockOldIndex !== -1) {
           blockOldIndex = _blockOldIndex;
           columnOldIndex = j;
           pageOldIndex = i;
         }
-        break;
       }
     }
     if (blockOldIndex !== -1 && pageOldIndex !== -1 && columnOldIndex !== -1) {
@@ -214,6 +213,7 @@ const blogSlice = createReducer(initialState, (builder) => {
   builder.addCase(updateBlock, (state, action) => {
     const payload = action.payload;
     let data = payload.data;
+    const blockId = payload.data.id.split('/')[0];
     const fieldType = payload.type;
     const value = payload.value;
     if (fieldType !== InputType.contentBullet) {
@@ -225,7 +225,7 @@ const blogSlice = createReducer(initialState, (builder) => {
       data = JSON.parse(JSON.stringify(payload.data));
       data.content_bullet.child[foundChild].text = value;
     }
-    const blocks: Common[] = convert(data.id, state);
+    const blocks: Common[] = convert(blockId, state);
     const dir: number = blocks.findIndex((d: Common) => d.uid === data.uid);
     blocks[dir] = data;
   });

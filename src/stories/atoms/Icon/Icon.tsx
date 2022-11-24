@@ -46,116 +46,107 @@ import './icon.scss';
 
 interface IconProps {
   className?: string;
-  iconType: number | string;
+  iconType: string;
   iconColorHex?: string;
 }
 
 export const Icon = (props: IconProps) => {
   const { className, iconType, iconColorHex } = props;
 
-  const renderIcon = (type: number | string) => {
-    if (typeof type === 'number') {
-      switch (type) {
-        case 1:
-          return <EducationIcon />;
-        case 2:
-          return <WorkExperienceIcon />;
-        case 3:
-          return <OrganizationIcon />;
-        case 4:
-          return <CertificateIcon />;
-        case 5:
-          return <PersonalProjectIcon />;
-        case 6:
-          return <AchievementIcon />;
-        case 7:
-          return <ConferenceIcon />;
-        case 8:
-          return <HonorAwardIcon />;
-        case 9:
-          return <TeachingExperienceIcon />;
-        case 10:
-          return <VolunteerIcon />;
-        case 11:
-          return <SupportCauseIcon />;
-        case 12:
-          return <LanguageIcon />;
-        case 13:
-          return <PublicationIcon />;
-        case 14:
-          return <SkillIcon />;
-        case 15:
-          return <InterestIcon />;
-        case 16:
-          return <SoftSkillIcon />;
-        case 17:
-          return <ReferenceIcon />;
-        default:
-          return <EducationIcon />;
-      }
-    } else {
-      switch (type) {
-        case 'add':
-          return <AddIcon />;
-        case 'download':
-          return <DownloadIcon />;
-        case 'bold':
-          return <BoldIcon />;
-        case 'italic':
-          return <ItalicIcon />;
-        case 'underline':
-          return <UnderlineIcon />;
-        case 'move-up':
-          return <MoveUpIcon />;
-        case 'move-down':
-          return <MoveDownIcon />;
-        case 'trash':
-          return <TrashIcon />;
-        case 'font':
-          return <FontIcon />;
-        case 'theme':
-          return <ThemeIcon />;
-        case 'template':
-          return <TemplateIcon />;
-        case 'layout':
-          return <LayoutIcon />;
-        case 'setting':
-          return <SettingIcon />;
-        case 'email':
-          return <MailIconWhite />;
-        case 'address':
-          return <LocationIconWhite />;
-        case 'phoneNumber':
-          return <PhoneIconWhite />;
-        case 'website':
-          return <WebsiteIconWhite />;
-        case 'linkedIn':
-          return <LinkedinIconWhite />;
-        case 'twitter':
-          return <TwitterIconWhite />;
-        case 'skype':
-          return <SkypeIconWhite />;
-        case 'facebook':
-          return <FacebookIconWhite />;
-        case 'github':
-          return <GithubIconWhite />;
-        case 'stackOverflow':
-          return <StackOverFlowIconWhite />;
-        case 'medium':
-          return <MediumIconWhite />;
-        case 'instagram':
-          return <InstagramIconWhite />;
-        default:
-          return null;
-      }
+  const renderIcon = (type: string) => {
+    switch (type) {
+      case '1':
+        return <EducationIcon />;
+      case '2':
+        return <WorkExperienceIcon />;
+      case '3':
+        return <OrganizationIcon />;
+      case '4':
+        return <CertificateIcon />;
+      case '5':
+        return <PersonalProjectIcon />;
+      case '6':
+        return <AchievementIcon />;
+      case '7':
+        return <ConferenceIcon />;
+      case '8':
+        return <HonorAwardIcon />;
+      case '9':
+        return <TeachingExperienceIcon />;
+      case '10':
+        return <VolunteerIcon />;
+      case '11':
+        return <SupportCauseIcon />;
+      case '12':
+        return <LanguageIcon />;
+      case '13':
+        return <PublicationIcon />;
+      case '14':
+        return <SkillIcon />;
+      case '15':
+        return <InterestIcon />;
+      case '16':
+        return <SoftSkillIcon />;
+      case '17':
+        return <ReferenceIcon />;
+      case 'add':
+        return <AddIcon />;
+      case 'download':
+        return <DownloadIcon />;
+      case 'bold':
+        return <BoldIcon />;
+      case 'italic':
+        return <ItalicIcon />;
+      case 'underline':
+        return <UnderlineIcon />;
+      case 'move-up':
+        return <MoveUpIcon />;
+      case 'move-down':
+        return <MoveDownIcon />;
+      case 'trash':
+        return <TrashIcon />;
+      case 'font':
+        return <FontIcon />;
+      case 'theme':
+        return <ThemeIcon />;
+      case 'template':
+        return <TemplateIcon />;
+      case 'layout':
+        return <LayoutIcon />;
+      case 'setting':
+        return <SettingIcon />;
+      case 'email':
+        return <MailIconWhite />;
+      case 'address':
+        return <LocationIconWhite />;
+      case 'phoneNumber':
+        return <PhoneIconWhite />;
+      case 'website':
+        return <WebsiteIconWhite />;
+      case 'linkedIn':
+        return <LinkedinIconWhite />;
+      case 'twitter':
+        return <TwitterIconWhite />;
+      case 'skype':
+        return <SkypeIconWhite />;
+      case 'facebook':
+        return <FacebookIconWhite />;
+      case 'github':
+        return <GithubIconWhite />;
+      case 'stackOverflow':
+        return <StackOverFlowIconWhite />;
+      case 'medium':
+        return <MediumIconWhite />;
+      case 'instagram':
+        return <InstagramIconWhite />;
+      default:
+        return <EducationIcon />;
     }
   };
 
   return (
     <div
-      className={`icon ${iconType} ${typeof iconType === 'string' ? 'social' : ''} ${
-        className || ''
-      }`}
+      className={`icon ${iconType} ${!Number(iconType) ? 'social' : ''} ${className || ''}`}
       style={{ backgroundColor: `${iconColorHex}` }}
     >
       {renderIcon(iconType)}

@@ -1,5 +1,5 @@
 export interface Common extends Year, GlobalIterator {
-  id: number;
+  id: string;
   uid?: string;
   header: {
     text: string;

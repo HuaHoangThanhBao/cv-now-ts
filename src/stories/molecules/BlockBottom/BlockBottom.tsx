@@ -4,7 +4,7 @@ import { useBlock } from '../../organisms/Block/BlockProvider';
 import './blockBottom.scss';
 
 export interface BlockBottomProps {
-  blockId: number;
+  blockId: string;
   blockChildIndex: number;
   children?: JSX.Element | JSX.Element[];
 }

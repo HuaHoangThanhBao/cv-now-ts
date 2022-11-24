@@ -15,9 +15,9 @@ interface IBlockContext {
   showBlockContentBar: boolean;
   showBlockHeaderBar: boolean;
   selectedBlock: BlockSelectState;
-  handleShowBlockContentBar: (type: string, blockId: number, childIndex: number) => void;
+  handleShowBlockContentBar: (type: string, blockId: string, childIndex: number) => void;
   handleDisableBlockContentBar: () => void;
-  handleShowBlockHeaderBar: (type: string, blockId: number, childIndex: number) => void;
+  handleShowBlockHeaderBar: (type: string, blockId: string, childIndex: number) => void;
   handleDisableBlockHeaderBar: () => void;
 }
 
@@ -36,7 +36,7 @@ const BlockContext = createContext<IBlockContext>({
   selectedBlock: {
     selectedBlock: {
       blockType: '',
-      blockId: -1,
+      blockId: '-1',
       blockChildIndex: -1,
       selectedElement: '',
     },
@@ -52,7 +52,7 @@ const BlockProvider = (props: BlockComposition) => {
   const selectedBlock = useSelector((state: RootState) => state.block.selectedBlock);
   const [showBlockContentBar, setShowBlockContentBar] = useState(false);
   const [showBlockHeaderBar, setShowBlockHeaderBar] = useState(false);
-  const handleShowBlockContentBar = (type: string, blockId: number, childIndex: number) => {
+  const handleShowBlockContentBar = (type: string, blockId: string, childIndex: number) => {
     dispatch(
       updateSelectedBlock({
         selectedBlock: { ...selectedBlock, blockId, blockChildIndex: childIndex, blockType: type },
@@ -65,13 +65,13 @@ const BlockProvider = (props: BlockComposition) => {
   const handleDisableBlockContentBar = useCallback(() => {
     dispatch(
       updateSelectedBlock({
-        selectedBlock: { blockId: -1, blockType: '', blockChildIndex: -1, selectedElement: '' },
+        selectedBlock: { blockId: '-1', blockType: '', blockChildIndex: -1, selectedElement: '' },
       })
     );
     setShowBlockContentBar(false);
   }, [dispatch]);
 
-  const handleShowBlockHeaderBar = (type: string, blockId: number, childIndex: number) => {
+  const handleShowBlockHeaderBar = (type: string, blockId: string, childIndex: number) => {
     dispatch(
       updateSelectedBlock({
         selectedBlock: { ...selectedBlock, blockId, blockType: type, blockChildIndex: childIndex },

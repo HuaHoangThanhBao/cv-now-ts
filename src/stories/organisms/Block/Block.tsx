@@ -11,17 +11,22 @@ interface BlockProps {
 export const Block = React.memo(
   React.forwardRef((props: BlockProps, blocksRef: any) => {
     const { className, data, blockChildIndex } = props;
-    const blockId = data.id;
+    const block = data.id;
+    const blockId = block.split('/')[0];
     const update = (el: any) => {
-      blocksRef.current[Math.floor(blockId)] = {
-        ...blocksRef.current[Math.floor(blockId)],
-        [data.uid]: { id: blockId, el: el },
+      blocksRef.current[blockId] = {
+        ...blocksRef.current[blockId],
+        [data.uid]: { id: block, el: el },
       };
     };
+    const isChild = data.id.includes('/');
     console.log('render block');
     return (
       <BlockProvider>
-        <div className={`block ${className || ''}`} ref={(el) => update(el)}>
+        <div
+          className={`block ${className || ''} ${isChild ? 'is-child' : ''}`}
+          ref={(el) => update(el)}
+        >
           <BlockProvider.Header>
             {data?.uid}
             <BlockProvider.Input

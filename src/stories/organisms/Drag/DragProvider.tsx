@@ -66,6 +66,7 @@ const DragProvider = (props: DragComposition) => {
           1
         )[0]
       );
+      console.log('_pages after drag:', _pages);
       dragItem.current = targetItem;
       dispatch(updatePages({ pages: [..._pages] }));
     }
