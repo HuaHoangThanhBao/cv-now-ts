@@ -10,6 +10,6 @@ export default {
   },
 } as ComponentMeta<typeof BlockBar>;
 
-const Template: ComponentStory<typeof BlockBar> = (args) => <BlockBar />;
+const Template: ComponentStory<typeof BlockBar> = (args) => <BlockBar blockId={1} />;
 
 export const Menu = Template.bind({});

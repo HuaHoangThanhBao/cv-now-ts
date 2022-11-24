@@ -2,16 +2,17 @@ import { useDrag } from '../../organisms/Drag/DragProvider';
 import './dragGroup.scss';
 
 export interface DragGroupProps {
+  className?: string;
   page: any;
   pageI: any;
   children?: JSX.Element | JSX.Element[];
 }
 
-export const DragGroup = ({ children, page, pageI }: DragGroupProps) => {
+export const DragGroup = ({ children, page, pageI, className }: DragGroupProps) => {
   const { dragging, handleDragEnter } = useDrag();
   return (
     <div
-      className="drag-group"
+      className={`drag-group ${className || ''}`}
       onDragEnter={
         dragging && !page.length ? (e) => handleDragEnter(e, { page, pageI, itemI: 0 }) : () => {}
       }

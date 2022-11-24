@@ -1,8 +1,12 @@
-import { createContext, useContext, useRef, useState, useEffect } from 'react';
+import { createContext, useContext, useRef, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../../store';
 import { DragItem } from '../../atoms/DragItem';
 import { DragItemProps } from '../../atoms/DragItem/DragItem';
 import { DragGroup, DragGroupProps } from '../../molecules/DragGroup/DragGroup';
+import { updatePages } from '../Block/block.slice';
 import './drag.scss';
+import { finishingDrag } from './drag.slice';
 
 interface IDragContext {
   dragging: boolean;
@@ -15,8 +19,6 @@ interface IDragContext {
 }
 
 interface DragComposition {
-  data: any;
-  setData: any;
   Item?: React.FC<DragItemProps>;
   Group?: React.FC<DragGroupProps>;
   children?: JSX.Element | JSX.Element[];
@@ -33,13 +35,9 @@ const DragContext = createContext<IDragContext>({
 });
 
 const DragProvider = (props: DragComposition) => {
-  const { data, setData } = props;
+  const pages = useSelector((state: RootState) => state.block.pages);
+  const dispatch = useDispatch();
   const [dragging, setDragging] = useState(false);
-
-  useEffect(() => {
-    setData(data);
-  }, [setData, data]);
-
   const dragItem = useRef<any>();
   const dragItemNode = useRef<any>();
 
@@ -56,16 +54,20 @@ const DragProvider = (props: DragComposition) => {
     }, 0);
   };
   const handleDragEnter = (e: any, targetItem: any) => {
+    const _pages = JSON.parse(JSON.stringify(pages));
     // console.log('Entering a drag target', targetItem);
     if (dragItemNode.current !== e.target) {
       // console.log('Target is NOT the same as dragged item');
-      data[targetItem.pageI][targetItem.columnI].splice(
+      _pages[targetItem.pageI][targetItem.columnI].splice(
         targetItem.blockI,
         0,
-        data[dragItem.current.pageI][dragItem.current.columnI].splice(dragItem.current.blockI, 1)[0]
+        _pages[dragItem.current.pageI][dragItem.current.columnI].splice(
+          dragItem.current.blockI,
+          1
+        )[0]
       );
       dragItem.current = targetItem;
-      setData([...data]);
+      dispatch(updatePages({ pages: [..._pages] }));
     }
   };
   const handleDragEnd = (e: any) => {
@@ -73,6 +75,7 @@ const DragProvider = (props: DragComposition) => {
     dragItem.current = null;
     dragItemNode.current.removeEventListener('dragend', handleDragEnd);
     dragItemNode.current = null;
+    dispatch(finishingDrag(true));
   };
   const getStyles = (item: any) => {
     if (
@@ -86,7 +89,6 @@ const DragProvider = (props: DragComposition) => {
   };
 
   const value = {
-    data,
     dragItem,
     dragItemNode,
     dragging,
@@ -98,7 +100,9 @@ const DragProvider = (props: DragComposition) => {
 
   return (
     <DragContext.Provider value={value} {...props}>
-      <div className={`drag-n-drop ${data.length === 1 ? 'one-column' : ''}`}>{props.children}</div>
+      <div className={`drag-n-drop ${pages.length === 1 ? 'one-column' : ''}`}>
+        {props.children}
+      </div>
     </DragContext.Provider>
   );
 };

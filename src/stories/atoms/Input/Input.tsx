@@ -35,8 +35,7 @@ export const Input = ({
   const contentEditable = createRef<any>();
   const [html, setHTML] = useState(textVal);
   const [placeHolder, setPlaceHolder] = useState('');
-  const { handleShowBlockContentBar, handleShowBlockHeaderBar } = useBlock();
-
+  const { handleShowBlockContentBar, handleShowBlockHeaderBar, selectedBlock } = useBlock();
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -62,8 +61,20 @@ export const Input = ({
     }
   };
 
+  const getFieldStatus = () => {
+    if (textVal === '') {
+      if (
+        data.id !== selectedBlock.selectedBlock.blockId ||
+        blockChildIndex !== selectedBlock.selectedBlock.blockChildIndex
+      ) {
+        return ' disable';
+      }
+    }
+    return '';
+  };
+
   return (
-    <div className={`field${title ? ' title' : ''}`}>
+    <div className={`field${title ? ' title' : ''}${getFieldStatus()}`}>
       {title && title}
       {detailChild && <span className="field-bullet"></span>}
       <ContentEditable

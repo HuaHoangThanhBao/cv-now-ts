@@ -2,7 +2,7 @@ import { BlockState } from '../stories/organisms/Block/block.slice';
 import { Common } from '../types/Block';
 
 export const convert = (blockType: number, state: BlockState): Common[] => {
-  switch (blockType) {
+  switch (Math.floor(blockType)) {
     case 1:
       return state['education'];
     case 2:

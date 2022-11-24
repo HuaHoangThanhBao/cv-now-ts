@@ -1,75 +1,61 @@
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../store';
 import { DragProvider } from './DragProvider';
 
-interface DragProps {
-  data?: any;
-  setData: any;
-}
+export const Drag = () => {
+  const pages = useSelector((state: RootState) => state.block.pages);
 
-export const Drag = (props: DragProps) => {
-  const { data, setData } = props;
+  const getFirstColumn = () => {
+    const res = [];
+    for (let i = 0; i < pages.length; i++) {
+      for (let j = 0; j < pages[i].length; j++) {
+        for (let z = 0; z < pages[i][j].length; z++) {
+          if (j === 0) {
+            res.push({
+              page: pages[i],
+              pageI: i,
+              column: pages[i][j],
+              columnI: j,
+              block: pages[i][j][z],
+              blockI: z,
+            });
+          }
+        }
+      }
+    }
+    return res;
+  };
+  const getSecondColumn = () => {
+    const res = [];
+    for (let i = 0; i < pages.length; i++) {
+      for (let j = 0; j < pages[i].length; j++) {
+        for (let z = 0; z < pages[i][j].length; z++) {
+          if (j === 1) {
+            res.push({
+              page: pages[i],
+              pageI: i,
+              column: pages[i][j],
+              columnI: j,
+              block: pages[i][j][z],
+              blockI: z,
+            });
+          }
+        }
+      }
+    }
+    return res;
+  };
 
   const renderDragGroup = () => {
-    if (data.length > 1) {
-      const evenColumn = data[0][0];
-      const oddColumn = data[0][1];
-      const evenColumn1 = data[1][0];
-      const oddColumn1 = data[1][1];
-      return (
-        <>
-          <DragProvider.Group page={data[0]} pageI={0}>
-            {evenColumn.map((block: any, blockI: any) => (
-              <DragProvider.Item
-                key={block}
-                page={data[0]}
-                pageI={0}
-                column={evenColumn}
-                columnI={0}
-                block={block}
-                blockI={blockI}
-              />
-            ))}
-            {evenColumn1.map((block: any, blockI: any) => (
-              <DragProvider.Item
-                key={block}
-                page={data[1]}
-                pageI={1}
-                column={evenColumn}
-                columnI={0}
-                block={block}
-                blockI={blockI}
-              />
-            ))}
-          </DragProvider.Group>
-          <DragProvider.Group page={data[1]} pageI={1}>
-            {oddColumn.map((block: any, blockI: any) => (
-              <DragProvider.Item
-                key={block}
-                page={data[0]}
-                pageI={0}
-                column={oddColumn}
-                columnI={1}
-                block={block}
-                blockI={blockI}
-              />
-            ))}
-            {oddColumn1.map((block: any, blockI: any) => (
-              <DragProvider.Item
-                key={block}
-                page={data[1]}
-                pageI={1}
-                column={oddColumn}
-                columnI={1}
-                block={block}
-                blockI={blockI}
-              />
-            ))}
-          </DragProvider.Group>
-        </>
-      );
-    } else {
-      return data.map((page: any, pageI: number) =>
+    if (pages[0].length <= 1) {
+      return pages.map((page: any, pageI: number) =>
         page.map((column: any, columnI: number) => (
-          <DragProvider.Group key={column} page={page} pageI={pageI}>
+          <DragProvider.Group
+            key={column}
+            page={page}
+            pageI={pageI}
+            className={columnI % 2 === 0 ? 'even' : 'odd'}
+          >
             {column.map((block: any, blockI: any) => (
               <DragProvider.Item
                 key={block}
@@ -84,14 +70,43 @@ export const Drag = (props: DragProps) => {
           </DragProvider.Group>
         ))
       );
+    } else {
+      const firstColumn: any = getFirstColumn();
+      const secondColumn: any = getSecondColumn();
+      return (
+        <>
+          <DragProvider.Group page={firstColumn[0].page} pageI={0}>
+            {firstColumn.map((item: any) => (
+              <DragProvider.Item
+                key={item.block}
+                page={item.page}
+                pageI={item.pageI}
+                column={item.column}
+                columnI={item.columnI}
+                block={item.block}
+                blockI={item.blockI}
+              />
+            ))}
+          </DragProvider.Group>
+          <DragProvider.Group page={secondColumn[0].page} pageI={1}>
+            {secondColumn.map((item: any) => (
+              <DragProvider.Item
+                key={item.block}
+                page={item.page}
+                pageI={item.pageI}
+                column={item.column}
+                columnI={item.columnI}
+                block={item.block}
+                blockI={item.blockI}
+              />
+            ))}
+          </DragProvider.Group>
+        </>
+      );
     }
   };
 
-  if (data) {
-    return (
-      <DragProvider data={data} setData={setData}>
-        {renderDragGroup()}
-      </DragProvider>
-    );
+  if (pages) {
+    return <DragProvider>{renderDragGroup()}</DragProvider>;
   } else return null;
 };

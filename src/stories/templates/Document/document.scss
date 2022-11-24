@@ -1,7 +1,13 @@
 .document {
   width: 1200px;
-  min-height: 500px;
-  padding: 2rem;
+  min-height: 1180px;
+  // padding: 2rem;
+  background-color: white;
+  margin: 0 auto;
+  &:not(:first-of-type) {
+    margin-top: 3rem;
+    margin-bottom: 3rem;
+  }
   &::after {
     content: '';
     display: block;
@@ -13,6 +19,6 @@
   }
   .odd {
     width: 50%;
-    float: left;
+    float: right;
   }
 }

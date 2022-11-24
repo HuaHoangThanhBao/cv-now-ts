@@ -2,6 +2,9 @@
   word-break: break-word;
   // display: none !important;
   font-size: 1.2rem;
+  &.disable {
+    display: none;
+  }
   &-input {
     display: block;
     border: none;

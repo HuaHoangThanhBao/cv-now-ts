@@ -92,6 +92,7 @@ export const educationMetaData: Education = {
 
 export const workExperienceMetaData: WorkExperience = {
   id: 2,
+  uid: uuidv4(),
   header: {
     text: 'WORK EXPERIENCE',
     placeHolder: 'WORK EXPERIENCE',
@@ -139,6 +140,7 @@ export const workExperienceMetaData: WorkExperience = {
 
 export const organizationMetaData: Common = {
   id: 3,
+  uid: uuidv4(),
   header: {
     text: 'ORGANIZATIONS',
     placeHolder: 'ORGANIZATIONS',
@@ -160,6 +162,7 @@ export const organizationMetaData: Common = {
 
 export const certificateMetaData: Common = {
   id: 4,
+  uid: uuidv4(),
   header: {
     text: 'CERTIFICATES',
     placeHolder: 'CERTIFICATES',
@@ -181,6 +184,7 @@ export const certificateMetaData: Common = {
 
 export const personalProjectMetaData: Common = {
   id: 5,
+  uid: uuidv4(),
   header: {
     text: 'PERSONAL PROJECTS',
     placeHolder: 'PERSONAL PROJECTS',
@@ -209,6 +213,7 @@ export const personalProjectMetaData: Common = {
 
 export const achievementMetaData: Common = {
   id: 6,
+  uid: uuidv4(),
   header: {
     text: 'ACHIEVEMENTS',
     placeHolder: 'ACHIEVEMENTS',
@@ -230,6 +235,7 @@ export const achievementMetaData: Common = {
 
 export const conferenceMetaData: Education = {
   id: 7,
+  uid: uuidv4(),
   header: {
     text: 'CONFERENCES & COURSES',
     placeHolder: 'CONFERENCES & COURSES',
@@ -264,6 +270,7 @@ export const conferenceMetaData: Education = {
 
 export const awardMetaData: Education = {
   id: 8,
+  uid: uuidv4(),
   header: {
     text: 'HONOR AWARDS',
     placeHolder: 'HONOR AWARDS',
@@ -298,6 +305,7 @@ export const awardMetaData: Education = {
 
 export const teachingExperienceMetaData: Education = {
   id: 9,
+  uid: uuidv4(),
   header: {
     text: 'TEACHING EXPERIENCE',
     placeHolder: 'TEACHING EXPERIENCE',
@@ -338,6 +346,7 @@ export const teachingExperienceMetaData: Education = {
 
 export const volunteerMetaData: WorkExperience = {
   id: 10,
+  uid: uuidv4(),
   header: {
     text: 'VOLUNTEER EXPERIENCE',
     placeHolder: 'VOLUNTEER EXPERIENCE',
@@ -391,6 +400,7 @@ export const volunteerMetaData: WorkExperience = {
 
 export const supportMetaData: Common = {
   id: 11,
+  uid: uuidv4(),
   header: {
     text: 'SUPPORTED CAUSE',
     placeHolder: 'SUPPORTED CAUSE',
@@ -405,6 +415,7 @@ export const supportMetaData: Common = {
 
 export const languageMetaData: Common = {
   id: 12,
+  uid: uuidv4(),
   header: {
     text: 'LANGUAGES',
     placeHolder: 'LANGUAGES',
@@ -425,6 +436,7 @@ export const languageMetaData: Common = {
 
 export const publicationMetaData: Publication = {
   id: 13,
+  uid: uuidv4(),
   header: {
     text: 'PUBLICATIONS',
     placeHolder: 'PUBLICATIONS',
@@ -476,6 +488,7 @@ export const publicationMetaData: Publication = {
 
 export const skillMetaData: Common = {
   id: 14,
+  uid: uuidv4(),
   header: {
     text: 'SKILLS',
     placeHolder: 'SKILLS',
@@ -490,6 +503,7 @@ export const skillMetaData: Common = {
 
 export const interestMetaData: Common = {
   id: 15,
+  uid: uuidv4(),
   header: {
     text: 'INTERESTS',
     placeHolder: 'INTERESTS',
@@ -504,6 +518,7 @@ export const interestMetaData: Common = {
 
 export const softSkillMetaData: Common = {
   id: 16,
+  uid: uuidv4(),
   header: {
     text: 'SOFT SKILLS',
     placeHolder: 'SOFT SKILLS',
@@ -518,6 +533,7 @@ export const softSkillMetaData: Common = {
 
 export const referenceMetaData: Common = {
   id: 17,
+  uid: uuidv4(),
   header: {
     text: 'REFERENCES',
     placeHolder: 'REFERENCES',

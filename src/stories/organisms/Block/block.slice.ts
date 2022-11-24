@@ -38,6 +38,10 @@ export interface BlockSelectState {
   };
 }
 
+export interface PageState {
+  pages: number[][][];
+}
+
 export interface BlockState {
   education: Education[];
   workExperience: WorkExperience[];
@@ -65,7 +69,21 @@ export interface BlockUpdateState {
   child?: any;
 }
 
-const initialState: BlockState & BlockSelectState = {
+export interface BlockCreateState {
+  blockCreateId: number;
+}
+
+const initialState: BlockState & BlockCreateState & BlockSelectState & PageState = {
+  pages: [
+    [
+      [2, 3, 4, 1],
+      [5, 6, 7, 8],
+    ],
+    [[9, 10, 11], [13]],
+    [[16], [14]],
+    [[12], []],
+  ],
+  blockCreateId: -1,
   selectedBlock: {
     blockType: '',
     blockId: -1,
@@ -93,16 +111,105 @@ const initialState: BlockState & BlockSelectState = {
 
 export const updateSelectedBlock = createAction<BlockSelectState>('block/updateSelectedBlock');
 export const updateBlock = createAction<BlockUpdateState>('block/updateBlock');
-export const createBlock = createAction('block/createBlock');
+export const createBlock = createAction<BlockCreateState>('block/createBlock');
+export const updatePages = createAction<PageState>('block/updatePages');
 
 const blogSlice = createReducer(initialState, (builder) => {
+  builder.addCase(updatePages, (state, action) => {
+    state.pages = action.payload.pages;
+  });
   builder.addCase(updateSelectedBlock, (state, action) => {
     state.selectedBlock = { ...state.selectedBlock, ...action.payload.selectedBlock };
   });
-  builder.addCase(createBlock, (state) => {
-    const newData = { ...educationMetaData };
+  builder.addCase(createBlock, (state, action) => {
+    const blockCreateId = action.payload.blockCreateId;
+    let newData: any = initialState.education;
+    switch (blockCreateId) {
+      case 1:
+        newData = { ...educationMetaData };
+        break;
+      case 2:
+        newData = { ...workExperienceMetaData };
+        break;
+      case 3:
+        newData = { ...organizationMetaData };
+        break;
+      case 4:
+        newData = { ...certificateMetaData };
+        break;
+      case 5:
+        newData = { ...personalProjectMetaData };
+        break;
+      case 6:
+        newData = { ...achievementMetaData };
+        break;
+      case 7:
+        newData = { ...conferenceMetaData };
+        break;
+      case 8:
+        newData = { ...awardMetaData };
+        break;
+      case 9:
+        newData = { ...teachingExperienceMetaData };
+        break;
+      case 10:
+        newData = { ...volunteerMetaData };
+        break;
+      case 11:
+        newData = { ...supportMetaData };
+        break;
+      case 12:
+        newData = { ...languageMetaData };
+        break;
+      case 13:
+        newData = { ...publicationMetaData };
+        break;
+      case 14:
+        newData = { ...skillMetaData };
+        break;
+      case 15:
+        newData = { ...interestMetaData };
+        break;
+      case 16:
+        newData = { ...softSkillMetaData };
+        break;
+      case 17:
+        newData = { ...referenceMetaData };
+        break;
+    }
     newData.uid = uuidv4();
-    state.education.push(newData);
+    let newBlockId = 0;
+    const blocks: Common[] = convert(blockCreateId, state);
+    if (blocks.length >= 1) {
+      newBlockId = newData.id + blocks.length * 0.1;
+      newData.id = newBlockId;
+    }
+    blocks.push(newData);
+
+    /*push block to page*/
+    const blockId = action.payload.blockCreateId;
+    const blockIdFormat = Math.floor(blockId);
+    const pages = JSON.parse(JSON.stringify(state.pages));
+    let blockOldIndex = -1;
+    let columnOldIndex = -1;
+    let pageOldIndex = -1;
+    for (let i = 0; i < pages.length; i++) {
+      for (let j = 0; j < pages[i].length; j++) {
+        const clone = pages[i][j].map((column: any) => Math.floor(column));
+        const _blockOldIndex = clone.lastIndexOf(blockIdFormat);
+        if (_blockOldIndex !== -1) {
+          blockOldIndex = _blockOldIndex;
+          columnOldIndex = j;
+          pageOldIndex = i;
+        }
+        break;
+      }
+    }
+    if (blockOldIndex !== -1 && pageOldIndex !== -1 && columnOldIndex !== -1) {
+      pages[pageOldIndex][columnOldIndex].splice(blockOldIndex + 1, 0, newBlockId);
+    }
+    console.log('updated pages:', pages);
+    state.pages = pages;
   });
   builder.addCase(updateBlock, (state, action) => {
     const payload = action.payload;

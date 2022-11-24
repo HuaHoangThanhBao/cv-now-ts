@@ -4,14 +4,14 @@ import { Icon } from '../../atoms/Icon/Icon';
 import { useBlock } from '../../organisms/Block/BlockProvider';
 
 export interface BlockBarProps {
-  data?: any;
+  blockId: number;
   blockChildIndex?: number;
 }
 
-export const BlockBar = ({ data, blockChildIndex }: BlockBarProps) => {
+export const BlockBar = ({ blockId, blockChildIndex }: BlockBarProps) => {
   const { showBlockContentBar, showBlockHeaderBar, selectedBlock } = useBlock();
   if (
-    data.id !== selectedBlock.selectedBlock.blockId ||
+    blockId !== selectedBlock.selectedBlock.blockId ||
     blockChildIndex !== selectedBlock.selectedBlock.blockChildIndex
   )
     return null;

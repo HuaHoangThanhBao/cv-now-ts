@@ -4,16 +4,16 @@ import { useBlock } from '../../organisms/Block/BlockProvider';
 import './blockBottom.scss';
 
 export interface BlockBottomProps {
-  data?: any;
+  blockId: number;
   blockChildIndex: number;
   children?: JSX.Element | JSX.Element[];
 }
 
 export const BlockBottom = ({ children, ...props }: BlockBottomProps) => {
-  const { data, blockChildIndex } = props;
+  const { blockId, blockChildIndex } = props;
   const { showBlockContentBar, selectedBlock } = useBlock();
   if (
-    data.id !== selectedBlock.selectedBlock.blockId ||
+    blockId !== selectedBlock.selectedBlock.blockId ||
     blockChildIndex !== selectedBlock.selectedBlock.blockChildIndex
   )
     return null;

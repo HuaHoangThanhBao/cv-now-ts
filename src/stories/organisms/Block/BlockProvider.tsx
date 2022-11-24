@@ -22,7 +22,6 @@ interface IBlockContext {
 }
 
 interface BlockComposition {
-  clasName?: string;
   Header?: React.FC<BlockHeaderProps>;
   Content?: React.FC<BlockContentProps>;
   Bottom?: React.FC<BlockBottomProps>;
@@ -62,9 +61,16 @@ const BlockProvider = (props: BlockComposition) => {
     setShowBlockHeaderBar(false);
     setShowBlockContentBar(true);
   };
+
   const handleDisableBlockContentBar = useCallback(() => {
+    dispatch(
+      updateSelectedBlock({
+        selectedBlock: { blockId: -1, blockType: '', blockChildIndex: -1, selectedElement: '' },
+      })
+    );
     setShowBlockContentBar(false);
-  }, []);
+  }, [dispatch]);
+
   const handleShowBlockHeaderBar = (type: string, blockId: number, childIndex: number) => {
     dispatch(
       updateSelectedBlock({
@@ -74,9 +80,11 @@ const BlockProvider = (props: BlockComposition) => {
     setShowBlockHeaderBar(true);
     setShowBlockContentBar(false);
   };
+
   const handleDisableBlockHeaderBar = useCallback(() => {
     setShowBlockHeaderBar(false);
   }, []);
+
   const value = {
     selectedBlock: {
       selectedBlock: selectedBlock,
@@ -104,7 +112,7 @@ const BlockProvider = (props: BlockComposition) => {
 
   return (
     <BlockContext.Provider value={value} {...props}>
-      <div className={`block ${props.clasName || ''}`}>{props.children}</div>
+      {props.children}
     </BlockContext.Provider>
   );
 };
