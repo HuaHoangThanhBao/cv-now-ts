@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import './App.css';
 import { Block } from './stories/organisms/Block/Block';
@@ -13,9 +13,9 @@ import { convert } from './utils';
 import { Common } from './types/Block';
 import { Drag } from './stories/organisms/Drag/Drag';
 import { finishingDrag } from './stories/organisms/Drag/drag.slice';
+import { v4 as uuidv4 } from 'uuid';
 
 function App() {
-  const [isMoveChildToParent, setIsMoveChildToParent] = useState(false);
   const rootBlockState = useSelector((state: RootState) => state.block);
   const rootDragState = useSelector((state: RootState) => state.drag);
   const blocksRef = useRef([]);
@@ -57,21 +57,25 @@ function App() {
             })}
           </div>
           <div className="odd">
-            {oddColumn.map((block: string, blockIndex: number) => {
-              const blocks: Common[] = convert(oddColumn[blockIndex], rootBlockState);
-              return blocks.map((blockChild, blockChildIndex) => {
-                if (blockChild.id.includes(block)) {
-                  return (
-                    <Block
-                      key={blockChild.uid}
-                      data={blockChild}
-                      blockChildIndex={blockChildIndex}
-                      ref={blocksRef}
-                    />
-                  );
-                } else return null;
-              });
-            })}
+            {oddColumn &&
+              oddColumn.map((block: string, blockIndex: number) => {
+                const blocks: Common[] = convert(
+                  oddColumn[blockIndex].split('/')[0],
+                  rootBlockState
+                );
+                return blocks.map((blockChild, blockChildIndex) => {
+                  if (blockChild.id === block) {
+                    return (
+                      <Block
+                        key={blockChild.uid}
+                        data={blockChild}
+                        blockChildIndex={blockChildIndex}
+                        ref={blocksRef}
+                      />
+                    );
+                  } else return null;
+                });
+              })}
           </div>
         </>
       );
@@ -105,93 +109,93 @@ function App() {
     return sum;
   };
 
-  const moveChildToParent = () => {
-    const _pages = JSON.parse(JSON.stringify(rootBlockState.pages));
-    if (_pages.length > 1) {
-      /* Move child to parent*/
-      const childs: any = [];
-      _pages.forEach((page: any, pageI: any) =>
-        page.forEach((column: any, columnI: any) =>
-          column.forEach((block: any, blockI: any) => {
-            if (block.includes('/')) {
-              childs.push({ pageI, columnI, blockI, childBlock: block });
-            }
-          })
-        )
-      );
-      const parents: any = [];
-      _pages.forEach((page: any, pageI: any) =>
-        page.forEach((column: any, columnI: any) =>
-          column.forEach((block: any, blockI: any) => {
-            if (!block.includes('/')) {
-              parents.push({
-                parentPageI: pageI,
-                parentColumnI: columnI,
-                parentBlockI: blockI,
-                block,
-              });
-            }
-          })
-        )
-      );
-      for (let i = 0; i < childs.length; i++) {
-        const child = childs[i];
-        const { pageI, columnI, childBlock } = child;
-        const childBlockId = childBlock.split('/')[0];
-        const found = parents.find((parent: any) => parent.block === childBlockId);
-        const { parentPageI, parentColumnI, parentBlockI } = found;
-        if (found) {
-          if (pageI === parentPageI) {
-            if (columnI !== parentColumnI) {
-              _pages[pageI][columnI].splice(childBlock, 1);
-              _pages[parentPageI][parentColumnI].splice(parentBlockI + 1, 0, childBlock);
-            }
-          } else {
-            _pages[pageI][columnI].splice(childBlock, 1);
-            _pages[parentPageI][parentColumnI].splice(parentBlockI + 1, 0, childBlock);
+  const getChildWithId = (_pages: any, block: any): any => {
+    for (let a = 0; a < _pages.length; a++) {
+      for (let b = 0; b < _pages[a].length; b++) {
+        for (let c = 0; c < _pages[a][b].length; c++) {
+          if (_pages[a][b][c] === block && !_pages[a][b][c].includes('/')) {
+            return { a, b, c };
           }
         }
       }
-      dispatch(updatePages({ pages: [..._pages] }));
-      /* Move child to parent*/
     }
   };
 
-  const transformBlocks = () => {
+  const transformBlocks = useCallback(() => {
     console.log(blocksRef.current);
-    const _pages = JSON.parse(JSON.stringify(rootBlockState.pages));
+    let _pages = JSON.parse(JSON.stringify(rootBlockState.pages));
     const maxHeight = 1000;
+
+    /* Move child to parent*/
     if (_pages.length > 1) {
-      let columnFirst = 0;
-      let columnSecond = 1;
-      /* Move first and second column to next page*/
-      for (let i = 0; i < _pages.length; i++) {
-        let sumFirstCol = 0;
-        let sumSecondCol = 0;
-        const firstColumn = _pages[i][columnFirst];
-        const secondColumn = _pages[i][columnSecond];
-        for (let a = 0; a < firstColumn.length; a++) {
-          sumFirstCol += findBlockRef(firstColumn[a]);
-          if (sumFirstCol > maxHeight) {
-            if (i < _pages.length - 1) {
-              const nextFirstColumn = _pages[i + 1][columnFirst];
-              for (let z = firstColumn.length - 1; z >= a; z--) {
-                console.log('push:', firstColumn[z]);
-                nextFirstColumn.unshift(firstColumn[z]);
-              }
-              firstColumn.splice(a, firstColumn.length);
-              break;
-            } else {
-              _pages.push([[], []]);
-              const nextFirstColumn = _pages[i + 1][columnFirst];
-              for (let z = firstColumn.length - 1; z >= a; z--) {
-                nextFirstColumn.unshift(firstColumn[z]);
-              }
-              firstColumn.splice(a, firstColumn.length);
-              break;
+      let childs: any = [];
+      _pages.forEach((page: any) =>
+        page.forEach((column: any) =>
+          column.forEach((block: any) => {
+            if (block.includes('/')) {
+              childs.push({ uid: uuidv4(), block: block });
             }
+          })
+        )
+      );
+      // console.log('childs:', childs);
+      _pages = _pages.map((page: any) =>
+        page.map((column: any) =>
+          column.filter((block: any) => {
+            return !block.includes('/');
+          })
+        )
+      );
+
+      const group: any = {};
+      for (let i = 0; i < childs.length; i++) {
+        const child = childs[i];
+        const block = childs[i].block;
+        const blockId = block.split('/')[0];
+        group[blockId] = {
+          ...group[blockId],
+          [child.uid]: block,
+        };
+      }
+      for (let i = 0; i < Object.keys(group).length; i++) {
+        const g = Object.keys(group)[i];
+        const { a, b, c } = getChildWithId(_pages, g);
+        _pages[a][b].splice(c + 1, 0, ...Object.values(group[g]));
+      }
+      console.log('page after move child to parent:', _pages);
+    }
+    /* End Move child to parent*/
+
+    let columnFirst = 0;
+    let columnSecond = 1;
+    /* Move first and second column to next page*/
+    for (let i = 0; i < _pages.length; i++) {
+      let sumFirstCol = 0;
+      let sumSecondCol = 0;
+      const firstColumn = _pages[i][columnFirst];
+      const secondColumn = _pages[i][columnSecond];
+      for (let a = 0; a < firstColumn.length; a++) {
+        sumFirstCol += findBlockRef(firstColumn[a]);
+        if (sumFirstCol > maxHeight) {
+          if (i < _pages.length - 1) {
+            const nextFirstColumn = _pages[i + 1][columnFirst];
+            for (let z = firstColumn.length - 1; z >= a; z--) {
+              nextFirstColumn.unshift(firstColumn[z]);
+            }
+            firstColumn.splice(a, firstColumn.length);
+            break;
+          } else {
+            _pages.push([[], []]);
+            const nextFirstColumn = _pages[i + 1][columnFirst];
+            for (let z = firstColumn.length - 1; z >= a; z--) {
+              nextFirstColumn.unshift(firstColumn[z]);
+            }
+            firstColumn.splice(a, firstColumn.length);
+            break;
           }
         }
+      }
+      if (secondColumn) {
         for (let a = 0; a < secondColumn.length; a++) {
           sumSecondCol += findBlockRef(secondColumn[a]);
           if (sumSecondCol > maxHeight) {
@@ -214,73 +218,76 @@ function App() {
           }
         }
       }
-      /* End Move first and second column to next page*/
+    }
+    /* End Move first and second column to next page*/
 
-      console.log('--------------------------');
+    console.log('--------------------------');
 
-      /* Move first and second column to previous page*/
-      for (let i = 0; i < _pages.length; i++) {
-        let sumFirstCol = 0;
-        let sumSecondCol = 0;
-        const firstColumnDelete = [];
-        const secondColumnDelete = [];
-        const firstColumn = _pages[i][columnFirst];
-        const secondColumn = _pages[i][columnSecond];
-        for (let a = 0; a < firstColumn.length; a++) {
-          sumFirstCol += findBlockRef(firstColumn[a]);
-        }
+    /* Move first and second column to previous page*/
+    for (let i = 0; i < _pages.length; i++) {
+      let sumFirstCol = 0;
+      let sumSecondCol = 0;
+      const firstColumnDelete = [];
+      const secondColumnDelete = [];
+      const firstColumn = _pages[i][columnFirst];
+      const secondColumn = _pages[i][columnSecond];
+      for (let a = 0; a < firstColumn.length; a++) {
+        sumFirstCol += findBlockRef(firstColumn[a]);
+      }
+      if (secondColumn) {
         for (let a = 0; a < secondColumn.length; a++) {
           sumSecondCol += findBlockRef(secondColumn[a]);
         }
-        if (sumFirstCol < maxHeight) {
-          if (i < _pages.length - 1) {
-            const nextFirstColumn = _pages[i + 1][columnFirst];
-            for (let z = 0; z < nextFirstColumn.length; z++) {
-              sumFirstCol += findBlockRef(nextFirstColumn[z]);
-              if (sumFirstCol < maxHeight) {
-                firstColumn.push(nextFirstColumn[z]);
-                firstColumnDelete.push(nextFirstColumn[z]);
-              } else {
-                break;
-              }
-            }
-            //remove deleted element
-            for (let z = 0; z < firstColumnDelete.length; z++) {
-              nextFirstColumn.shift();
+      }
+      if (sumFirstCol < maxHeight) {
+        if (i < _pages.length - 1) {
+          const nextFirstColumn = _pages[i + 1][columnFirst];
+          for (let z = 0; z < nextFirstColumn.length; z++) {
+            sumFirstCol += findBlockRef(nextFirstColumn[z]);
+            if (sumFirstCol < maxHeight) {
+              firstColumn.push(nextFirstColumn[z]);
+              firstColumnDelete.push(nextFirstColumn[z]);
+            } else {
+              break;
             }
           }
-        }
-        if (sumSecondCol < maxHeight) {
-          if (i < _pages.length - 1) {
-            const nextSecondColumn = _pages[i + 1][columnSecond];
-            for (let z = 0; z < nextSecondColumn.length; z++) {
-              sumSecondCol += findBlockRef(nextSecondColumn[z]);
-              if (sumSecondCol < maxHeight) {
-                secondColumn.push(nextSecondColumn[z]);
-                secondColumnDelete.push(nextSecondColumn[z]);
-              } else {
-                break;
-              }
-            }
-            //remove deleted element
-            for (let z = 0; z < secondColumnDelete.length; z++) {
-              nextSecondColumn.shift();
-            }
+          //remove deleted element
+          for (let z = 0; z < firstColumnDelete.length; z++) {
+            nextFirstColumn.shift();
           }
         }
       }
-      /* End Move first and second column to previous page*/
-
-      /* Remove empty pages */
-      for (let i = _pages.length - 1; i >= 0; i--) {
-        if (_pages[i][0].length === 0 && _pages[i][1].length === 0) {
-          _pages.pop();
+      if (sumSecondCol < maxHeight) {
+        if (i < _pages.length - 1) {
+          const nextSecondColumn = _pages[i + 1][columnSecond];
+          for (let z = 0; z < nextSecondColumn.length; z++) {
+            sumSecondCol += findBlockRef(nextSecondColumn[z]);
+            if (sumSecondCol < maxHeight) {
+              secondColumn.push(nextSecondColumn[z]);
+              secondColumnDelete.push(nextSecondColumn[z]);
+            } else {
+              break;
+            }
+          }
+          //remove deleted element
+          for (let z = 0; z < secondColumnDelete.length; z++) {
+            nextSecondColumn.shift();
+          }
         }
       }
     }
+    /* End Move first and second column to previous page*/
+
+    /* Remove empty pages */
+    for (let i = _pages.length - 1; i >= 0; i--) {
+      if (_pages[i][0].length === 0 && _pages[i][1].length === 0) {
+        _pages.pop();
+      }
+    }
+
     console.log('pages:', _pages);
     dispatch(updatePages({ pages: [..._pages] }));
-  };
+  }, [rootBlockState.pages, dispatch]);
 
   // console.log(blocksRef.current);
 
@@ -290,18 +297,10 @@ function App() {
 
   useEffect(() => {
     if (rootDragState.finishingDrag) {
-      moveChildToParent();
-      setIsMoveChildToParent(true);
+      transformBlocks();
       dispatch(finishingDrag(false));
     }
   }, [rootDragState.finishingDrag, dispatch, transformBlocks]);
-
-  useEffect(() => {
-    if (isMoveChildToParent) {
-      transformBlocks();
-      setIsMoveChildToParent(false);
-    }
-  }, [isMoveChildToParent]);
 
   useEffect(() => {
     window.addEventListener('keydown', (e: any) => {

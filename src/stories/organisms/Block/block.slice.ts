@@ -27,7 +27,7 @@ import {
   WorkExperience,
 } from '../../../types/Block';
 import { InputType } from '../../../types/Input';
-import { convert } from '../../../utils';
+import { convert, create } from '../../../utils';
 
 export interface BlockSelectState {
   selectedBlock: {
@@ -123,60 +123,7 @@ const blogSlice = createReducer(initialState, (builder) => {
   });
   builder.addCase(createBlock, (state, action) => {
     const blockCreateId = action.payload.blockCreateId;
-    let newData: any = initialState.education;
-    switch (blockCreateId) {
-      case '1':
-        newData = { ...educationMetaData };
-        break;
-      case '2':
-        newData = { ...workExperienceMetaData };
-        break;
-      case '3':
-        newData = { ...organizationMetaData };
-        break;
-      case '4':
-        newData = { ...certificateMetaData };
-        break;
-      case '5':
-        newData = { ...personalProjectMetaData };
-        break;
-      case '6':
-        newData = { ...achievementMetaData };
-        break;
-      case '7':
-        newData = { ...conferenceMetaData };
-        break;
-      case '8':
-        newData = { ...awardMetaData };
-        break;
-      case '9':
-        newData = { ...teachingExperienceMetaData };
-        break;
-      case '10':
-        newData = { ...volunteerMetaData };
-        break;
-      case '11':
-        newData = { ...supportMetaData };
-        break;
-      case '12':
-        newData = { ...languageMetaData };
-        break;
-      case '13':
-        newData = { ...publicationMetaData };
-        break;
-      case '14':
-        newData = { ...skillMetaData };
-        break;
-      case '15':
-        newData = { ...interestMetaData };
-        break;
-      case '16':
-        newData = { ...softSkillMetaData };
-        break;
-      case '17':
-        newData = { ...referenceMetaData };
-        break;
-    }
+    let newData = { ...create(blockCreateId) };
     newData.uid = uuidv4();
     const blocks: Common[] = convert(blockCreateId, state);
     let newBlockId = '';

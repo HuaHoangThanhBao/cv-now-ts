@@ -49,26 +49,34 @@ export const Drag = () => {
   const renderDragGroup = () => {
     if (pages[0].length <= 1) {
       return pages.map((page: any, pageI: number) =>
-        page.map((column: any, columnI: number) => (
-          <DragProvider.Group
-            key={column}
-            page={page}
-            pageI={pageI}
-            className={columnI % 2 === 0 ? 'even' : 'odd'}
-          >
-            {column.map((block: any, blockI: any) => (
-              <DragProvider.Item
-                key={block}
+        page.map((column: any, columnI: number) => {
+          if (!column.every((item: any) => item.includes('/'))) {
+            return (
+              <DragProvider.Group
+                key={column}
                 page={page}
                 pageI={pageI}
-                column={column}
-                columnI={columnI}
-                block={block}
-                blockI={blockI}
-              />
-            ))}
-          </DragProvider.Group>
-        ))
+                className={columnI % 2 === 0 ? 'even' : 'odd'}
+              >
+                {column.map((block: any, blockI: any) => {
+                  if (!block.includes('/'))
+                    return (
+                      <DragProvider.Item
+                        key={block}
+                        page={page}
+                        pageI={pageI}
+                        column={column}
+                        columnI={columnI}
+                        block={block}
+                        blockI={blockI}
+                      />
+                    );
+                  else return null;
+                })}
+              </DragProvider.Group>
+            );
+          } else return null;
+        })
       );
     } else {
       const firstColumn: any = getFirstColumn();

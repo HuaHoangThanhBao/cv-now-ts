@@ -101,7 +101,7 @@ const DragProvider = (props: DragComposition) => {
 
   return (
     <DragContext.Provider value={value} {...props}>
-      <div className={`drag-n-drop ${pages.length === 1 ? 'one-column' : ''}`}>
+      <div className={`drag-n-drop ${pages[0].length === 1 ? 'one-column' : ''}`}>
         {props.children}
       </div>
     </DragContext.Provider>
