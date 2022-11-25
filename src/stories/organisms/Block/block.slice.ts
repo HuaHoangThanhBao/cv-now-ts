@@ -42,6 +42,10 @@ export interface PageState {
   pages: string[][][];
 }
 
+export interface BlockMovingState {
+  isMovingBlock: boolean;
+}
+
 export interface BlockState {
   education: Education[];
   workExperience: WorkExperience[];
@@ -73,7 +77,11 @@ export interface BlockCreateState {
   blockCreateId: string;
 }
 
-const initialState: BlockState & BlockCreateState & BlockSelectState & PageState = {
+const initialState: BlockState &
+  BlockCreateState &
+  BlockMovingState &
+  BlockSelectState &
+  PageState = {
   pages: [
     [
       ['2', '3', '4', '1'],
@@ -83,6 +91,7 @@ const initialState: BlockState & BlockCreateState & BlockSelectState & PageState
     [['16'], ['14']],
     [['12'], []],
   ],
+  isMovingBlock: false,
   blockCreateId: '-1',
   selectedBlock: {
     blockType: '',
@@ -113,8 +122,12 @@ export const updateSelectedBlock = createAction<BlockSelectState>('block/updateS
 export const updateBlock = createAction<BlockUpdateState>('block/updateBlock');
 export const createBlock = createAction<BlockCreateState>('block/createBlock');
 export const updatePages = createAction<PageState>('block/updatePages');
+export const moveBlock = createAction<BlockMovingState>('block/moveBlock');
 
 const blogSlice = createReducer(initialState, (builder) => {
+  builder.addCase(moveBlock, (state, action) => {
+    state.isMovingBlock = action.payload.isMovingBlock;
+  });
   builder.addCase(updatePages, (state, action) => {
     state.pages = action.payload.pages;
   });
@@ -135,7 +148,6 @@ const blogSlice = createReducer(initialState, (builder) => {
 
     /*push block to page*/
     const blockId = action.payload.blockCreateId;
-    // console.log('blockId:', blockId);
     const pages = JSON.parse(JSON.stringify(state.pages));
     let blockOldIndex = -1;
     let columnOldIndex = -1;
@@ -154,6 +166,8 @@ const blogSlice = createReducer(initialState, (builder) => {
     if (blockOldIndex !== -1 && pageOldIndex !== -1 && columnOldIndex !== -1) {
       pages[pageOldIndex][columnOldIndex].splice(blockOldIndex + 1, 0, newBlockId);
     }
+    /*end push block to page*/
+
     console.log('updated pages:', pages);
     state.pages = pages;
   });

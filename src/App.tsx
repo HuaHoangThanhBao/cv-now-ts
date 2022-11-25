@@ -6,14 +6,14 @@ import { Document } from './stories/templates/Document';
 import { RootState } from './store';
 import {
   createBlock,
+  moveBlock,
   updatePages,
   updateSelectedBlock,
 } from './stories/organisms/Block/block.slice';
-import { convert } from './utils';
+import { convert, moveChildToParent } from './utils';
 import { Common } from './types/Block';
 import { Drag } from './stories/organisms/Drag/Drag';
 import { finishingDrag } from './stories/organisms/Drag/drag.slice';
-import { v4 as uuidv4 } from 'uuid';
 
 function App() {
   const rootBlockState = useSelector((state: RootState) => state.block);
@@ -109,61 +109,14 @@ function App() {
     return sum;
   };
 
-  const getChildWithId = (_pages: any, block: any): any => {
-    for (let a = 0; a < _pages.length; a++) {
-      for (let b = 0; b < _pages[a].length; b++) {
-        for (let c = 0; c < _pages[a][b].length; c++) {
-          if (_pages[a][b][c] === block && !_pages[a][b][c].includes('/')) {
-            return { a, b, c };
-          }
-        }
-      }
-    }
-  };
-
   const transformBlocks = useCallback(() => {
     console.log(blocksRef.current);
     let _pages = JSON.parse(JSON.stringify(rootBlockState.pages));
     const maxHeight = 1000;
 
     /* Move child to parent*/
-    if (_pages.length > 1) {
-      let childs: any = [];
-      _pages.forEach((page: any) =>
-        page.forEach((column: any) =>
-          column.forEach((block: any) => {
-            if (block.includes('/')) {
-              childs.push({ uid: uuidv4(), block: block });
-            }
-          })
-        )
-      );
-      // console.log('childs:', childs);
-      _pages = _pages.map((page: any) =>
-        page.map((column: any) =>
-          column.filter((block: any) => {
-            return !block.includes('/');
-          })
-        )
-      );
-
-      const group: any = {};
-      for (let i = 0; i < childs.length; i++) {
-        const child = childs[i];
-        const block = childs[i].block;
-        const blockId = block.split('/')[0];
-        group[blockId] = {
-          ...group[blockId],
-          [child.uid]: block,
-        };
-      }
-      for (let i = 0; i < Object.keys(group).length; i++) {
-        const g = Object.keys(group)[i];
-        const { a, b, c } = getChildWithId(_pages, g);
-        _pages[a][b].splice(c + 1, 0, ...Object.values(group[g]));
-      }
-      console.log('page after move child to parent:', _pages);
-    }
+    const { result } = moveChildToParent(_pages, true);
+    _pages = result;
     /* End Move child to parent*/
 
     let columnFirst = 0;
@@ -301,6 +254,13 @@ function App() {
       dispatch(finishingDrag(false));
     }
   }, [rootDragState.finishingDrag, dispatch, transformBlocks]);
+
+  useEffect(() => {
+    if (rootBlockState.isMovingBlock) {
+      transformBlocks();
+      dispatch(moveBlock({ isMovingBlock: false }));
+    }
+  }, [rootBlockState.isMovingBlock, dispatch, transformBlocks]);
 
   useEffect(() => {
     window.addEventListener('keydown', (e: any) => {

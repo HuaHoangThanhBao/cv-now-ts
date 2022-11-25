@@ -1,4 +1,3 @@
-import React from 'react';
 import { ReactComponent as EducationIcon } from '../../assets/education.svg';
 import { ReactComponent as WorkExperienceIcon } from '../../assets/work-experience.svg';
 import { ReactComponent as SoftSkillIcon } from '../../assets/soft-skill.svg';
@@ -48,10 +47,11 @@ interface IconProps {
   className?: string;
   iconType: string;
   iconColorHex?: string;
+  onClick?: () => void;
 }
 
 export const Icon = (props: IconProps) => {
-  const { className, iconType, iconColorHex } = props;
+  const { className, iconType, iconColorHex, onClick } = props;
 
   const renderIcon = (type: string) => {
     switch (type) {
@@ -148,6 +148,7 @@ export const Icon = (props: IconProps) => {
     <div
       className={`icon ${iconType} ${!Number(iconType) ? 'social' : ''} ${className || ''}`}
       style={{ backgroundColor: `${iconColorHex}` }}
+      onClick={onClick}
     >
       {renderIcon(iconType)}
     </div>
