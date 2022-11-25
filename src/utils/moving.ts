@@ -114,3 +114,76 @@ export const movingBlockUp = (parents: any, blockId: string) => {
     if (found) break;
   }
 };
+
+export const movingBlockChildDown = (_pages: any, block: string) => {
+  let found = false;
+  let movingChild: any = null;
+  for (let a = 0; a < _pages.length; a++) {
+    for (let b = 0; b < _pages[a].length; b++) {
+      for (let c = 0; c < _pages[a][b].length; c++) {
+        if (_pages[a][b][c] === block) {
+          console.log(a, b, c);
+          movingChild = { pageI: a, columnI: b, blockI: c, block: _pages[a][b][c] };
+        }
+      }
+      if (found) break;
+    }
+    if (found) break;
+  }
+  found = false;
+  for (let a = 0; a < _pages.length; a++) {
+    for (let b = 0; b < _pages[a].length; b++) {
+      for (let c = 0; c < _pages[a][b].length; c++) {
+        const num = Number(_pages[a][b][c].split('/')[0]);
+        const numChild = Number(movingChild.block.split('/')[0]);
+        if (num === numChild) {
+          if (c > movingChild.blockI || a !== movingChild.pageI) {
+            _pages[a][b].splice(c + 1, 0, movingChild.block);
+            _pages[movingChild.pageI][movingChild.columnI].splice(movingChild.blockI, 1);
+            found = true;
+            break;
+          }
+        }
+        if (found) break;
+      }
+      if (found) break;
+    }
+  }
+};
+
+export const movingBlockChildUp = (_pages: any, block: string) => {
+  let found = false;
+  let movingChild: any = null;
+  for (let a = 0; a < _pages.length; a++) {
+    for (let b = 0; b < _pages[a].length; b++) {
+      for (let c = 0; c < _pages[a][b].length; c++) {
+        if (_pages[a][b][c] === block) {
+          console.log(a, b, c);
+          movingChild = { pageI: a, columnI: b, blockI: c, block: _pages[a][b][c] };
+        }
+      }
+      if (found) break;
+    }
+    if (found) break;
+  }
+  found = false;
+  let res: any = {};
+  for (let a = 0; a < _pages.length; a++) {
+    for (let b = 0; b < _pages[a].length; b++) {
+      for (let c = 0; c < _pages[a][b].length; c++) {
+        const num = Number(_pages[a][b][c].split('/')[0]);
+        const numChild = Number(movingChild.block.split('/')[0]);
+        if (num === numChild) {
+          console.log(a, b, c);
+          if (c < movingChild.blockI || a !== movingChild.pageI) {
+            res = { a, b, c };
+          }
+        }
+        if (found) break;
+      }
+      if (found) break;
+    }
+  }
+  _pages[movingChild.pageI][movingChild.columnI].splice(movingChild.blockI, 1);
+  _pages[res.a][res.b].splice(res.c, 0, movingChild.block);
+};

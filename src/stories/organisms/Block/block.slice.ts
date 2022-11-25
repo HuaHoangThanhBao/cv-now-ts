@@ -123,6 +123,8 @@ export const updateBlock = createAction<BlockUpdateState>('block/updateBlock');
 export const createBlock = createAction<BlockCreateState>('block/createBlock');
 export const updatePages = createAction<PageState>('block/updatePages');
 export const moveBlock = createAction<BlockMovingState>('block/moveBlock');
+export const moveBlockContentDown = createAction<string>('block/moveBlockContentDown');
+export const moveBlockContentUp = createAction<string>('block/moveBlockContentUp');
 
 const blogSlice = createReducer(initialState, (builder) => {
   builder.addCase(moveBlock, (state, action) => {
@@ -189,6 +191,33 @@ const blogSlice = createReducer(initialState, (builder) => {
     const blocks: Common[] = convert(blockId, state);
     const dir: number = blocks.findIndex((d: Common) => d.uid === data.uid);
     blocks[dir] = data;
+  });
+  builder.addCase(moveBlockContentDown, (state, action) => {
+    const blockId = action.payload;
+    const blockIdFormat = blockId.split('/')[0];
+    let blocks: Common[] = convert(blockIdFormat, state);
+    const found = blocks.findIndex((block: any) => block.id === blockId);
+    if (found !== -1) {
+      if (found < blocks.length - 1) {
+        blocks.splice(found + 2, 0, blocks[found]);
+        blocks.splice(found, 1);
+      }
+    }
+    console.log('blocks after move down:', JSON.parse(JSON.stringify(blocks)));
+  });
+  builder.addCase(moveBlockContentUp, (state, action) => {
+    const blockId = action.payload;
+    const blockIdFormat = blockId.split('/')[0];
+    let blocks: Common[] = convert(blockIdFormat, state);
+    const found = blocks.findIndex((block: any) => block.id === blockId);
+    console.log('blockId:', blockId);
+    if (found !== -1) {
+      if (found > 0) {
+        blocks.splice(found - 1, 0, blocks[found]);
+        blocks.splice(found + 1, 1);
+      }
+    }
+    console.log('blocks after move up:', JSON.parse(JSON.stringify(blocks)));
   });
 });
 

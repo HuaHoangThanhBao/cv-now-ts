@@ -3,13 +3,22 @@ import { Icon } from '../../atoms/Icon/Icon';
 import { useBlock } from '../../organisms/Block/BlockProvider';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../store';
-import { moveBlock, updatePages } from '../../organisms/Block/block.slice';
 import {
+  moveBlock,
+  moveBlockContentDown,
+  moveBlockContentUp,
+  updatePages,
+} from '../../organisms/Block/block.slice';
+import {
+  convert,
   insertChildsToAfterParent,
   moveChildToParent,
+  movingBlockChildDown,
+  movingBlockChildUp,
   movingBlockDown,
   movingBlockUp,
 } from '../../../utils';
+import { Common } from '../../../types/Block';
 
 export interface BlockBarProps {
   block: string;
@@ -25,7 +34,9 @@ export const BlockBar = ({ block, blockId, blockChildIndex }: BlockBarProps) => 
     selectedBlock,
     handleCreateBlock,
   } = useBlock();
+  const rootBlockState = useSelector((state: RootState) => state.block);
   const pages = useSelector((state: RootState) => state.block.pages);
+  let blocks: Common[] = convert(blockId, rootBlockState);
   const dispatch = useDispatch();
   const moveBlockUp = () => {
     let _pages = JSON.parse(JSON.stringify(pages));
@@ -47,81 +58,19 @@ export const BlockBar = ({ block, blockId, blockChildIndex }: BlockBarProps) => 
   };
   const moveContentUp = () => {
     let _pages = JSON.parse(JSON.stringify(pages));
-    let found = false;
-    let movingChild: any = null;
-    for (let a = 0; a < _pages.length; a++) {
-      for (let b = 0; b < _pages[a].length; b++) {
-        for (let c = 0; c < _pages[a][b].length; c++) {
-          if (_pages[a][b][c] === block) {
-            console.log(a, b, c);
-            movingChild = { pageI: a, columnI: b, blockI: c, block: _pages[a][b][c] };
-          }
-        }
-        if (found) break;
-      }
-      if (found) break;
-    }
-    found = false;
-    for (let a = 0; a < _pages.length; a++) {
-      for (let b = 0; b < _pages[a].length; b++) {
-        for (let c = 0; c < _pages[a][b].length; c++) {
-          const num = Number(_pages[a][b][c].split('/')[0]);
-          const numChild = Number(movingChild.block.split('/')[0]);
-          if (num === numChild) {
-            if (c < movingChild.blockI || a !== movingChild.pageI) {
-              _pages[movingChild.pageI][movingChild.columnI].splice(movingChild.blockI, 1);
-              _pages[a][b].splice(c, 0, movingChild.block);
-              found = true;
-              break;
-            }
-          }
-          if (found) break;
-        }
-        if (found) break;
-      }
-    }
+    movingBlockChildUp(_pages, block);
     console.log('pages after move up content:', _pages);
     handleDisableBlockContentBar();
+    dispatch(moveBlockContentUp(block));
     dispatch(updatePages({ pages: [..._pages] }));
     dispatch(moveBlock({ isMovingBlock: true }));
   };
   const moveContentDown = () => {
     let _pages = JSON.parse(JSON.stringify(pages));
-    let found = false;
-    let movingChild: any = null;
-    for (let a = 0; a < _pages.length; a++) {
-      for (let b = 0; b < _pages[a].length; b++) {
-        for (let c = 0; c < _pages[a][b].length; c++) {
-          if (_pages[a][b][c] === block) {
-            console.log(a, b, c);
-            movingChild = { pageI: a, columnI: b, blockI: c, block: _pages[a][b][c] };
-          }
-        }
-        if (found) break;
-      }
-      if (found) break;
-    }
-    found = false;
-    for (let a = 0; a < _pages.length; a++) {
-      for (let b = 0; b < _pages[a].length; b++) {
-        for (let c = 0; c < _pages[a][b].length; c++) {
-          const num = Number(_pages[a][b][c].split('/')[0]);
-          const numChild = Number(movingChild.block.split('/')[0]);
-          if (num === numChild) {
-            if (c > movingChild.blockI || a !== movingChild.pageI) {
-              _pages[a][b].splice(c + 1, 0, movingChild.block);
-              _pages[movingChild.pageI][movingChild.columnI].splice(movingChild.blockI, 1);
-              found = true;
-              break;
-            }
-          }
-          if (found) break;
-        }
-        if (found) break;
-      }
-    }
+    movingBlockChildDown(_pages, block);
     console.log('pages after move down content:', _pages);
     handleDisableBlockContentBar();
+    dispatch(moveBlockContentDown(block));
     dispatch(updatePages({ pages: [..._pages] }));
     dispatch(moveBlock({ isMovingBlock: true }));
   };
@@ -142,13 +91,13 @@ export const BlockBar = ({ block, blockId, blockChildIndex }: BlockBarProps) => 
         <Icon iconType={'bold'} className={'block-bar-icon'} />
         <Icon iconType={'italic'} className={'block-bar-icon'} />
         <Icon iconType={'underline'} className={'block-bar-icon'} />
-        {blockChildIndex !== 0 && (
+        {blockChildIndex !== 0 && blockChildIndex > 1 && (
           <Icon iconType={'move-up'} className={'block-bar-icon'} onClick={moveContentUp} />
         )}
-        {blockChildIndex !== 0 && (
+        {blockChildIndex !== 0 && blockChildIndex < blocks.length - 1 && (
           <Icon iconType={'move-down'} className={'block-bar-icon'} onClick={moveContentDown} />
         )}
-        <Icon iconType={'trash'} className={'block-bar-icon'} />
+        {blockChildIndex !== 0 && <Icon iconType={'trash'} className={'block-bar-icon'} />}
       </div>
     );
   } else if (showBlockHeaderBar) {
