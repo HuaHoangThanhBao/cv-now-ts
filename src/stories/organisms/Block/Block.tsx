@@ -107,6 +107,7 @@ export const Block = React.memo(
           <BlockProvider.Bar
             blockChildIndex={blockChildIndex}
             blockId={blockId}
+            block={block}
           ></BlockProvider.Bar>
         </div>
       </BlockProvider>

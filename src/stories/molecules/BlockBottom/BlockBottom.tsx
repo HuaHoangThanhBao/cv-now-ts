@@ -11,7 +11,12 @@ export interface BlockBottomProps {
 
 export const BlockBottom = ({ children, ...props }: BlockBottomProps) => {
   const { blockId, blockChildIndex } = props;
-  const { showBlockContentBar, selectedBlock } = useBlock();
+  const { showBlockContentBar, selectedBlock, handleCreateBlock } = useBlock();
+
+  const onCreateBlock = () => {
+    handleCreateBlock(blockId);
+  };
+
   if (
     blockId !== selectedBlock.selectedBlock.blockId ||
     blockChildIndex !== selectedBlock.selectedBlock.blockChildIndex
@@ -20,7 +25,7 @@ export const BlockBottom = ({ children, ...props }: BlockBottomProps) => {
   else if (showBlockContentBar) {
     return (
       <div className="block-bottom">
-        <Icon iconType={'add'} />
+        <Icon iconType={'add'} onClick={onCreateBlock} />
         <div className="block-bottom-box line">
           <div className="block-bottom-line"></div>
         </div>

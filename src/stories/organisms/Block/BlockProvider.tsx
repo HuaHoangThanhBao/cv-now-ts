@@ -9,7 +9,7 @@ import { BlockContent, BlockContentProps } from '../../molecules/BlockContent/Bl
 import { BlockHeader } from '../../molecules/BlockHeader';
 import { BlockHeaderProps } from '../../molecules/BlockHeader/BlockHeader';
 import './block.scss';
-import { BlockSelectState, updateSelectedBlock } from './block.slice';
+import { BlockSelectState, createBlock, updateSelectedBlock } from './block.slice';
 
 interface IBlockContext {
   showBlockContentBar: boolean;
@@ -19,6 +19,7 @@ interface IBlockContext {
   handleDisableBlockContentBar: () => void;
   handleShowBlockHeaderBar: (type: string, blockId: string, childIndex: number) => void;
   handleDisableBlockHeaderBar: () => void;
+  handleCreateBlock: (blockId: string) => void;
 }
 
 interface BlockComposition {
@@ -45,6 +46,7 @@ const BlockContext = createContext<IBlockContext>({
   handleDisableBlockContentBar: () => {},
   handleShowBlockHeaderBar: () => {},
   handleDisableBlockHeaderBar: () => {},
+  handleCreateBlock: () => {},
 });
 
 const BlockProvider = (props: BlockComposition) => {
@@ -85,6 +87,11 @@ const BlockProvider = (props: BlockComposition) => {
     setShowBlockHeaderBar(false);
   }, []);
 
+  const handleCreateBlock = (blockId: string) => {
+    handleDisableBlockContentBar();
+    dispatch(createBlock({ blockCreateId: blockId }));
+  };
+
   const value = {
     selectedBlock: {
       selectedBlock: selectedBlock,
@@ -95,6 +102,7 @@ const BlockProvider = (props: BlockComposition) => {
     handleDisableBlockContentBar,
     handleShowBlockHeaderBar,
     handleDisableBlockHeaderBar,
+    handleCreateBlock,
   };
 
   useEffect(() => {
