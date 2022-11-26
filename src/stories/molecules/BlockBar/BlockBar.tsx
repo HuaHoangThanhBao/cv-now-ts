@@ -3,6 +3,8 @@ import { Icon } from '../../atoms/Icon/Icon';
 import { useBlock } from '../../organisms/Block/BlockProvider';
 import { useDispatch, useSelector } from 'react-redux';
 import {
+  BlockMoveType,
+  movingBlock,
   movingBlockContentDown,
   movingBlockContentUp,
   onMovingBlock,
@@ -21,6 +23,7 @@ export const BlockBar = ({ block, blockId, blockChildIndex }: BlockBarProps) => 
   const {
     showBlockContentBar,
     showBlockHeaderBar,
+    handleDisableBlockHeaderBar,
     handleDisableBlockContentBar,
     selectedBlock,
     handleCreateBlock,
@@ -28,8 +31,18 @@ export const BlockBar = ({ block, blockId, blockChildIndex }: BlockBarProps) => 
   const blockState = useSelector((state: RootState) => state.block);
   const dispatch = useDispatch();
   const blocks: Common[] = convert(blockId, blockState);
-  const moveBlockUp = () => {};
-  const moveBlockDown = () => {};
+  const moveBlockUp = () => {
+    handleDisableBlockHeaderBar();
+    handleDisableBlockContentBar();
+    dispatch(onMovingBlock(true));
+    dispatch(movingBlock({ blockMovingId: blockId, blockMoveType: BlockMoveType.up }));
+  };
+  const moveBlockDown = () => {
+    handleDisableBlockHeaderBar();
+    handleDisableBlockContentBar();
+    dispatch(onMovingBlock(true));
+    dispatch(movingBlock({ blockMovingId: blockId, blockMoveType: BlockMoveType.down }));
+  };
   const moveContentUp = () => {
     console.log('block content to move up:', block);
     handleDisableBlockContentBar();

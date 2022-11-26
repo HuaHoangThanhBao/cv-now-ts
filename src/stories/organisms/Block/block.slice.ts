@@ -42,8 +42,17 @@ export interface PageState {
   pages: string[][][];
 }
 
+export enum BlockMoveType {
+  down = 'down',
+  up = 'up',
+  drag = 'drag',
+}
+
 export interface BlockMovingState {
-  isMovingBlock: boolean;
+  isMovingBlock?: boolean;
+  blockMovingId: string;
+  blockMoveType: BlockMoveType;
+  blockMoveToIndex?: number;
 }
 
 export interface BlockState {
@@ -84,13 +93,14 @@ const initialState: BlockState &
   PageState = {
   pages: [
     [
-      ['2', '3', '4', '1'],
+      ['3', '4', '1'],
       ['5', '6', '7', '8'],
     ],
-    [['9', '10', '11'], ['13']],
+    [['9', '2', '10'], ['13']],
     [['16'], ['14']],
     [['12'], []],
   ],
+  blockMovingId: '-1',
   isMovingBlock: false,
   blockCreateId: '-1',
   selectedBlock: {
@@ -99,6 +109,8 @@ const initialState: BlockState &
     blockChildIndex: -1,
     selectedElement: '',
   },
+  blockMoveType: BlockMoveType.down,
+  blockMoveToIndex: -1,
   education: [educationMetaData],
   workExperience: [workExperienceMetaData],
   organization: [organizationMetaData],
@@ -125,8 +137,130 @@ export const updatePages = createAction<PageState>('block/updatePages');
 export const onMovingBlock = createAction<boolean>('block/onMovingBlock');
 export const movingBlockContentUp = createAction<string>('block/movingBlockContentUp');
 export const movingBlockContentDown = createAction<string>('block/movingBlockContentDown');
+export const movingBlock = createAction<BlockMovingState>('block/movingBlock');
 
 const blogSlice = createReducer(initialState, (builder) => {
+  builder.addCase(movingBlock, (state, action) => {
+    const type = action.payload.blockMoveType;
+    const _id = action.payload.blockMovingId;
+    const blockId = _id.split('/')[0];
+    let pages = JSON.parse(JSON.stringify(state.pages));
+    const temp: any = [];
+    for (let a = 0; a < pages.length; a++) {
+      for (let b = 0; b < pages[a].length; b++) {
+        for (let c = 0; c < pages[a][b].length; c++) {
+          const _block = pages[a][b][c].split('/')[0];
+          if (_block === blockId) {
+            temp.push({ a, b, c, block: pages[a][b][c] });
+          }
+        }
+      }
+    }
+    console.log('temp:', temp);
+    let childFound: any = getChildWithId(pages, action.payload.blockMovingId);
+    let store = [];
+    let found = false;
+    if (type === BlockMoveType.down) {
+      let max: any = {};
+      for (let a = 0; a < pages.length; a++) {
+        for (let b = 0; b < pages[a].length; b++) {
+          for (let c = 0; c < pages[a][b].length; c++) {
+            const _block = pages[a][b][c].split('/')[0];
+            if (_block !== blockId) {
+              if (a === childFound.i && b === childFound.j) {
+                console.log('childFound:', childFound);
+                if (c >= childFound.z && c !== pages[a][b].length) {
+                  max = { a, b, c };
+                  found = true;
+                  break;
+                } else {
+                  max = { a: a + 1, b, c: 0 };
+                }
+              }
+            }
+            if (found) break;
+          }
+          if (found) break;
+        }
+      }
+      console.log('max:', max);
+      store = temp.map((t: any) => t.block);
+      if (max.a === childFound.i) {
+        pages[max.a][max.b] = pages[max.a][max.b].filter(
+          (item: any) => item.split('/')[0] !== blockId
+        );
+        pages[max.a][max.b].splice(max.c, 0, ...store);
+      } else {
+        if (max.a < pages.length) {
+          pages[childFound.i][childFound.j] = pages[childFound.i][childFound.j].filter(
+            (item: any) => item.split('/')[0] !== blockId
+          );
+        }
+        if (childFound.i + 1 < pages.length) {
+          pages[childFound.i + 1][childFound.j] = pages[childFound.i + 1][childFound.j].filter(
+            (item: any) => item.split('/')[0] !== blockId
+          );
+        }
+        if (max.a < pages.length) {
+          pages[max.a][max.b].splice(max.c + 1, 0, ...store);
+        }
+      }
+    } else if (type === BlockMoveType.up) {
+      let min: any = {};
+      for (let a = 0; a < pages.length; a++) {
+        for (let b = 0; b < pages[a].length; b++) {
+          for (let c = 0; c < pages[a][b].length; c++) {
+            const _block = pages[a][b][c].split('/')[0];
+            if (_block !== blockId) {
+              if (a === childFound.i && b === childFound.j) {
+                console.log('childFound:', childFound);
+                if (c < childFound.z) {
+                  min = { a, b, c };
+                }
+              }
+            }
+          }
+        }
+      }
+      console.log('min:', min);
+      store = temp.map((t: any) => t.block);
+      if (Object.keys(min).length !== 0) {
+        if (min.a === childFound.i) {
+          pages[min.a][min.b] = pages[min.a][min.b].filter(
+            (item: any) => item.split('/')[0] !== blockId
+          );
+          if (min.a + 1 < pages.length) {
+            pages[min.a + 1][min.b] = pages[min.a + 1][min.b].filter(
+              (item: any) => item.split('/')[0] !== blockId
+            );
+          }
+        }
+        if (childFound.z > 0) {
+          pages[min.a][min.b].splice(min.c, 0, ...store);
+        }
+      } else {
+        if (min.a !== childFound.i && childFound.z === 0) {
+          if (childFound.i > 0 && childFound.z > 0) {
+            pages[childFound.i][childFound.j] = pages[childFound.i][childFound.j].filter(
+              (item: any) => item.split('/')[0] !== blockId
+            );
+          }
+          if (childFound.i - 1 >= 0) {
+            pages[childFound.i][childFound.j] = pages[childFound.i][childFound.j].filter(
+              (item: any) => item.split('/')[0] !== blockId
+            );
+            pages[childFound.i - 1][childFound.j].splice(
+              pages[childFound.i - 1][childFound.j].length - 1,
+              0,
+              ...store
+            );
+          }
+        }
+      }
+    }
+    state.pages = pages;
+    console.log('pages after move move block:', JSON.parse(JSON.stringify(pages)));
+  });
   builder.addCase(onMovingBlock, (state, action) => {
     state.isMovingBlock = action.payload;
   });

@@ -10,7 +10,7 @@ import {
   updatePages,
   updateSelectedBlock,
 } from './stories/organisms/Block/block.slice';
-import { convert, moveChildToParent } from './utils';
+import { convert } from './utils';
 import { Common } from './types/Block';
 import { Drag } from './stories/organisms/Drag/Drag';
 import { finishingDrag } from './stories/organisms/Drag/drag.slice';
