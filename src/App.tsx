@@ -6,7 +6,7 @@ import { Document } from './stories/templates/Document';
 import { RootState } from './store';
 import {
   createBlock,
-  moveBlock,
+  onMovingBlock,
   updatePages,
   updateSelectedBlock,
 } from './stories/organisms/Block/block.slice';
@@ -59,22 +59,24 @@ function App() {
           <div className="odd">
             {oddColumn &&
               oddColumn.map((block: string, blockIndex: number) => {
-                const blocks: Common[] = convert(
-                  oddColumn[blockIndex].split('/')[0],
-                  rootBlockState
-                );
-                return blocks.map((blockChild, blockChildIndex) => {
-                  if (blockChild.id === block) {
-                    return (
-                      <Block
-                        key={blockChild.uid}
-                        data={blockChild}
-                        blockChildIndex={blockChildIndex}
-                        ref={blocksRef}
-                      />
-                    );
-                  } else return null;
-                });
+                if (oddColumn[blockIndex]) {
+                  const blocks: Common[] = convert(
+                    oddColumn[blockIndex].split('/')[0],
+                    rootBlockState
+                  );
+                  return blocks.map((blockChild, blockChildIndex) => {
+                    if (blockChild.id === block) {
+                      return (
+                        <Block
+                          key={blockChild.uid}
+                          data={blockChild}
+                          blockChildIndex={blockChildIndex}
+                          ref={blocksRef}
+                        />
+                      );
+                    } else return null;
+                  });
+                } else return null;
               })}
           </div>
         </>
@@ -115,8 +117,8 @@ function App() {
     const maxHeight = 1000;
 
     /* Move child to parent*/
-    const { result } = moveChildToParent(_pages, true);
-    _pages = result;
+    // const { result } = moveChildToParent(_pages, true);
+    // _pages = result;
     /* End Move child to parent*/
 
     let columnFirst = 0;
@@ -258,7 +260,7 @@ function App() {
   useEffect(() => {
     if (rootBlockState.isMovingBlock) {
       transformBlocks();
-      dispatch(moveBlock({ isMovingBlock: false }));
+      dispatch(onMovingBlock(false));
     }
   }, [rootBlockState.isMovingBlock, dispatch, transformBlocks]);
 
@@ -311,7 +313,7 @@ function App() {
 
   return (
     <div className="App">
-      <Drag />
+      {/* <Drag /> */}
       {renderDocuments(rootBlockState.pages)}
     </div>
   );

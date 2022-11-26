@@ -9,7 +9,7 @@ import { BlockContent, BlockContentProps } from '../../molecules/BlockContent/Bl
 import { BlockHeader } from '../../molecules/BlockHeader';
 import { BlockHeaderProps } from '../../molecules/BlockHeader/BlockHeader';
 import './block.scss';
-import { BlockSelectState, createBlock, updateSelectedBlock } from './block.slice';
+import { BlockSelectState, updateSelectedBlock } from './block.slice';
 
 interface IBlockContext {
   showBlockContentBar: boolean;
@@ -89,7 +89,7 @@ const BlockProvider = (props: BlockComposition) => {
 
   const handleCreateBlock = (blockId: string) => {
     handleDisableBlockContentBar();
-    dispatch(createBlock({ blockCreateId: blockId }));
+    // dispatch(createBlock({ blockCreateId: blockId }));
   };
 
   const value = {

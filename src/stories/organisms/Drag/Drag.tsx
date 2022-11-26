@@ -10,7 +10,7 @@ export const Drag = () => {
     for (let i = 0; i < pages.length; i++) {
       for (let j = 0; j < pages[i].length; j++) {
         for (let z = 0; z < pages[i][j].length; z++) {
-          if (j === 0 && !pages[i][j][z].includes('/')) {
+          if (j === 0 && pages[i][j][z] && !pages[i][j][z].includes('/')) {
             res.push({
               page: pages[i],
               pageI: i,
@@ -30,7 +30,7 @@ export const Drag = () => {
     for (let i = 0; i < pages.length; i++) {
       for (let j = 0; j < pages[i].length; j++) {
         for (let z = 0; z < pages[i][j].length; z++) {
-          if (j === 1 && !pages[i][j][z].includes('/')) {
+          if (j === 1 && pages[i][j][z] && !pages[i][j][z].includes('/')) {
             res.push({
               page: pages[i],
               pageI: i,

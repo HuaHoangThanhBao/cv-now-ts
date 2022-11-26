@@ -27,7 +27,7 @@ import {
   WorkExperience,
 } from '../../../types/Block';
 import { InputType } from '../../../types/Input';
-import { convert, create } from '../../../utils';
+import { convert, create, getChildWithId } from '../../../utils';
 
 export interface BlockSelectState {
   selectedBlock: {
@@ -122,13 +122,140 @@ export const updateSelectedBlock = createAction<BlockSelectState>('block/updateS
 export const updateBlock = createAction<BlockUpdateState>('block/updateBlock');
 export const createBlock = createAction<BlockCreateState>('block/createBlock');
 export const updatePages = createAction<PageState>('block/updatePages');
-export const moveBlock = createAction<BlockMovingState>('block/moveBlock');
-export const moveBlockContentDown = createAction<string>('block/moveBlockContentDown');
-export const moveBlockContentUp = createAction<string>('block/moveBlockContentUp');
+export const onMovingBlock = createAction<boolean>('block/onMovingBlock');
+export const movingBlockContentUp = createAction<string>('block/movingBlockContentUp');
+export const movingBlockContentDown = createAction<string>('block/movingBlockContentDown');
 
 const blogSlice = createReducer(initialState, (builder) => {
-  builder.addCase(moveBlock, (state, action) => {
-    state.isMovingBlock = action.payload.isMovingBlock;
+  builder.addCase(onMovingBlock, (state, action) => {
+    state.isMovingBlock = action.payload;
+  });
+  builder.addCase(movingBlockContentUp, (state, action) => {
+    const currentBlockContentId = action.payload;
+    const blockId = currentBlockContentId.split('')[0];
+    const blocks: Common[] = convert(blockId, state);
+    const foundBlock: any = blocks.find((block: Common) => block.id === currentBlockContentId);
+    const foundIndex = blocks.findIndex((block: Common) => block.id === currentBlockContentId);
+    console.log('blocks:', blocks);
+    console.log('foundIndex:', foundIndex);
+    if (foundIndex > 1) {
+      blocks.splice(foundIndex - 1, 0, foundBlock);
+      blocks.splice(foundIndex + 1, 1);
+    } else if (foundIndex > 0) {
+      foundBlock.header = blocks[0].header;
+      blocks.splice(0, 0, foundBlock);
+      blocks.splice(foundIndex + 1, 1);
+    }
+    const pages = state.pages;
+    let found: any = {};
+    let dir: any = getChildWithId(pages, currentBlockContentId);
+    let exist = false;
+    for (let a = 0; a < pages.length; a++) {
+      for (let b = 0; b < pages[a].length; b++) {
+        for (let c = 0; c < pages[a][b].length; c++) {
+          const _block = pages[a][b][c].split('/')[0];
+          if (_block === blockId && pages[a][b][c] !== currentBlockContentId) {
+            if (a === dir.i) {
+              if (c < dir.z) {
+                found = { a, b, c };
+                exist = true;
+              }
+            } else {
+              if (!exist) {
+                found = { a, b, c };
+              } else {
+                break;
+              }
+            }
+          }
+        }
+      }
+    }
+    const { a, b, c } = found;
+    const { i, j, z } = dir;
+
+    if (Object.keys(found).length !== 0) {
+      console.log('cur to move up:', a, b, c);
+      console.log('dir to remove:', i, j, z);
+
+      pages[a][b].splice(c, 0, currentBlockContentId);
+      if (z > 0) {
+        pages[i][j].splice(z + 1, 1);
+      } else {
+        pages[i][j].splice(z, 1);
+      }
+
+      console.log('pages after move up:', JSON.parse(JSON.stringify(state.pages)));
+      console.log('blocks after move up:', JSON.parse(JSON.stringify(blocks)));
+    }
+  });
+  builder.addCase(movingBlockContentDown, (state, action) => {
+    const currentBlockContentId = action.payload;
+    const blockId = currentBlockContentId.split('')[0];
+    const blocks: Common[] = convert(blockId, state);
+    const foundBlock: any = blocks.find((block: Common) => block.id === currentBlockContentId);
+    const foundIndex = blocks.findIndex((block: Common) => block.id === currentBlockContentId);
+    console.log('blocks:', blocks);
+    console.log('foundIndex:', foundIndex);
+    if (foundIndex === 0) {
+      blocks.splice(foundIndex + 2, 0, foundBlock);
+      blocks.splice(foundIndex, 1);
+    } else if (foundIndex <= blocks.length - 2) {
+      blocks.splice(foundIndex + 2, 0, foundBlock);
+      blocks.splice(foundIndex, 1);
+    }
+    if (foundIndex === 0 && blocks.length > 1) {
+      blocks[0].header = blocks[1].header;
+    }
+    const pages = state.pages;
+    let found: any = {};
+    let dir: any = getChildWithId(pages, currentBlockContentId);
+    let exist = false;
+    for (let a = 0; a < pages.length; a++) {
+      for (let b = 0; b < pages[a].length; b++) {
+        for (let c = 0; c < pages[a][b].length; c++) {
+          const _block = pages[a][b][c].split('/')[0];
+          if (_block === blockId && pages[a][b][c] !== currentBlockContentId) {
+            if (a === dir.i) {
+              if (c > dir.z) {
+                found = { a, b, c };
+                exist = true;
+                break;
+              }
+            } else {
+              if (!exist) {
+                found = { a, b, c };
+                break;
+              }
+            }
+          }
+        }
+      }
+    }
+    const { a, b, c } = found;
+    const { i, j, z } = dir;
+
+    if (Object.keys(found).length !== 0) {
+      const _found: any = pages[a][b][c];
+      const _dir: any = pages[i][j][z];
+
+      console.log('cur to move down:', a, b, c);
+      console.log('dir to remove:', i, j, z);
+      console.log('_found:', _found);
+      console.log('_dir:', _dir);
+      console.log('z:', z);
+
+      if (z === 0) {
+        pages[a][b].splice(c + 1, 0, _dir);
+        pages[i][j].splice(0, 1);
+      } else {
+        pages[a][b].splice(c + 1, 0, _dir);
+        pages[i][j].splice(z, 1);
+      }
+    }
+
+    console.log('pages after move down:', JSON.parse(JSON.stringify(state.pages)));
+    console.log('blocks after move down:', JSON.parse(JSON.stringify(blocks)));
   });
   builder.addCase(updatePages, (state, action) => {
     state.pages = action.payload.pages;
@@ -143,7 +270,7 @@ const blogSlice = createReducer(initialState, (builder) => {
     const blocks: Common[] = convert(blockCreateId, state);
     let newBlockId = '';
     if (blocks.length >= 1) {
-      newBlockId += blocks[0].id + '/' + blocks.length;
+      newBlockId += blockCreateId + '/' + blocks.length;
       newData.id = newBlockId;
     }
     blocks.push(newData);
@@ -191,33 +318,6 @@ const blogSlice = createReducer(initialState, (builder) => {
     const blocks: Common[] = convert(blockId, state);
     const dir: number = blocks.findIndex((d: Common) => d.uid === data.uid);
     blocks[dir] = data;
-  });
-  builder.addCase(moveBlockContentDown, (state, action) => {
-    const blockId = action.payload;
-    const blockIdFormat = blockId.split('/')[0];
-    let blocks: Common[] = convert(blockIdFormat, state);
-    const found = blocks.findIndex((block: any) => block.id === blockId);
-    if (found !== -1) {
-      if (found < blocks.length - 1) {
-        blocks.splice(found + 2, 0, blocks[found]);
-        blocks.splice(found, 1);
-      }
-    }
-    console.log('blocks after move down:', JSON.parse(JSON.stringify(blocks)));
-  });
-  builder.addCase(moveBlockContentUp, (state, action) => {
-    const blockId = action.payload;
-    const blockIdFormat = blockId.split('/')[0];
-    let blocks: Common[] = convert(blockIdFormat, state);
-    const found = blocks.findIndex((block: any) => block.id === blockId);
-    console.log('blockId:', blockId);
-    if (found !== -1) {
-      if (found > 0) {
-        blocks.splice(found - 1, 0, blocks[found]);
-        blocks.splice(found + 1, 1);
-      }
-    }
-    console.log('blocks after move up:', JSON.parse(JSON.stringify(blocks)));
   });
 });
 

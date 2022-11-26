@@ -19,12 +19,11 @@ export const Block = React.memo(
         [data.uid]: { id: block, el: el },
       };
     };
-    const isChild = data.id.includes('/');
     console.log('render block');
     return (
       <BlockProvider>
         <div
-          className={`block ${className || ''} ${isChild ? 'is-child' : ''}`}
+          className={`block ${className || ''} ${blockChildIndex > 0 ? 'is-child' : ''}`}
           ref={(el) => update(el)}
         >
           <BlockProvider.Header>
