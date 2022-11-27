@@ -52,7 +52,7 @@ export interface BlockMovingState {
   isMovingBlock?: boolean;
   blockMovingId: string;
   blockMoveType: BlockMoveType;
-  blockMoveToIndex?: number;
+  targetItem?: any;
 }
 
 export interface BlockState {
@@ -110,7 +110,7 @@ const initialState: BlockState &
     selectedElement: '',
   },
   blockMoveType: BlockMoveType.down,
-  blockMoveToIndex: -1,
+  targetItem: null,
   education: [educationMetaData],
   workExperience: [workExperienceMetaData],
   organization: [organizationMetaData],
@@ -158,7 +158,8 @@ const blogSlice = createReducer(initialState, (builder) => {
     }
     console.log('temp:', temp);
     let childFound: any = getChildWithId(pages, action.payload.blockMovingId);
-    let store = [];
+    // console.log('childFound:', childFound);
+    let store = temp.map((t: any) => t.block);
     let found = false;
     if (type === BlockMoveType.down) {
       let max: any = {};
@@ -168,7 +169,6 @@ const blogSlice = createReducer(initialState, (builder) => {
             const _block = pages[a][b][c].split('/')[0];
             if (_block !== blockId) {
               if (a === childFound.i && b === childFound.j) {
-                console.log('childFound:', childFound);
                 if (c >= childFound.z && c !== pages[a][b].length) {
                   max = { a, b, c };
                   found = true;
@@ -184,7 +184,6 @@ const blogSlice = createReducer(initialState, (builder) => {
         }
       }
       console.log('max:', max);
-      store = temp.map((t: any) => t.block);
       if (max.a === childFound.i) {
         pages[max.a][max.b] = pages[max.a][max.b].filter(
           (item: any) => item.split('/')[0] !== blockId
@@ -213,7 +212,6 @@ const blogSlice = createReducer(initialState, (builder) => {
             const _block = pages[a][b][c].split('/')[0];
             if (_block !== blockId) {
               if (a === childFound.i && b === childFound.j) {
-                console.log('childFound:', childFound);
                 if (c < childFound.z) {
                   min = { a, b, c };
                 }
@@ -223,7 +221,6 @@ const blogSlice = createReducer(initialState, (builder) => {
         }
       }
       console.log('min:', min);
-      store = temp.map((t: any) => t.block);
       if (Object.keys(min).length !== 0) {
         if (min.a === childFound.i) {
           pages[min.a][min.b] = pages[min.a][min.b].filter(
@@ -257,6 +254,14 @@ const blogSlice = createReducer(initialState, (builder) => {
           }
         }
       }
+    } else if (type === BlockMoveType.drag) {
+      console.log('blockId:', blockId);
+      const targetItem = action.payload.targetItem;
+      console.log('target item when end:', targetItem);
+      pages = pages.map((page: any) =>
+        page.map((column: any) => column.filter((block: any) => block.split('/')[0] !== blockId))
+      );
+      pages[targetItem.pageI][targetItem.columnI].splice(targetItem.blockI, 0, ...store);
     }
     state.pages = pages;
     console.log('pages after move move block:', JSON.parse(JSON.stringify(pages)));

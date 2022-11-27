@@ -4,9 +4,9 @@ import { RootState } from '../../../store';
 import { DragItem } from '../../atoms/DragItem';
 import { DragItemProps } from '../../atoms/DragItem/DragItem';
 import { DragGroup, DragGroupProps } from '../../molecules/DragGroup/DragGroup';
-import { updatePages } from '../Block/block.slice';
+import { BlockMoveType, movingBlock, onMovingBlock } from '../Block/block.slice';
 import './drag.scss';
-import { finishingDrag } from './drag.slice';
+import { updateDragPages } from './drag.slice';
 
 interface IDragContext {
   dragging: boolean;
@@ -35,11 +35,12 @@ const DragContext = createContext<IDragContext>({
 });
 
 const DragProvider = (props: DragComposition) => {
-  const pages = useSelector((state: RootState) => state.block.pages);
+  const pages = useSelector((state: RootState) => state.drag.pages);
   const dispatch = useDispatch();
   const [dragging, setDragging] = useState(false);
   const dragItem = useRef<any>();
   const dragItemNode = useRef<any>();
+  const currentDragItem = useRef<any>();
 
   const handleDragStart = (e: any, item: any) => {
     // console.log('item', item);
@@ -47,6 +48,7 @@ const DragProvider = (props: DragComposition) => {
 
     dragItemNode.current = e.target;
     dragItemNode.current.addEventListener('dragend', handleDragEnd);
+    currentDragItem.current = item;
     dragItem.current = item;
 
     setTimeout(() => {
@@ -66,17 +68,23 @@ const DragProvider = (props: DragComposition) => {
           1
         )[0]
       );
-      console.log('_pages after drag:', _pages);
       dragItem.current = targetItem;
-      dispatch(updatePages({ pages: [..._pages] }));
+      dispatch(updateDragPages({ pages: [..._pages] }));
     }
   };
   const handleDragEnd = (e: any) => {
     setDragging(false);
+    dispatch(
+      movingBlock({
+        blockMovingId: currentDragItem.current.block,
+        blockMoveType: BlockMoveType.drag,
+        targetItem: dragItem.current,
+      })
+    );
     dragItem.current = null;
     dragItemNode.current.removeEventListener('dragend', handleDragEnd);
     dragItemNode.current = null;
-    dispatch(finishingDrag(true));
+    dispatch(onMovingBlock(true));
   };
   const getStyles = (item: any) => {
     if (

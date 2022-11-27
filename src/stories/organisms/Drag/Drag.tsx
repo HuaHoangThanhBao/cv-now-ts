@@ -3,7 +3,7 @@ import { RootState } from '../../../store';
 import { DragProvider } from './DragProvider';
 
 export const Drag = () => {
-  const pages = useSelector((state: RootState) => state.block.pages);
+  const pages = useSelector((state: RootState) => state.drag.pages);
 
   const getFirstColumn = () => {
     const res = [];

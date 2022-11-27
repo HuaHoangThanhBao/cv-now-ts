@@ -13,11 +13,10 @@ import {
 import { convert } from './utils';
 import { Common } from './types/Block';
 import { Drag } from './stories/organisms/Drag/Drag';
-import { finishingDrag } from './stories/organisms/Drag/drag.slice';
+import { updateDragPages } from './stories/organisms/Drag/drag.slice';
 
 function App() {
   const rootBlockState = useSelector((state: RootState) => state.block);
-  const rootDragState = useSelector((state: RootState) => state.drag);
   const blocksRef = useRef([]);
   const dispatch = useDispatch();
   const renderDocuments = (_pages: any) => {
@@ -242,20 +241,14 @@ function App() {
 
     console.log('pages:', _pages);
     dispatch(updatePages({ pages: [..._pages] }));
+    dispatch(updateDragPages({ pages: [..._pages] }));
   }, [rootBlockState.pages, dispatch]);
 
   // console.log(blocksRef.current);
 
   useEffect(() => {
-    dispatch(finishingDrag(true));
+    dispatch(onMovingBlock(true));
   }, [dispatch]);
-
-  useEffect(() => {
-    if (rootDragState.finishingDrag) {
-      transformBlocks();
-      dispatch(finishingDrag(false));
-    }
-  }, [rootDragState.finishingDrag, dispatch, transformBlocks]);
 
   useEffect(() => {
     if (rootBlockState.isMovingBlock) {
@@ -268,10 +261,10 @@ function App() {
     window.addEventListener('keydown', (e: any) => {
       if (e.keyCode === 113) {
         dispatch(createBlock({ blockCreateId: '2' }));
-        dispatch(finishingDrag(true));
+        dispatch(onMovingBlock(true));
       }
       if (e.keyCode === 27) {
-        dispatch(finishingDrag(true));
+        dispatch(onMovingBlock(true));
       }
     });
     window.addEventListener('mousedown', (e: any) => {
@@ -313,7 +306,7 @@ function App() {
 
   return (
     <div className="App">
-      {/* <Drag /> */}
+      <Drag />
       {renderDocuments(rootBlockState.pages)}
     </div>
   );

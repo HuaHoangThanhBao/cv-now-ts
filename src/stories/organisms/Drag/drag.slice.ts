@@ -1,24 +1,26 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { pagesTwoColumn } from '../../../contants/ColumnFormat';
 
 export interface DragState {
-  finishingDrag: boolean;
+  pages: string[][][];
 }
 
 const initialState: DragState = {
-  finishingDrag: false,
+  pages: pagesTwoColumn,
 };
 
 const dragSlice = createSlice({
   name: 'drag',
   initialState,
   reducers: {
-    finishingDrag: (state, action: PayloadAction<boolean>) => {
-      state.finishingDrag = action.payload;
+    updateDragPages: (state, action: PayloadAction<DragState>) => {
+      const pages = action.payload.pages;
+      state.pages = pages;
     },
   },
 });
 
-export const { finishingDrag } = dragSlice.actions;
+export const { updateDragPages } = dragSlice.actions;
 const dragReducer = dragSlice.reducer;
 
 export default dragReducer;
