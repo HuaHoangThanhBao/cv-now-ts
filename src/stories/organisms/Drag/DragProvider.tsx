@@ -74,6 +74,13 @@ const DragProvider = (props: DragComposition) => {
   };
   const handleDragEnd = (e: any) => {
     setDragging(false);
+    const arr = dragItem.current.column.filter(
+      (block: any) => !block.includes('/') && block.split('/').length === 1
+    );
+    const index = arr.findIndex((t: any) => t === dragItem.current.block);
+    if (index !== -1) {
+      dragItem.current.blockI = index;
+    }
     dispatch(
       movingBlock({
         blockMovingId: currentDragItem.current.block,
