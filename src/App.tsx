@@ -7,6 +7,7 @@ import { RootState } from './store';
 import {
   createBlock,
   onMovingBlock,
+  transformPages,
   updatePages,
   updateSelectedBlock,
 } from './stories/organisms/Block/block.slice';
@@ -149,25 +150,27 @@ function App() {
           }
         }
       }
-      if (secondColumn) {
-        for (let a = 0; a < secondColumn.length; a++) {
-          sumSecondCol += findBlockRef(secondColumn[a]);
-          if (sumSecondCol > maxHeight) {
-            if (i < _pages.length - 1) {
-              const nextSecondColumn = _pages[i + 1][columnSecond];
-              for (let z = secondColumn.length - 1; z >= a; z--) {
-                nextSecondColumn.unshift(secondColumn[z]);
+      if (_pages[0].length > 1) {
+        if (secondColumn) {
+          for (let a = 0; a < secondColumn.length; a++) {
+            sumSecondCol += findBlockRef(secondColumn[a]);
+            if (sumSecondCol > maxHeight) {
+              if (i < _pages.length - 1) {
+                const nextSecondColumn = _pages[i + 1][columnSecond];
+                for (let z = secondColumn.length - 1; z >= a; z--) {
+                  nextSecondColumn.unshift(secondColumn[z]);
+                }
+                secondColumn.splice(a, secondColumn.length);
+                break;
+              } else {
+                _pages.push([[], []]);
+                const nextSecondColumn = _pages[i + 1][columnSecond];
+                for (let z = secondColumn.length - 1; z >= a; z--) {
+                  nextSecondColumn.unshift(secondColumn[z]);
+                }
+                secondColumn.splice(a, secondColumn.length);
+                break;
               }
-              secondColumn.splice(a, secondColumn.length);
-              break;
-            } else {
-              _pages.push([[], []]);
-              const nextSecondColumn = _pages[i + 1][columnSecond];
-              for (let z = secondColumn.length - 1; z >= a; z--) {
-                nextSecondColumn.unshift(secondColumn[z]);
-              }
-              secondColumn.splice(a, secondColumn.length);
-              break;
             }
           }
         }
@@ -211,21 +214,23 @@ function App() {
           }
         }
       }
-      if (sumSecondCol < maxHeight) {
-        if (i < _pages.length - 1) {
-          const nextSecondColumn = _pages[i + 1][columnSecond];
-          for (let z = 0; z < nextSecondColumn.length; z++) {
-            sumSecondCol += findBlockRef(nextSecondColumn[z]);
-            if (sumSecondCol < maxHeight) {
-              secondColumn.push(nextSecondColumn[z]);
-              secondColumnDelete.push(nextSecondColumn[z]);
-            } else {
-              break;
+      if (_pages[0].length > 1) {
+        if (sumSecondCol < maxHeight) {
+          if (i < _pages.length - 1) {
+            const nextSecondColumn = _pages[i + 1][columnSecond];
+            for (let z = 0; z < nextSecondColumn.length; z++) {
+              sumSecondCol += findBlockRef(nextSecondColumn[z]);
+              if (sumSecondCol < maxHeight) {
+                secondColumn.push(nextSecondColumn[z]);
+                secondColumnDelete.push(nextSecondColumn[z]);
+              } else {
+                break;
+              }
             }
-          }
-          //remove deleted element
-          for (let z = 0; z < secondColumnDelete.length; z++) {
-            nextSecondColumn.shift();
+            //remove deleted element
+            for (let z = 0; z < secondColumnDelete.length; z++) {
+              nextSecondColumn.shift();
+            }
           }
         }
       }
@@ -233,9 +238,17 @@ function App() {
     /* End Move first and second column to previous page*/
 
     /* Remove empty pages */
-    for (let i = _pages.length - 1; i >= 0; i--) {
-      if (_pages[i][0].length === 0 && _pages[i][1].length === 0) {
-        _pages.pop();
+    if (_pages[0].length > 1) {
+      for (let i = _pages.length - 1; i >= 0; i--) {
+        if (_pages[i][0].length === 0 && _pages[i][1].length === 0) {
+          _pages.pop();
+        }
+      }
+    } else {
+      for (let i = _pages.length - 1; i >= 0; i--) {
+        if (_pages[i][0].length === 0) {
+          _pages.pop();
+        }
       }
     }
 
@@ -245,6 +258,10 @@ function App() {
   }, [rootBlockState.pages, dispatch]);
 
   // console.log(blocksRef.current);
+
+  const onChangeColumnTransform = () => {
+    dispatch(transformPages({ isOneColumn: !rootBlockState.isOneColumn }));
+  };
 
   useEffect(() => {
     dispatch(onMovingBlock(true));
@@ -256,6 +273,10 @@ function App() {
       dispatch(onMovingBlock(false));
     }
   }, [rootBlockState.isMovingBlock, dispatch, transformBlocks]);
+
+  useEffect(() => {
+    console.log('isOneColumn:', rootBlockState.isOneColumn);
+  }, [rootBlockState.isOneColumn]);
 
   useEffect(() => {
     window.addEventListener('keydown', (e: any) => {
@@ -307,6 +328,11 @@ function App() {
   return (
     <div className="App">
       <Drag />
+      <input
+        type="checkbox"
+        onChange={onChangeColumnTransform}
+        checked={rootBlockState.isOneColumn}
+      />
       {renderDocuments(rootBlockState.pages)}
     </div>
   );

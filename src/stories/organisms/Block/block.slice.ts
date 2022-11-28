@@ -1,5 +1,6 @@
 import { createReducer, createAction } from '@reduxjs/toolkit';
 import { v4 as uuidv4 } from 'uuid';
+import { pagesOneColumn, pagesTwoColumn } from '../../../contants/ColumnFormat';
 import {
   achievementMetaData,
   awardMetaData,
@@ -29,6 +30,19 @@ import {
 import { InputType } from '../../../types/Input';
 import { convert, create, getChildWithId } from '../../../utils';
 
+export interface PageState {
+  pages: string[][][];
+}
+
+export interface PageColumnFormatState {
+  pagesOneColumn: string[][][];
+  pagesTwoColumn: string[][][];
+}
+
+export interface PageTransformState {
+  isOneColumn?: boolean;
+}
+
 export interface BlockSelectState {
   selectedBlock: {
     blockType?: string;
@@ -36,10 +50,6 @@ export interface BlockSelectState {
     blockChildIndex?: number;
     selectedElement: string;
   };
-}
-
-export interface PageState {
-  pages: string[][][];
 }
 
 export enum BlockMoveType {
@@ -90,7 +100,9 @@ const initialState: BlockState &
   BlockCreateState &
   BlockMovingState &
   BlockSelectState &
-  PageState = {
+  PageState &
+  PageTransformState &
+  PageColumnFormatState = {
   pages: [
     [
       ['3', '4', '1'],
@@ -100,6 +112,9 @@ const initialState: BlockState &
     [['16'], ['14']],
     [['12'], []],
   ],
+  pagesOneColumn: pagesOneColumn,
+  pagesTwoColumn: pagesTwoColumn,
+  isOneColumn: false,
   blockMovingId: '-1',
   isMovingBlock: false,
   blockCreateId: '-1',
@@ -133,13 +148,18 @@ const initialState: BlockState &
 export const updateSelectedBlock = createAction<BlockSelectState>('block/updateSelectedBlock');
 export const updateBlock = createAction<BlockUpdateState>('block/updateBlock');
 export const createBlock = createAction<BlockCreateState>('block/createBlock');
-export const updatePages = createAction<PageState>('block/updatePages');
 export const onMovingBlock = createAction<boolean>('block/onMovingBlock');
 export const movingBlockContentUp = createAction<string>('block/movingBlockContentUp');
 export const movingBlockContentDown = createAction<string>('block/movingBlockContentDown');
 export const movingBlock = createAction<BlockMovingState>('block/movingBlock');
+export const updatePages = createAction<PageState>('block/updatePages');
+export const transformPages = createAction<PageTransformState>('block/transformPages');
 
 const blogSlice = createReducer(initialState, (builder) => {
+  builder.addCase(transformPages, (state, action) => {
+    const status = action.payload.isOneColumn;
+    state.isOneColumn = status;
+  });
   builder.addCase(movingBlock, (state, action) => {
     const type = action.payload.blockMoveType;
     const _id = action.payload.blockMovingId;
@@ -158,7 +178,7 @@ const blogSlice = createReducer(initialState, (builder) => {
     }
     console.log('temp:', temp);
     let childFound: any = getChildWithId(pages, action.payload.blockMovingId);
-    // console.log('childFound:', childFound);
+    console.log('childFound:', childFound);
     let store = temp.map((t: any) => t.block);
     let found = false;
     if (type === BlockMoveType.down) {
@@ -185,22 +205,26 @@ const blogSlice = createReducer(initialState, (builder) => {
       }
       console.log('max:', max);
       if (max.a === childFound.i) {
+        console.log('a');
         pages[max.a][max.b] = pages[max.a][max.b].filter(
           (item: any) => item.split('/')[0] !== blockId
         );
-        pages[max.a][max.b].splice(max.c, 0, ...store);
+        pages[max.a][max.b].splice(childFound.z + 1, 0, ...store);
       } else {
         if (max.a < pages.length) {
+          console.log('b');
           pages[childFound.i][childFound.j] = pages[childFound.i][childFound.j].filter(
             (item: any) => item.split('/')[0] !== blockId
           );
         }
         if (childFound.i + 1 < pages.length) {
+          console.log('c');
           pages[childFound.i + 1][childFound.j] = pages[childFound.i + 1][childFound.j].filter(
             (item: any) => item.split('/')[0] !== blockId
           );
         }
         if (max.a < pages.length) {
+          console.log('d');
           pages[max.a][max.b].splice(max.c + 1, 0, ...store);
         }
       }
