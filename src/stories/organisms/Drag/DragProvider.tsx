@@ -1,4 +1,4 @@
-import { createContext, useContext, useRef, useState } from 'react';
+import { createContext, useContext, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../store';
 import { DragItem } from '../../atoms/DragItem';
@@ -38,6 +38,7 @@ const DragProvider = (props: DragComposition) => {
   const pages = useSelector((state: RootState) => state.drag.pages);
   const dispatch = useDispatch();
   const [dragging, setDragging] = useState(false);
+  const [isFinishDrag, setIsFinishDrag] = useState(false);
   const dragItem = useRef<any>();
   const dragItemNode = useRef<any>();
   const currentDragItem = useRef<any>();
@@ -46,6 +47,7 @@ const DragProvider = (props: DragComposition) => {
     // console.log('item', item);
     // console.log('Starting to drag', item);
 
+    setIsFinishDrag(false);
     dragItemNode.current = e.target;
     dragItemNode.current.addEventListener('dragend', handleDragEnd);
     currentDragItem.current = item;
@@ -72,27 +74,13 @@ const DragProvider = (props: DragComposition) => {
       dispatch(updateDragPages({ pages: [..._pages] }));
     }
   };
+
   const handleDragEnd = (e: any) => {
     setDragging(false);
-    const arr = dragItem.current.column.filter(
-      (block: any) => !block.includes('/') && block.split('/').length === 1
-    );
-    const index = arr.findIndex((t: any) => t === dragItem.current.block);
-    if (index !== -1) {
-      dragItem.current.blockI = index;
-    }
-    dispatch(
-      movingBlock({
-        blockMovingId: currentDragItem.current.block,
-        blockMoveType: BlockMoveType.drag,
-        targetItem: dragItem.current,
-      })
-    );
-    dragItem.current = null;
+    setIsFinishDrag(true);
     dragItemNode.current.removeEventListener('dragend', handleDragEnd);
-    dragItemNode.current = null;
-    dispatch(onMovingBlock(true));
   };
+
   const getStyles = (item: any) => {
     if (
       dragItem.current.pageI === item.pageI &&
@@ -103,6 +91,21 @@ const DragProvider = (props: DragComposition) => {
     }
     return 'drag-item';
   };
+
+  useEffect(() => {
+    if (isFinishDrag) {
+      dispatch(
+        movingBlock({
+          blockMovingId: currentDragItem.current.block,
+          blockMoveType: BlockMoveType.drag,
+          targetItem: dragItem.current,
+        })
+      );
+      dispatch(onMovingBlock(true));
+      dragItem.current = null;
+      dragItemNode.current = null;
+    }
+  }, [isFinishDrag]);
 
   const value = {
     dragItem,

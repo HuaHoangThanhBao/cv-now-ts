@@ -158,6 +158,36 @@ export const transformPages = createAction<PageTransformState>('block/transformP
 const blogSlice = createReducer(initialState, (builder) => {
   builder.addCase(transformPages, (state, action) => {
     const status = action.payload.isOneColumn;
+    let pages = JSON.parse(JSON.stringify(state.pages));
+    // const temp = [];
+    // for (let a = 0; a < pages.length; a++) {
+    //   for (let b = 0; b < pages[a].length; b++) {
+    //     for (let c = 0; c < pages[a][b].length; c++) {
+    //       const _block = pages[a][b][c];
+    //       if (_block.includes('/')) {
+    //         temp.push({ a, b, c, block: pages[a][b][c] });
+    //       }
+    //     }
+    //   }
+    // }
+    // console.log('temp:', temp);
+    // for (let a = 0; a < pages.length; a++) {
+    //   for (let b = 0; b < pages[a].length; b++) {
+    //     for (let c = 0; c < pages[a][b].length; c++) {
+    //       const _block = pages[a][b][c];
+    //       if (!_block.includes('/')) {
+    //         const found = temp.find()
+    //       }
+    //     }
+    //   }
+    // }
+    if (status) {
+      state.pages = state.pagesOneColumn;
+      state.pagesOneColumn = state.pages;
+    } else {
+      state.pages = state.pagesTwoColumn;
+      state.pagesTwoColumn = state.pages;
+    }
     state.isOneColumn = status;
   });
   builder.addCase(movingBlock, (state, action) => {
@@ -180,53 +210,77 @@ const blogSlice = createReducer(initialState, (builder) => {
     let childFound: any = getChildWithId(pages, action.payload.blockMovingId);
     console.log('childFound:', childFound);
     let store = temp.map((t: any) => t.block);
-    let found = false;
+    let count = 0;
     if (type === BlockMoveType.down) {
       let max: any = {};
+      let keep = false;
+      console.log('pages before:', JSON.parse(JSON.stringify(pages)));
       for (let a = 0; a < pages.length; a++) {
         for (let b = 0; b < pages[a].length; b++) {
           for (let c = 0; c < pages[a][b].length; c++) {
             const _block = pages[a][b][c].split('/')[0];
-            if (_block !== blockId) {
-              if (a === childFound.i && b === childFound.j) {
-                if (c >= childFound.z && c !== pages[a][b].length) {
-                  max = { a, b, c };
-                  found = true;
-                  break;
-                } else {
-                  max = { a: a + 1, b, c: 0 };
+            if (count <= 1) {
+              if (_block !== blockId) {
+                if (b === childFound.j) {
+                  if (a === childFound.i && c >= childFound.z) {
+                    if (c === pages[a][b].length - 1) {
+                      keep = true;
+                      max = { a, b, c: pages[a][b].length - 1, block: _block };
+                      count++;
+                    } else {
+                      if (!pages[a][b][c].includes('/')) {
+                        max = { a, b, c, block: _block };
+                        if (count === 1 && c - temp[temp.length - 1].c === 2) {
+                          count += 2;
+                        }
+                      }
+                    }
+                    if (c < pages[a][b].length - 1) {
+                      if (!pages[a][b][c + 1].includes('/')) {
+                        count++;
+                      }
+                    }
+                  } else if (a !== childFound.i && a > childFound.i) {
+                    max = { a, b, c: c, block: _block };
+                    count += 2;
+                  }
                 }
               }
-            }
-            if (found) break;
+            } else break;
           }
-          if (found) break;
+          if (count > 1) break;
+        }
+        if (count > 1) break;
+      }
+      if (max.a !== childFound.i && max.c === 0 && !keep) {
+        console.log('a');
+        max.c = 1;
+      }
+      if (max.a == childFound.i && max.c - temp[temp.length - 1].c === 1) {
+        console.log('b');
+        max.c = pages[childFound.i][childFound.j].length;
+      }
+      if (max.a === pages.length - 1 && max.c === pages[childFound.i][childFound.j].length - 1) {
+        console.log('c');
+        max.c = pages[childFound.i][childFound.j].length;
+      }
+      if (max.a > childFound.i && max.c > 0) {
+        if (pages[max.a][max.b][max.c - 1].split('/')[0] === blockId) {
+          console.log('d');
+          max.c = max.c + 1;
         }
       }
       console.log('max:', max);
-      if (max.a === childFound.i) {
-        console.log('a');
-        pages[max.a][max.b] = pages[max.a][max.b].filter(
-          (item: any) => item.split('/')[0] !== blockId
+      if (Object.keys(max).length !== 0) {
+        pages[max.a][max.b].splice(max.c, 0, ...store);
+        pages = pages.map((page: any, pageI: number) =>
+          page.map((column: any, columnI: number) =>
+            column.filter((block: any, blockI: number) => {
+              const f = temp.find((t: any) => t.block === block);
+              return !f || f.a !== pageI || f.b !== columnI || f.c !== blockI;
+            })
+          )
         );
-        pages[max.a][max.b].splice(childFound.z + 1, 0, ...store);
-      } else {
-        if (max.a < pages.length) {
-          console.log('b');
-          pages[childFound.i][childFound.j] = pages[childFound.i][childFound.j].filter(
-            (item: any) => item.split('/')[0] !== blockId
-          );
-        }
-        if (childFound.i + 1 < pages.length) {
-          console.log('c');
-          pages[childFound.i + 1][childFound.j] = pages[childFound.i + 1][childFound.j].filter(
-            (item: any) => item.split('/')[0] !== blockId
-          );
-        }
-        if (max.a < pages.length) {
-          console.log('d');
-          pages[max.a][max.b].splice(max.c + 1, 0, ...store);
-        }
       }
     } else if (type === BlockMoveType.up) {
       let min: any = {};
@@ -245,39 +299,39 @@ const blogSlice = createReducer(initialState, (builder) => {
         }
       }
       console.log('min:', min);
-      if (Object.keys(min).length !== 0) {
-        if (min.a === childFound.i) {
-          pages[min.a][min.b] = pages[min.a][min.b].filter(
-            (item: any) => item.split('/')[0] !== blockId
-          );
-          if (min.a + 1 < pages.length) {
-            pages[min.a + 1][min.b] = pages[min.a + 1][min.b].filter(
-              (item: any) => item.split('/')[0] !== blockId
-            );
-          }
-        }
-        if (childFound.z > 0) {
-          pages[min.a][min.b].splice(min.c, 0, ...store);
-        }
-      } else {
-        if (min.a !== childFound.i && childFound.z === 0) {
-          if (childFound.i > 0 && childFound.z > 0) {
-            pages[childFound.i][childFound.j] = pages[childFound.i][childFound.j].filter(
-              (item: any) => item.split('/')[0] !== blockId
-            );
-          }
-          if (childFound.i - 1 >= 0) {
-            pages[childFound.i][childFound.j] = pages[childFound.i][childFound.j].filter(
-              (item: any) => item.split('/')[0] !== blockId
-            );
-            pages[childFound.i - 1][childFound.j].splice(
-              pages[childFound.i - 1][childFound.j].length - 1,
-              0,
-              ...store
-            );
-          }
-        }
-      }
+      // if (Object.keys(min).length !== 0) {
+      //   if (min.a === childFound.i) {
+      //     pages[min.a][min.b] = pages[min.a][min.b].filter(
+      //       (item: any) => item.split('/')[0] !== blockId
+      //     );
+      //     if (min.a + 1 < pages.length) {
+      //       pages[min.a + 1][min.b] = pages[min.a + 1][min.b].filter(
+      //         (item: any) => item.split('/')[0] !== blockId
+      //       );
+      //     }
+      //   }
+      //   if (childFound.z > 0) {
+      //     pages[min.a][min.b].splice(min.c, 0, ...store);
+      //   }
+      // } else {
+      //   if (min.a !== childFound.i && childFound.z === 0) {
+      //     if (childFound.i > 0 && childFound.z > 0) {
+      //       pages[childFound.i][childFound.j] = pages[childFound.i][childFound.j].filter(
+      //         (item: any) => item.split('/')[0] !== blockId
+      //       );
+      //     }
+      //     if (childFound.i - 1 >= 0) {
+      //       pages[childFound.i][childFound.j] = pages[childFound.i][childFound.j].filter(
+      //         (item: any) => item.split('/')[0] !== blockId
+      //       );
+      //       pages[childFound.i - 1][childFound.j].splice(
+      //         pages[childFound.i - 1][childFound.j].length - 1,
+      //         0,
+      //         ...store
+      //       );
+      //     }
+      //   }
+      // }
     } else if (type === BlockMoveType.drag) {
       console.log('blockId:', blockId);
       const targetItem = action.payload.targetItem;
@@ -286,6 +340,11 @@ const blogSlice = createReducer(initialState, (builder) => {
         page.map((column: any) => column.filter((block: any) => block.split('/')[0] !== blockId))
       );
       pages[targetItem.pageI][targetItem.columnI].splice(targetItem.blockI, 0, ...store);
+    }
+    if (state.isOneColumn) {
+      state.pagesOneColumn = pages;
+    } else {
+      state.pagesTwoColumn = pages;
     }
     state.pages = pages;
     console.log('pages after move move block:', JSON.parse(JSON.stringify(pages)));
