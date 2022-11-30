@@ -1,10 +1,11 @@
 import { createContext, useContext, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../store';
+import { convert } from '../../../utils';
 import { DragItem } from '../../atoms/DragItem';
 import { DragItemProps } from '../../atoms/DragItem/DragItem';
 import { DragGroup, DragGroupProps } from '../../molecules/DragGroup/DragGroup';
-import { BlockMoveType, movingBlock, onMovingBlock } from '../Block/block.slice';
+import { BlockMoveType, movingBlock, onMovingBlock, updatePages } from '../Block/block.slice';
 import './drag.scss';
 import { updateDragPages } from './drag.slice';
 
@@ -94,13 +95,7 @@ const DragProvider = (props: DragComposition) => {
 
   useEffect(() => {
     if (isFinishDrag) {
-      dispatch(
-        movingBlock({
-          blockMovingId: currentDragItem.current.block,
-          blockMoveType: BlockMoveType.drag,
-          targetItem: dragItem.current,
-        })
-      );
+      dispatch(updatePages({ pages: pages }));
       dispatch(onMovingBlock(true));
       dragItem.current = null;
       dragItemNode.current = null;

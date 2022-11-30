@@ -33,7 +33,6 @@ function App() {
     if (rootBlockState.pages.length > 1) {
       const evenColumn = _pages[0];
       const oddColumn = _pages[1];
-      // console.log('evenColumn:', evenColumn);
       return (
         <>
           <div className="even">
@@ -43,16 +42,14 @@ function App() {
                 rootBlockState
               );
               return blocks.map((blockChild, blockChildIndex) => {
-                if (blockChild.id === block) {
-                  return (
-                    <Block
-                      key={blockChild.uid}
-                      data={blockChild}
-                      blockChildIndex={blockChildIndex}
-                      ref={blocksRef}
-                    />
-                  );
-                } else return null;
+                return (
+                  <Block
+                    key={blockChild.uid}
+                    data={blockChild}
+                    blockChildIndex={blockChildIndex}
+                    ref={blocksRef}
+                  />
+                );
               });
             })}
           </div>
@@ -65,16 +62,14 @@ function App() {
                     rootBlockState
                   );
                   return blocks.map((blockChild, blockChildIndex) => {
-                    if (blockChild.id === block) {
-                      return (
-                        <Block
-                          key={blockChild.uid}
-                          data={blockChild}
-                          blockChildIndex={blockChildIndex}
-                          ref={blocksRef}
-                        />
-                      );
-                    } else return null;
+                    return (
+                      <Block
+                        key={blockChild.uid}
+                        data={blockChild}
+                        blockChildIndex={blockChildIndex}
+                        ref={blocksRef}
+                      />
+                    );
                   });
                 } else return null;
               })}
@@ -115,11 +110,6 @@ function App() {
     console.log(blocksRef.current);
     let _pages = JSON.parse(JSON.stringify(rootBlockState.pages));
     const maxHeight = 1000;
-
-    /* Move child to parent*/
-    // const { result } = moveChildToParent(_pages, true);
-    // _pages = result;
-    /* End Move child to parent*/
 
     let columnFirst = 0;
     let columnSecond = 1;
@@ -251,10 +241,11 @@ function App() {
         }
       }
     }
-
-    console.log('pages:', _pages);
-    dispatch(updatePages({ pages: [..._pages] }));
-    dispatch(updateDragPages({ pages: [..._pages] }));
+    const filtered = _pages.map((page: any) =>
+      page.map((column: any) => column.filter((block: any) => !block.includes('/')))
+    );
+    dispatch(updatePages({ pages: filtered }));
+    dispatch(updateDragPages({ pages: filtered }));
   }, [rootBlockState.pages, dispatch]);
 
   // console.log(blocksRef.current);
@@ -282,6 +273,10 @@ function App() {
     window.addEventListener('keydown', (e: any) => {
       if (e.keyCode === 113) {
         dispatch(createBlock({ blockCreateId: '2' }));
+        dispatch(onMovingBlock(true));
+      }
+      if (e.keyCode === 115) {
+        dispatch(createBlock({ blockCreateId: '3' }));
         dispatch(onMovingBlock(true));
       }
       if (e.keyCode === 27) {

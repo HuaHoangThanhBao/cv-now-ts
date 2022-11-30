@@ -332,14 +332,6 @@ const blogSlice = createReducer(initialState, (builder) => {
       //     }
       //   }
       // }
-    } else if (type === BlockMoveType.drag) {
-      console.log('blockId:', blockId);
-      const targetItem = action.payload.targetItem;
-      console.log('target item when end:', targetItem);
-      pages = pages.map((page: any) =>
-        page.map((column: any) => column.filter((block: any) => block.split('/')[0] !== blockId))
-      );
-      pages[targetItem.pageI][targetItem.columnI].splice(targetItem.blockI, 0, ...store);
     }
     if (state.isOneColumn) {
       state.pagesOneColumn = pages;

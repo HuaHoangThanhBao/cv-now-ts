@@ -23,7 +23,7 @@ export const DragItem = ({ page, pageI, column, columnI, block, blockI }: DragIt
             }
           : () => {}
       }
-      className={dragging ? getStyles({ pageI, columnI, blockI }) : 'drag-item'}
+      className={dragging ? getStyles({ pageI, columnI, blockI, block }) : 'drag-item'}
     >
       {block}
     </div>
