@@ -210,77 +210,40 @@ const blogSlice = createReducer(initialState, (builder) => {
     let childFound: any = getChildWithId(pages, action.payload.blockMovingId);
     console.log('childFound:', childFound);
     let store = temp.map((t: any) => t.block);
-    let count = 0;
+    let found = false;
     if (type === BlockMoveType.down) {
       let max: any = {};
-      let keep = false;
-      console.log('pages before:', JSON.parse(JSON.stringify(pages)));
       for (let a = 0; a < pages.length; a++) {
         for (let b = 0; b < pages[a].length; b++) {
           for (let c = 0; c < pages[a][b].length; c++) {
             const _block = pages[a][b][c].split('/')[0];
-            if (count <= 1) {
-              if (_block !== blockId) {
-                if (b === childFound.j) {
-                  if (a === childFound.i && c >= childFound.z) {
-                    if (c === pages[a][b].length - 1) {
-                      keep = true;
-                      max = { a, b, c: pages[a][b].length - 1, block: _block };
-                      count++;
-                    } else {
-                      if (!pages[a][b][c].includes('/')) {
-                        max = { a, b, c, block: _block };
-                        if (count === 1 && c - temp[temp.length - 1].c === 2) {
-                          count += 2;
-                        }
-                      }
-                    }
-                    if (c < pages[a][b].length - 1) {
-                      if (!pages[a][b][c + 1].includes('/')) {
-                        count++;
-                      }
-                    }
-                  } else if (a !== childFound.i && a > childFound.i) {
-                    max = { a, b, c: c, block: _block };
-                    count += 2;
-                  }
+            if (_block !== blockId) {
+              if (a === childFound.i && b === childFound.j) {
+                if (c > childFound.z) {
+                  max = { a, b, c };
+                  found = true;
+                  break;
                 }
               }
-            } else break;
+            }
           }
-          if (count > 1) break;
+          if (found) break;
         }
-        if (count > 1) break;
-      }
-      if (max.a !== childFound.i && max.c === 0 && !keep) {
-        console.log('a');
-        max.c = 1;
-      }
-      if (max.a == childFound.i && max.c - temp[temp.length - 1].c === 1) {
-        console.log('b');
-        max.c = pages[childFound.i][childFound.j].length;
-      }
-      if (max.a === pages.length - 1 && max.c === pages[childFound.i][childFound.j].length - 1) {
-        console.log('c');
-        max.c = pages[childFound.i][childFound.j].length;
-      }
-      if (max.a > childFound.i && max.c > 0) {
-        if (pages[max.a][max.b][max.c - 1].split('/')[0] === blockId) {
-          console.log('d');
-          max.c = max.c + 1;
-        }
+        if (found) break;
       }
       console.log('max:', max);
-      if (Object.keys(max).length !== 0) {
+      if (
+        Object.keys(max).length === 0 &&
+        childFound.z <= pages[childFound.i][childFound.j].length - 1
+      ) {
+        if (childFound.i + 1 < pages.length) {
+          pages[childFound.i][childFound.j].splice(childFound.z, 1);
+          pages[childFound.i + 1][childFound.j].splice(1, 0, ...store);
+        }
+      }
+      if (max.a > 0 || (max.a === 0 && childFound.z < pages[childFound.i][childFound.j].length)) {
+        pages[childFound.i][childFound.j].splice(childFound.z, 1);
         pages[max.a][max.b].splice(max.c, 0, ...store);
-        pages = pages.map((page: any, pageI: number) =>
-          page.map((column: any, columnI: number) =>
-            column.filter((block: any, blockI: number) => {
-              const f = temp.find((t: any) => t.block === block);
-              return !f || f.a !== pageI || f.b !== columnI || f.c !== blockI;
-            })
-          )
-        );
       }
     } else if (type === BlockMoveType.up) {
       let min: any = {};
@@ -299,39 +262,20 @@ const blogSlice = createReducer(initialState, (builder) => {
         }
       }
       console.log('min:', min);
-      // if (Object.keys(min).length !== 0) {
-      //   if (min.a === childFound.i) {
-      //     pages[min.a][min.b] = pages[min.a][min.b].filter(
-      //       (item: any) => item.split('/')[0] !== blockId
-      //     );
-      //     if (min.a + 1 < pages.length) {
-      //       pages[min.a + 1][min.b] = pages[min.a + 1][min.b].filter(
-      //         (item: any) => item.split('/')[0] !== blockId
-      //       );
-      //     }
-      //   }
-      //   if (childFound.z > 0) {
-      //     pages[min.a][min.b].splice(min.c, 0, ...store);
-      //   }
-      // } else {
-      //   if (min.a !== childFound.i && childFound.z === 0) {
-      //     if (childFound.i > 0 && childFound.z > 0) {
-      //       pages[childFound.i][childFound.j] = pages[childFound.i][childFound.j].filter(
-      //         (item: any) => item.split('/')[0] !== blockId
-      //       );
-      //     }
-      //     if (childFound.i - 1 >= 0) {
-      //       pages[childFound.i][childFound.j] = pages[childFound.i][childFound.j].filter(
-      //         (item: any) => item.split('/')[0] !== blockId
-      //       );
-      //       pages[childFound.i - 1][childFound.j].splice(
-      //         pages[childFound.i - 1][childFound.j].length - 1,
-      //         0,
-      //         ...store
-      //       );
-      //     }
-      //   }
-      // }
+      if (Object.keys(min).length === 0) {
+        if (childFound.z === 0 && childFound.i - 1 >= 0) {
+          pages[childFound.i][childFound.j].splice(childFound.z, 1);
+          pages[childFound.i - 1][childFound.j].splice(
+            pages[childFound.i - 1][childFound.j].length - 1,
+            0,
+            ...store
+          );
+        }
+      }
+      if (min.a > 0 || (min.a === 0 && childFound.z > 0)) {
+        pages[childFound.i][childFound.j].splice(childFound.z, 1);
+        pages[min.a][min.b].splice(min.c, 0, ...store);
+      }
     }
     if (state.isOneColumn) {
       state.pagesOneColumn = pages;
@@ -360,48 +304,7 @@ const blogSlice = createReducer(initialState, (builder) => {
       blocks.splice(0, 0, foundBlock);
       blocks.splice(foundIndex + 1, 1);
     }
-    const pages = state.pages;
-    let found: any = {};
-    let dir: any = getChildWithId(pages, currentBlockContentId);
-    let exist = false;
-    for (let a = 0; a < pages.length; a++) {
-      for (let b = 0; b < pages[a].length; b++) {
-        for (let c = 0; c < pages[a][b].length; c++) {
-          const _block = pages[a][b][c].split('/')[0];
-          if (_block === blockId && pages[a][b][c] !== currentBlockContentId) {
-            if (a === dir.i) {
-              if (c < dir.z) {
-                found = { a, b, c };
-                exist = true;
-              }
-            } else {
-              if (!exist) {
-                found = { a, b, c };
-              } else {
-                break;
-              }
-            }
-          }
-        }
-      }
-    }
-    const { a, b, c } = found;
-    const { i, j, z } = dir;
-
-    if (Object.keys(found).length !== 0) {
-      console.log('cur to move up:', a, b, c);
-      console.log('dir to remove:', i, j, z);
-
-      pages[a][b].splice(c, 0, currentBlockContentId);
-      if (z > 0) {
-        pages[i][j].splice(z + 1, 1);
-      } else {
-        pages[i][j].splice(z, 1);
-      }
-
-      console.log('pages after move up:', JSON.parse(JSON.stringify(state.pages)));
-      console.log('blocks after move up:', JSON.parse(JSON.stringify(blocks)));
-    }
+    console.log('blocks after move up:', JSON.parse(JSON.stringify(blocks)));
   });
   builder.addCase(movingBlockContentDown, (state, action) => {
     const currentBlockContentId = action.payload;
@@ -421,54 +324,7 @@ const blogSlice = createReducer(initialState, (builder) => {
     if (foundIndex === 0 && blocks.length > 1) {
       blocks[0].header = blocks[1].header;
     }
-    const pages = state.pages;
-    let found: any = {};
-    let dir: any = getChildWithId(pages, currentBlockContentId);
-    let exist = false;
-    for (let a = 0; a < pages.length; a++) {
-      for (let b = 0; b < pages[a].length; b++) {
-        for (let c = 0; c < pages[a][b].length; c++) {
-          const _block = pages[a][b][c].split('/')[0];
-          if (_block === blockId && pages[a][b][c] !== currentBlockContentId) {
-            if (a === dir.i) {
-              if (c > dir.z) {
-                found = { a, b, c };
-                exist = true;
-                break;
-              }
-            } else {
-              if (!exist) {
-                found = { a, b, c };
-                break;
-              }
-            }
-          }
-        }
-      }
-    }
-    const { a, b, c } = found;
-    const { i, j, z } = dir;
 
-    if (Object.keys(found).length !== 0) {
-      const _found: any = pages[a][b][c];
-      const _dir: any = pages[i][j][z];
-
-      console.log('cur to move down:', a, b, c);
-      console.log('dir to remove:', i, j, z);
-      console.log('_found:', _found);
-      console.log('_dir:', _dir);
-      console.log('z:', z);
-
-      if (z === 0) {
-        pages[a][b].splice(c + 1, 0, _dir);
-        pages[i][j].splice(0, 1);
-      } else {
-        pages[a][b].splice(c + 1, 0, _dir);
-        pages[i][j].splice(z, 1);
-      }
-    }
-
-    console.log('pages after move down:', JSON.parse(JSON.stringify(state.pages)));
     console.log('blocks after move down:', JSON.parse(JSON.stringify(blocks)));
   });
   builder.addCase(updatePages, (state, action) => {
