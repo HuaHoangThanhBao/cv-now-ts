@@ -33,7 +33,7 @@ export const Input = ({
     else return detailChild.placeHolder;
   }, [data, detailChild, type]);
 
-  const contentEditable = createRef<any>();
+  // const contentEditable = createRef<any>();
   const [html, setHTML] = useState(textVal);
   const [placeHolder, setPlaceHolder] = useState('');
   const { handleShowBlockContentBar, handleShowBlockHeaderBar, selectedBlock } = useBlock();
@@ -75,18 +75,17 @@ export const Input = ({
   };
 
   return (
-    <div className={`field${title ? ' title' : ''}${getFieldStatus()}`}>
+    <div className={`field${title ? ' title' : ''}${getFieldStatus()}`} onFocus={onFocus}>
       {title && title}
       {detailChild && <span className="field-bullet"></span>}
       <ContentEditable
         className={`field-input ${type}${className ? ` ${className}` : ''}${
           detailChild ? ` detail` : ''
         }`}
-        innerRef={contentEditable}
+        // innerRef={contentEditable}
         html={html}
         placeholder={placeHolder}
         onChange={handleChange}
-        onFocus={onFocus}
       />
     </div>
   );

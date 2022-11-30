@@ -158,7 +158,7 @@ export const transformPages = createAction<PageTransformState>('block/transformP
 const blogSlice = createReducer(initialState, (builder) => {
   builder.addCase(transformPages, (state, action) => {
     const status = action.payload.isOneColumn;
-    let pages = JSON.parse(JSON.stringify(state.pages));
+    // let pages = JSON.parse(JSON.stringify(state.pages));
     // const temp = [];
     // for (let a = 0; a < pages.length; a++) {
     //   for (let b = 0; b < pages[a].length; b++) {
@@ -344,31 +344,6 @@ const blogSlice = createReducer(initialState, (builder) => {
       newData.id = newBlockId;
     }
     blocks.push(newData);
-
-    /*push block to page*/
-    const blockId = action.payload.blockCreateId;
-    const pages = JSON.parse(JSON.stringify(state.pages));
-    let blockOldIndex = -1;
-    let columnOldIndex = -1;
-    let pageOldIndex = -1;
-    for (let i = 0; i < pages.length; i++) {
-      for (let j = 0; j < pages[i].length; j++) {
-        const clone = pages[i][j].map((column: any) => column.split('/')[0]);
-        const _blockOldIndex = clone.lastIndexOf(blockId);
-        if (_blockOldIndex !== -1) {
-          blockOldIndex = _blockOldIndex;
-          columnOldIndex = j;
-          pageOldIndex = i;
-        }
-      }
-    }
-    if (blockOldIndex !== -1 && pageOldIndex !== -1 && columnOldIndex !== -1) {
-      pages[pageOldIndex][columnOldIndex].splice(blockOldIndex + 1, 0, newBlockId);
-    }
-    /*end push block to page*/
-
-    console.log('updated pages:', pages);
-    state.pages = pages;
   });
   builder.addCase(updateBlock, (state, action) => {
     const payload = action.payload;

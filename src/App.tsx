@@ -99,7 +99,7 @@ function App() {
     const blocks: any = blocksRef.current[Number(blockIdFormat)];
     for (let i = 0; i < Object.keys(blocks).length; i++) {
       const block = blocks[Object.keys(blocks)[i]];
-      if (block.id === blockId) {
+      if (block.id.split('/')[0] === blockId) {
         sum += blocks[Object.keys(blocks)[i]].el.offsetHeight;
       }
     }
