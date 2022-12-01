@@ -1,12 +1,15 @@
+import React from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../store';
+import { DragPosition } from '../../../types/Drag';
 import { DragProvider } from './DragProvider';
+import { v4 as uuidv4 } from 'uuid';
 
 export const Drag = () => {
   const pages = useSelector((state: RootState) => state.drag.pages);
 
   const getFirstColumn = () => {
-    const res = [];
+    const res: DragPosition[] = [];
     for (let i = 0; i < pages.length; i++) {
       for (let j = 0; j < pages[i].length; j++) {
         for (let z = 0; z < pages[i][j].length; z++) {
@@ -26,7 +29,7 @@ export const Drag = () => {
     return res;
   };
   const getSecondColumn = () => {
-    const res = [];
+    const res: DragPosition[] = [];
     for (let i = 0; i < pages.length; i++) {
       for (let j = 0; j < pages[i].length; j++) {
         for (let z = 0; z < pages[i][j].length; z++) {
@@ -48,17 +51,17 @@ export const Drag = () => {
 
   const renderDragGroup = () => {
     if (pages[0].length <= 1) {
-      return pages.map((page: any, pageI: number) =>
-        page.map((column: any, columnI: number) => {
-          if (!column.every((item: any) => item.includes('/'))) {
+      return pages.map((page: string[][], pageI: number) =>
+        page.map((column: string[], columnI: number) => {
+          if (!column.every((item: string) => item.includes('/'))) {
             return (
               <DragProvider.Group
-                key={column}
+                key={column.length + columnI}
                 page={page}
                 pageI={pageI}
                 className={columnI % 2 === 0 ? 'even' : 'odd'}
               >
-                {column.map((block: any, blockI: any) => {
+                {column.map((block: string, blockI: number) => {
                   if (!block.includes('/'))
                     return (
                       <DragProvider.Item
@@ -71,20 +74,20 @@ export const Drag = () => {
                         blockI={blockI}
                       />
                     );
-                  else return null;
+                  else return <React.Fragment key={uuidv4()} />;
                 })}
               </DragProvider.Group>
             );
-          } else return null;
+          } else return <React.Fragment key={uuidv4()} />;
         })
       );
     } else {
-      const firstColumn: any = getFirstColumn();
-      const secondColumn: any = getSecondColumn();
+      const firstColumn: DragPosition[] = getFirstColumn();
+      const secondColumn: DragPosition[] = getSecondColumn();
       return (
         <>
           <DragProvider.Group page={firstColumn[0].page} pageI={0}>
-            {firstColumn.map((item: any) => (
+            {firstColumn.map((item: DragPosition) => (
               <DragProvider.Item
                 key={item.block}
                 page={item.page}
@@ -97,7 +100,7 @@ export const Drag = () => {
             ))}
           </DragProvider.Group>
           <DragProvider.Group page={secondColumn[0].page} pageI={1}>
-            {secondColumn.map((item: any) => (
+            {secondColumn.map((item: DragPosition) => (
               <DragProvider.Item
                 key={item.block}
                 page={item.page}

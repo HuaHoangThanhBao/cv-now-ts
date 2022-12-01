@@ -12,7 +12,7 @@ import {
   updateSelectedBlock,
 } from './stories/organisms/Block/block.slice';
 import { convert, moveChildBlockToParentBlock } from './utils';
-import { Common } from './types/Block';
+import { Common, GlobalIterator } from './types/Block';
 import { Drag } from './stories/organisms/Drag/Drag';
 import { updateDragPages } from './stories/organisms/Drag/drag.slice';
 
@@ -20,16 +20,16 @@ function App() {
   const rootBlockState = useSelector((state: RootState) => state.block);
   const blocksRef = useRef([]);
   const dispatch = useDispatch();
-  const renderDocuments = (_pages: any) => {
+  const renderDocuments = (_pages: string[][][]) => {
     if (_pages.length > 0) {
-      return _pages.map((page: any) => (
-        <Document key={page} className={_pages.length > 1 ? 'two-column' : ''}>
+      return _pages.map((page: string[][], pageI: number) => (
+        <Document key={page.length + pageI} className={_pages.length > 1 ? 'two-column' : ''}>
           {renderBlocks(page)}
         </Document>
       ));
     }
   };
-  const renderBlocks = (_pages: any) => {
+  const renderBlocks = (_pages: string[][]) => {
     if (rootBlockState.pages.length > 1) {
       const evenColumn = _pages[0];
       const oddColumn = _pages[1];
@@ -81,7 +81,7 @@ function App() {
         </>
       );
     } else {
-      return _pages.map((column: any, columnIndex: number) => {
+      return _pages.map((column: string[]) => {
         return column.map((block: string) => {
           const blocks: Common[] = convert(block, rootBlockState);
           return blocks.map((item, index) => (
@@ -97,10 +97,10 @@ function App() {
     }
   };
 
-  const findBlockRef = (blockId: string): any => {
+  const findBlockRef = (blockId: string): number => {
     let sum = 0;
     const blockIdFormat = blockId.split('/')[0];
-    const blocks: any = blocksRef.current[Number(blockIdFormat)];
+    const blocks: GlobalIterator = blocksRef.current[Number(blockIdFormat)];
     // console.log('blocks:', blocks);
     for (let i = 0; i < Object.keys(blocks).length; i++) {
       const block = blocks[Object.keys(blocks)[i]];
@@ -119,8 +119,8 @@ function App() {
     const maxHeight = 1000;
 
     /*Move child to parent*/
-    _pages = _pages.map((page: any) =>
-      page.map((column: any) => column.filter((block: any) => !block.includes('/')))
+    _pages = _pages.map((page: string[][]) =>
+      page.map((column: string[]) => column.filter((block: string) => !block.includes('/')))
     );
     _pages = moveChildBlockToParentBlock(_pages, rootBlockState);
     /**/
@@ -258,8 +258,8 @@ function App() {
         }
       }
     }
-    const filtered = _pages.map((page: any) =>
-      page.map((column: any) => column.filter((block: any) => !block.includes('/')))
+    const filtered = _pages.map((page: string[][]) =>
+      page.map((column: string[]) => column.filter((block: string) => !block.includes('/')))
     );
     dispatch(updatePages({ pages: _pages }));
     dispatch(updateDragPages({ pages: filtered }));
@@ -274,8 +274,8 @@ function App() {
       newPagesTransform = rootBlockState.pagesTwoColumn;
     }
     /*Move child to parent*/
-    newPagesTransform = newPagesTransform.map((page: any) =>
-      page.map((column: any) => column.filter((block: any) => !block.includes('/')))
+    newPagesTransform = newPagesTransform.map((page: string[][]) =>
+      page.map((column: string[]) => column.filter((block: string) => !block.includes('/')))
     );
     newPagesTransform = moveChildBlockToParentBlock(newPagesTransform, rootBlockState);
     /**/

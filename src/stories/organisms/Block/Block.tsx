@@ -1,9 +1,10 @@
 import React from 'react';
+import { Common, DetailDetail, GlobalIterator } from '../../../types/Block';
 import { Icon } from '../../atoms/Icon/Icon';
 import { BlockProvider } from './BlockProvider';
 
 interface BlockProps {
-  data: any;
+  data: Common | GlobalIterator;
   className?: string;
   blockChildIndex: number;
 }
@@ -13,7 +14,7 @@ export const Block = React.memo(
     const { className, data, blockChildIndex } = props;
     const block = data.id;
     const blockId = block.split('/')[0];
-    const update = (el: any) => {
+    const update = (el: HTMLDivElement) => {
       blocksRef.current[blockId] = {
         ...blocksRef.current[blockId],
         [data.uid]: { id: block, el: el },
@@ -24,7 +25,7 @@ export const Block = React.memo(
       <BlockProvider>
         <div
           className={`block ${className || ''} ${blockChildIndex > 0 ? 'is-child' : ''}`}
-          ref={(el) => update(el)}
+          ref={(el: HTMLDivElement) => update(el)}
         >
           <BlockProvider.Header>
             {data?.uid}
@@ -76,9 +77,9 @@ export const Block = React.memo(
           )}
           {data.content_bullet && (
             <div className="block-content-detail">
-              {data.content_bullet.child.map((child: any) => (
+              {data.content_bullet.child.map((child: DetailDetail) => (
                 <BlockProvider.Input
-                  key={child}
+                  key={child.text}
                   type="content_bullet"
                   detailChild={child}
                   data={data}

@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../store';
+import { DragColumnPosition, DragPosition } from '../../../types/Drag';
 import { moveChildBlockToParentBlock } from '../../../utils';
 import { DragItem } from '../../atoms/DragItem';
 import { DragItemProps } from '../../atoms/DragItem/DragItem';
@@ -13,16 +14,16 @@ interface IDragContext {
   dragging: boolean;
   dragItem: any;
   dragItemNode: any;
-  handleDragStart: (e: any, item: any) => void;
-  handleDragEnter: (e: any, targetItem: any) => void;
-  handleDragEnd: (e: any) => void;
-  getStyles: (item: any) => string;
+  handleDragStart: (e: React.DragEvent<HTMLDivElement>, item: DragPosition) => void;
+  handleDragEnter: (e: React.DragEvent<HTMLDivElement>, targetItem: any) => void;
+  handleDragEnd: (e: React.DragEvent<HTMLDivElement>) => void;
+  getStyles: (item: DragColumnPosition) => string;
 }
 
 interface DragComposition {
   Item?: React.FC<DragItemProps>;
   Group?: React.FC<DragGroupProps>;
-  children?: JSX.Element | JSX.Element[];
+  children?: JSX.Element | JSX.Element[] | JSX.Element[][];
 }
 
 const DragContext = createContext<IDragContext>({
@@ -45,7 +46,7 @@ const DragProvider = (props: DragComposition) => {
   const dragItemNode = useRef<any>();
   const currentDragItem = useRef<any>();
 
-  const handleDragStart = (e: any, item: any) => {
+  const handleDragStart = (e: React.DragEvent<HTMLDivElement>, item: DragPosition) => {
     // console.log('item', item);
     // console.log('Starting to drag', item);
 
@@ -59,7 +60,7 @@ const DragProvider = (props: DragComposition) => {
       setDragging(true);
     }, 0);
   };
-  const handleDragEnter = (e: any, targetItem: any) => {
+  const handleDragEnter = (e: React.DragEvent<HTMLDivElement>, targetItem: any) => {
     const _pages = JSON.parse(JSON.stringify(pages));
     // console.log('Entering a drag target', targetItem);
     if (dragItemNode.current !== e.target) {
@@ -77,13 +78,13 @@ const DragProvider = (props: DragComposition) => {
     }
   };
 
-  const handleDragEnd = (e: any) => {
+  const handleDragEnd = (e: React.DragEvent<HTMLDivElement>) => {
     setDragging(false);
     setIsFinishDrag(true);
     dragItemNode.current.removeEventListener('dragend', handleDragEnd);
   };
 
-  const getStyles = (item: any) => {
+  const getStyles = (item: DragColumnPosition) => {
     if (
       dragItem.current.pageI === item.pageI &&
       dragItem.current.columnI === item.columnI &&
@@ -104,8 +105,8 @@ const DragProvider = (props: DragComposition) => {
           pagesTwoColumn: _pages,
         })
       );
-      _pages = _pages.map((page: any) =>
-        page.map((column: any) => column.filter((block: any) => !block.includes('/')))
+      _pages = _pages.map((page: string[][]) =>
+        page.map((column: string[]) => column.filter((block: string) => !block.includes('/')))
       );
       /*Move child to parent*/
       _pages = moveChildBlockToParentBlock(_pages, rootBlockState);

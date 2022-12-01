@@ -22,12 +22,14 @@ import {
 } from '../../../contants/MetaData';
 import {
   Common,
+  DetailDetail,
   Education,
   GlobalIterator,
   Publication,
   WorkExperience,
 } from '../../../types/Block';
 import { InputType } from '../../../types/Input';
+import { PositionA, PositionB } from '../../../types/Position';
 import { convert, create, getChildWithId, moveChildBlockToParentBlock } from '../../../utils';
 
 export interface PageState {
@@ -62,7 +64,6 @@ export interface BlockMovingState {
   isMovingBlock?: boolean;
   blockMovingId: string;
   blockMoveType: BlockMoveType;
-  targetItem?: any;
 }
 
 export interface BlockState {
@@ -89,7 +90,7 @@ export interface BlockUpdateState {
   data: Education & WorkExperience & Publication & Common;
   type: string;
   value: string;
-  child?: any;
+  child?: DetailDetail;
 }
 
 export interface BlockCreateState {
@@ -125,7 +126,6 @@ const initialState: BlockState &
     selectedElement: '',
   },
   blockMoveType: BlockMoveType.down,
-  targetItem: null,
   education: [educationMetaData],
   workExperience: [workExperienceMetaData],
   organization: [organizationMetaData],
@@ -175,31 +175,31 @@ const blogSlice = createReducer(initialState, (builder) => {
     const blockId = _id.split('/')[0];
     let pages = JSON.parse(JSON.stringify(state.pages));
 
-    pages = pages.map((page: any) =>
-      page.map((column: any) => column.filter((block: any) => !block.includes('/')))
+    pages = pages.map((page: string[][]) =>
+      page.map((column: string[]) => column.filter((block: string) => !block.includes('/')))
     );
     /*Move child to parent*/
     pages = moveChildBlockToParentBlock(pages, state);
     /**/
 
-    const temp: any = [];
+    const tmp: PositionB[] = [];
     for (let a = 0; a < pages.length; a++) {
       for (let b = 0; b < pages[a].length; b++) {
         for (let c = 0; c < pages[a][b].length; c++) {
           const _block = pages[a][b][c].split('/')[0];
           if (_block === blockId) {
-            temp.push({ a, b, c, block: pages[a][b][c] });
+            tmp.push({ a, b, c, block: pages[a][b][c] });
           }
         }
       }
     }
-    console.log('temp:', temp);
-    let childFound: any = getChildWithId(pages, action.payload.blockMovingId);
+    console.log('temp:', tmp);
+    let childFound: PositionA = getChildWithId(pages, action.payload.blockMovingId);
     console.log('childFound:', childFound);
-    let store = temp.map((t: any) => t.block);
+    let store = tmp.map((t: PositionB) => t.block);
     let found = false;
     if (type === BlockMoveType.down) {
-      let max: any = {};
+      let max: PositionB = { a: -1, b: -1, c: -1 };
       for (let a = 0; a < pages.length; a++) {
         for (let b = 0; b < pages[a].length; b++) {
           for (let c = 0; c < pages[a][b].length; c++) {
@@ -219,10 +219,7 @@ const blogSlice = createReducer(initialState, (builder) => {
         if (found) break;
       }
       console.log('max:', max);
-      if (
-        Object.keys(max).length === 0 &&
-        childFound.z <= pages[childFound.i][childFound.j].length - 1
-      ) {
+      if (max.a === -1 && childFound.z <= pages[childFound.i][childFound.j].length - 1) {
         if (childFound.i + 1 < pages.length) {
           pages[childFound.i][childFound.j].splice(childFound.z, 1);
           pages[childFound.i + 1][childFound.j].splice(1, 0, ...store);
@@ -235,7 +232,7 @@ const blogSlice = createReducer(initialState, (builder) => {
         pages[max.a][max.b].splice(max.c, 0, ...store);
       }
     } else if (type === BlockMoveType.up) {
-      let min: any = {};
+      let min: PositionB = { a: -1, b: -1, c: -1 };
       for (let a = 0; a < pages.length; a++) {
         for (let b = 0; b < pages[a].length; b++) {
           for (let c = 0; c < pages[a][b].length; c++) {
@@ -251,7 +248,7 @@ const blogSlice = createReducer(initialState, (builder) => {
         }
       }
       console.log('min:', min);
-      if (Object.keys(min).length === 0) {
+      if (min.a === -1) {
         if (childFound.z === 0 && childFound.i - 1 >= 0) {
           for (let a = 0; a < pages.length; a++) {
             for (let b = 0; b < pages[a].length; b++) {
@@ -290,41 +287,44 @@ const blogSlice = createReducer(initialState, (builder) => {
     const currentBlockContentId = action.payload;
     const blockId = currentBlockContentId.split('')[0];
     const blocks: Common[] = convert(blockId, state);
-    const foundBlock: any = blocks.find((block: Common) => block.id === currentBlockContentId);
+    const foundBlock = blocks.find((block: Common) => block.id === currentBlockContentId);
     const foundIndex = blocks.findIndex((block: Common) => block.id === currentBlockContentId);
     console.log('blocks:', JSON.parse(JSON.stringify(blocks)));
     console.log('foundIndex:', foundIndex);
-    if (foundIndex > 1) {
-      blocks.splice(foundIndex - 1, 0, foundBlock);
-      blocks.splice(foundIndex + 1, 1);
-    } else if (foundIndex > 0) {
-      foundBlock.header = blocks[0].header;
-      blocks.splice(0, 0, foundBlock);
-      blocks.splice(foundIndex + 1, 1);
+    if (foundBlock) {
+      if (foundIndex > 1) {
+        blocks.splice(foundIndex - 1, 0, foundBlock);
+        blocks.splice(foundIndex + 1, 1);
+      } else if (foundIndex > 0) {
+        foundBlock.header = blocks[0].header;
+        blocks.splice(0, 0, foundBlock);
+        blocks.splice(foundIndex + 1, 1);
+      }
+      console.log('blocks after move up:', JSON.parse(JSON.stringify(blocks)));
     }
-    console.log('blocks after move up:', JSON.parse(JSON.stringify(blocks)));
   });
   builder.addCase(movingBlockContentDown, (state, action) => {
     const currentBlockContentId = action.payload;
     const blockId = currentBlockContentId.split('')[0];
     const blocks: Common[] = convert(blockId, state);
-    const foundBlock: any = blocks.find((block: Common) => block.id === currentBlockContentId);
+    const foundBlock = blocks.find((block: Common) => block.id === currentBlockContentId);
     const foundIndex = blocks.findIndex((block: Common) => block.id === currentBlockContentId);
     console.log('currentBlockContentId:', currentBlockContentId);
     console.log('blocks:', JSON.parse(JSON.stringify(blocks)));
     console.log('foundIndex:', foundIndex);
-    if (foundIndex === 0) {
-      blocks.splice(foundIndex + 2, 0, foundBlock);
-      blocks.splice(foundIndex, 1);
-    } else if (foundIndex <= blocks.length - 2) {
-      blocks.splice(foundIndex + 2, 0, foundBlock);
-      blocks.splice(foundIndex, 1);
+    if (foundBlock) {
+      if (foundIndex === 0) {
+        blocks.splice(foundIndex + 2, 0, foundBlock);
+        blocks.splice(foundIndex, 1);
+      } else if (foundIndex <= blocks.length - 2) {
+        blocks.splice(foundIndex + 2, 0, foundBlock);
+        blocks.splice(foundIndex, 1);
+      }
+      if (foundIndex === 0 && blocks.length > 1) {
+        blocks[0].header = blocks[1].header;
+      }
+      console.log('blocks after move down:', JSON.parse(JSON.stringify(blocks)));
     }
-    if (foundIndex === 0 && blocks.length > 1) {
-      blocks[0].header = blocks[1].header;
-    }
-
-    console.log('blocks after move down:', JSON.parse(JSON.stringify(blocks)));
   });
   builder.addCase(updatePages, (state, action) => {
     state.pages = action.payload.pages;

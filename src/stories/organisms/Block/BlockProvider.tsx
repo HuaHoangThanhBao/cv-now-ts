@@ -1,6 +1,7 @@
 import { createContext, useCallback, useContext, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../store';
+import { convert } from '../../../utils';
 import { Input, InputProps } from '../../atoms/Input/Input';
 import { BlockBar } from '../../molecules/BlockBar';
 import { BlockBarProps } from '../../molecules/BlockBar/BlockBar';
@@ -52,6 +53,7 @@ const BlockContext = createContext<IBlockContext>({
 const BlockProvider = (props: BlockComposition) => {
   const dispatch = useDispatch();
   const selectedBlock = useSelector((state: RootState) => state.block.selectedBlock);
+  const blockState = useSelector((state: RootState) => state.block);
   const [showBlockContentBar, setShowBlockContentBar] = useState(false);
   const [showBlockHeaderBar, setShowBlockHeaderBar] = useState(false);
   const handleShowBlockContentBar = (type: string, blockId: string, childIndex: number) => {
@@ -118,6 +120,15 @@ const BlockProvider = (props: BlockComposition) => {
       handleDisableBlockHeaderBar();
     }
   }, [selectedBlock.selectedElement, handleDisableBlockContentBar, handleDisableBlockHeaderBar]);
+
+  useEffect(() => {
+    return () => {
+      if (showBlockContentBar || showBlockHeaderBar) {
+        const blockToUpdate = convert(selectedBlock.blockId || '-1', blockState);
+        console.log('blockToUpdate:', blockToUpdate);
+      }
+    };
+  }, [showBlockContentBar, showBlockHeaderBar]);
 
   return (
     <BlockContext.Provider value={value} {...props}>

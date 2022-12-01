@@ -2,12 +2,12 @@ import { useDrag } from '../../organisms/Drag/DragProvider';
 import './dragItem.scss';
 
 export interface DragItemProps {
-  page: any;
-  pageI: any;
-  column: any;
-  columnI: any;
-  block: any;
-  blockI: any;
+  page: string[][];
+  pageI: number;
+  column: string[];
+  columnI: number;
+  block: string;
+  blockI: number;
 }
 
 export const DragItem = ({ page, pageI, column, columnI, block, blockI }: DragItemProps) => {

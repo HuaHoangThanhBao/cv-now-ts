@@ -1,8 +1,10 @@
 import { BlockState } from '../stories/organisms/Block/block.slice';
+import { Common, GlobalIterator } from '../types/Block';
+import { PositionA } from '../types/Position';
 import { convert } from './block';
 
-export const getChildWithId = (pages: any, blockChildId: any): any => {
-  let result = {};
+export const getChildWithId = (pages: string[][][], blockChildId: string): PositionA => {
+  let result: PositionA = { i: -1, j: -1, z: -1 };
   for (let i = 0; i < pages.length; i++) {
     for (let j = 0; j < pages[i].length; j++) {
       for (let z = 0; z < pages[i][j].length; z++) {
@@ -16,41 +18,35 @@ export const getChildWithId = (pages: any, blockChildId: any): any => {
   return result;
 };
 
-export const moveChildBlockToParentBlock = (pages: string[][][], blockState: BlockState) => {
-  /*Move child to parent*/
-  let store: any = [];
-  pages.forEach((page: any) =>
-    page.forEach((column: any) => column.forEach((block: any) => store.push(block)))
+//This function is to move all child blocks of each block from blocks state to right after their parents
+export const moveChildBlockToParentBlock = (
+  pages: string[][][],
+  blockState: BlockState
+): string[][][] => {
+  let store: string[] = [];
+  pages.forEach((page: string[][]) =>
+    page.forEach((column: string[]) => column.forEach((block: string) => store.push(block)))
   );
-  // console.log('store:', store);
-  // console.log('rootBlockState:', blockState);
-  store.forEach((s: any) => {
-    const t = convert(s, blockState);
-    // console.log('t:', t);
-    const res: any = {};
-    t.forEach((_t: any) => {
-      // console.log(_t);
-      if (!res[_t.id.split('/')[0]]) {
-        res[_t.id.split('/')[0]] = [_t.id];
+  store.forEach((s: string) => {
+    const blocks: Common[] = convert(s, blockState);
+    const blockGroup: GlobalIterator = {};
+    blocks.forEach((block: Common) => {
+      const blockIdRoot = block.id;
+      const blockId = block.id.split('/')[0];
+      if (!blockGroup[blockId as keyof number]) {
+        blockGroup[blockId] = [blockIdRoot];
       } else {
-        res[_t.id.split('/')[0]].push(_t.id);
+        blockGroup[blockId].push(blockIdRoot);
       }
     });
-    // console.log('res:', res);
-    for (const [key, item] of Object.entries(res)) {
+    for (const [key, block] of Object.entries(blockGroup)) {
       let found = false;
       for (let a = 0; a < pages.length; a++) {
         for (let b = 0; b < pages[a].length; b++) {
           for (let c = 0; c < pages[a][b].length; c++) {
             const _block = pages[a][b][c].split('/')[0];
             if (_block === key) {
-              // console.log('key:', key);
-              // console.log('item:', item);
-              // console.log(a, b, c);
-              // @ts-ignore
-              const r = item.map((i: any) => i);
-              // console.log('r:', r);
-              pages[a][b].splice(c + 1, 0, ...r);
+              pages[a][b].splice(c + 1, 0, ...block);
               pages[a][b].splice(c, 1);
               found = true;
               break;
@@ -61,8 +57,6 @@ export const moveChildBlockToParentBlock = (pages: string[][][], blockState: Blo
         if (found) break;
       }
     }
-    // console.log('wow:', JSON.parse(JSON.stringify(pages)));
   });
-  /**/
   return pages;
 };

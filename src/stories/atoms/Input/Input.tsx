@@ -1,17 +1,18 @@
-import { createRef, useState, useMemo, useEffect } from 'react';
+import React, { createRef, useState, useMemo, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import ContentEditable from 'react-contenteditable';
+import ContentEditable, { ContentEditableEvent } from 'react-contenteditable';
 import { InputType } from '../../../types/Input';
 import { useBlock } from '../../organisms/Block/BlockProvider';
 import './input.scss';
 import { BlockUpdateState, updateBlock } from '../../organisms/Block/block.slice';
+import { DetailDetail } from '../../../types/Block';
 
 export interface InputProps {
   className?: string;
-  detailChild?: any;
+  detailChild?: DetailDetail;
   type: string;
   data?: any;
-  title?: any;
+  title?: JSX.Element;
   blockChildIndex: number;
 }
 
@@ -26,11 +27,11 @@ export const Input = ({
   const id = data.id.split('/')[0];
   const textVal = useMemo(() => {
     if (type !== InputType.contentBullet) return data[type].text;
-    else return detailChild.text;
+    else return detailChild?.text;
   }, [data, detailChild, type]);
   const placeHolderVal = useMemo(() => {
     if (type !== InputType.contentBullet) return data[type].placeHolder;
-    else return detailChild.placeHolder;
+    else return detailChild?.placeHolder;
   }, [data, detailChild, type]);
 
   // const contentEditable = createRef<any>();
@@ -43,7 +44,7 @@ export const Input = ({
     setPlaceHolder(placeHolderVal);
   }, [placeHolderVal]);
 
-  const handleChange = (evt: any) => {
+  const handleChange = (evt: ContentEditableEvent) => {
     const value = evt.target.value;
     const clone: BlockUpdateState = {
       data,
