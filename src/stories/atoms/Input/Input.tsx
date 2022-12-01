@@ -5,13 +5,13 @@ import { InputType } from '../../../types/Input';
 import { useBlock } from '../../organisms/Block/BlockProvider';
 import './input.scss';
 import { BlockUpdateState, updateBlock } from '../../organisms/Block/block.slice';
-import { DetailDetail } from '../../../types/Block';
+import { Common, DetailDetail, Education, Publication, WorkExperience } from '../../../types/Block';
 
 export interface InputProps {
   className?: string;
   detailChild?: DetailDetail;
   type: string;
-  data?: any;
+  data: Education | WorkExperience | Publication | Common;
   title?: JSX.Element;
   blockChildIndex: number;
 }

@@ -12,7 +12,7 @@ import {
   updateSelectedBlock,
 } from './stories/organisms/Block/block.slice';
 import { convert, moveChildBlockToParentBlock } from './utils';
-import { Common, GlobalIterator } from './types/Block';
+import { Common, Education, GlobalIterator, Publication, WorkExperience } from './types/Block';
 import { Drag } from './stories/organisms/Drag/Drag';
 import { updateDragPages } from './stories/organisms/Drag/drag.slice';
 
@@ -59,7 +59,7 @@ function App() {
             {oddColumn &&
               oddColumn.map((block: string, blockIndex: number) => {
                 if (oddColumn[blockIndex]) {
-                  const blocks: Common[] = convert(
+                  const blocks: Education[] | WorkExperience[] | Publication[] | Common[] = convert(
                     oddColumn[blockIndex].split('/')[0],
                     rootBlockState
                   );

@@ -18,9 +18,12 @@ import {
   workExperienceMetaData,
 } from '../contants/MetaData';
 import { BlockState } from '../stories/organisms/Block/block.slice';
-import { Common } from '../types/Block';
+import { Common, Education, Publication, WorkExperience } from '../types/Block';
 
-export const convert = (blockType: string, state: BlockState): Common[] => {
+export const convert = (
+  blockType: string,
+  state: BlockState
+): Education[] | WorkExperience[] | Publication[] | Common[] => {
   switch (blockType) {
     case '1':
       return state['education'];

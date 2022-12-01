@@ -87,7 +87,7 @@ export interface BlockState {
 }
 
 export interface BlockUpdateState {
-  data: Education & WorkExperience & Publication & Common;
+  data: Education | WorkExperience | Publication | Common;
   type: string;
   value: string;
   child?: DetailDetail;
@@ -356,7 +356,9 @@ const blogSlice = createReducer(initialState, (builder) => {
       data[fieldType as keyof GlobalIterator].text = value;
     } else {
       const childData = payload.child;
-      const foundChild = data[fieldType].child.findIndex((child) => child === childData);
+      const foundChild = data[fieldType].child.findIndex(
+        (child: DetailDetail) => child === childData
+      );
       data = JSON.parse(JSON.stringify(payload.data));
       data.content_bullet.child[foundChild].text = value;
     }

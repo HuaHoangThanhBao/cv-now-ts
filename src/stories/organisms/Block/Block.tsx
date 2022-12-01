@@ -1,10 +1,17 @@
 import React from 'react';
-import { Common, DetailDetail, GlobalIterator } from '../../../types/Block';
+import {
+  Common,
+  DetailDetail,
+  Education,
+  GlobalIterator,
+  Publication,
+  WorkExperience,
+} from '../../../types/Block';
 import { Icon } from '../../atoms/Icon/Icon';
 import { BlockProvider } from './BlockProvider';
 
 interface BlockProps {
-  data: Common | GlobalIterator;
+  data: Education | WorkExperience | Publication | Common;
   className?: string;
   blockChildIndex: number;
 }
@@ -17,7 +24,7 @@ export const Block = React.memo(
     const update = (el: HTMLDivElement) => {
       blocksRef.current[blockId] = {
         ...blocksRef.current[blockId],
-        [data.uid]: { id: block, el: el },
+        [data.uid as string]: { id: block, el: el },
       };
     };
     console.log('render block');
@@ -28,7 +35,7 @@ export const Block = React.memo(
           ref={(el: HTMLDivElement) => update(el)}
         >
           <BlockProvider.Header>
-            {data?.uid}
+            <>{data?.uid}</>
             <BlockProvider.Input
               type="header"
               data={data}
