@@ -5,7 +5,7 @@ import { moveChildBlockToParentBlock } from '../../../utils';
 import { DragItem } from '../../atoms/DragItem';
 import { DragItemProps } from '../../atoms/DragItem/DragItem';
 import { DragGroup, DragGroupProps } from '../../molecules/DragGroup/DragGroup';
-import { onMovingBlock, updatePages } from '../Block/block.slice';
+import { onMovingBlock, transformPages, updatePages } from '../Block/block.slice';
 import './drag.scss';
 import { updateDragPages } from './drag.slice';
 
@@ -97,6 +97,13 @@ const DragProvider = (props: DragComposition) => {
   useEffect(() => {
     if (isFinishDrag) {
       let _pages = JSON.parse(JSON.stringify(pages));
+      dispatch(
+        transformPages({
+          isOneColumn: rootBlockState.isOneColumn,
+          pagesOneColumn: _pages,
+          pagesTwoColumn: _pages,
+        })
+      );
       _pages = _pages.map((page: any) =>
         page.map((column: any) => column.filter((block: any) => !block.includes('/')))
       );

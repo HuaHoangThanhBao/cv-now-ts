@@ -39,7 +39,7 @@ export interface PageColumnFormatState {
   pagesTwoColumn: string[][][];
 }
 
-export interface PageTransformState {
+export interface PageTransformState extends PageColumnFormatState {
   isOneColumn?: boolean;
 }
 
@@ -158,34 +158,13 @@ export const transformPages = createAction<PageTransformState>('block/transformP
 const blogSlice = createReducer(initialState, (builder) => {
   builder.addCase(transformPages, (state, action) => {
     const status = action.payload.isOneColumn;
-    // let pages = JSON.parse(JSON.stringify(state.pages));
-    // const temp = [];
-    // for (let a = 0; a < pages.length; a++) {
-    //   for (let b = 0; b < pages[a].length; b++) {
-    //     for (let c = 0; c < pages[a][b].length; c++) {
-    //       const _block = pages[a][b][c];
-    //       if (_block.includes('/')) {
-    //         temp.push({ a, b, c, block: pages[a][b][c] });
-    //       }
-    //     }
-    //   }
-    // }
-    // console.log('temp:', temp);
-    // for (let a = 0; a < pages.length; a++) {
-    //   for (let b = 0; b < pages[a].length; b++) {
-    //     for (let c = 0; c < pages[a][b].length; c++) {
-    //       const _block = pages[a][b][c];
-    //       if (!_block.includes('/')) {
-    //         const found = temp.find()
-    //       }
-    //     }
-    //   }
-    // }
+    const oneColumnFormat = action.payload.pagesOneColumn;
+    const twoColumnFormat = action.payload.pagesTwoColumn;
     if (status) {
-      state.pages = state.pagesOneColumn;
+      state.pages = oneColumnFormat;
       state.pagesOneColumn = state.pages;
     } else {
-      state.pages = state.pagesTwoColumn;
+      state.pages = twoColumnFormat;
       state.pagesTwoColumn = state.pages;
     }
     state.isOneColumn = status;

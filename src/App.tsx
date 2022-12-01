@@ -1,4 +1,4 @@
-import { useEffect, useRef, useCallback } from 'react';
+import { useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import './App.css';
 import { Block } from './stories/organisms/Block/Block';
@@ -265,31 +265,55 @@ function App() {
     dispatch(updateDragPages({ pages: filtered }));
   };
 
-  // console.log(blocksRef.current);
-
   const onChangeColumnTransform = () => {
-    dispatch(transformPages({ isOneColumn: !rootBlockState.isOneColumn }));
+    const status = !rootBlockState.isOneColumn;
+    let newPagesTransform: string[][][] = [];
+    if (status) {
+      newPagesTransform = rootBlockState.pagesOneColumn;
+    } else {
+      newPagesTransform = rootBlockState.pagesTwoColumn;
+    }
+    /*Move child to parent*/
+    newPagesTransform = newPagesTransform.map((page: any) =>
+      page.map((column: any) => column.filter((block: any) => !block.includes('/')))
+    );
+    newPagesTransform = moveChildBlockToParentBlock(newPagesTransform, rootBlockState);
+    /**/
+    dispatch(
+      transformPages({
+        isOneColumn: !rootBlockState.isOneColumn,
+        pagesOneColumn: newPagesTransform,
+        pagesTwoColumn: newPagesTransform,
+      })
+    );
+    dispatch(updateDragPages({ pages: newPagesTransform }));
   };
 
   useEffect(() => {
+    dispatch(
+      transformPages({
+        isOneColumn: rootBlockState.isOneColumn,
+        pagesOneColumn: rootBlockState.pagesOneColumn,
+        pagesTwoColumn: rootBlockState.pagesTwoColumn,
+      })
+    );
     dispatch(onMovingBlock(true));
-  }, [dispatch]);
+  }, [
+    rootBlockState.isOneColumn,
+    rootBlockState.pagesOneColumn,
+    rootBlockState.pagesTwoColumn,
+    dispatch,
+  ]);
 
   useEffect(() => {
     if (rootBlockState.isMovingBlock) {
-      console.log('rootBlockState 0:', rootBlockState);
       transformBlocks();
       dispatch(onMovingBlock(false));
     }
   }, [rootBlockState.isMovingBlock, dispatch, transformBlocks]);
 
   useEffect(() => {
-    console.log('isOneColumn:', rootBlockState.isOneColumn);
-  }, [rootBlockState.isOneColumn]);
-
-  useEffect(() => {
     window.addEventListener('keydown', (e: any) => {
-      console.log(e.keyCode);
       if (e.keyCode === 81) {
         dispatch(createBlock({ blockCreateId: '2' }));
         dispatch(onMovingBlock(true));
