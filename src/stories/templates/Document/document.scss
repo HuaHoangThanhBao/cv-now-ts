@@ -11,7 +11,7 @@
   &::after {
     content: '';
     display: block;
-    clear: left;
+    clear: both;
   }
   .even {
     width: 50%;

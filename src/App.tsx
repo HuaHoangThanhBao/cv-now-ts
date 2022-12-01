@@ -289,12 +289,21 @@ function App() {
 
   useEffect(() => {
     window.addEventListener('keydown', (e: any) => {
-      if (e.keyCode === 113) {
+      console.log(e.keyCode);
+      if (e.keyCode === 81) {
         dispatch(createBlock({ blockCreateId: '2' }));
         dispatch(onMovingBlock(true));
       }
-      if (e.keyCode === 115) {
+      if (e.keyCode === 87) {
         dispatch(createBlock({ blockCreateId: '3' }));
+        dispatch(onMovingBlock(true));
+      }
+      if (e.keyCode === 69) {
+        dispatch(createBlock({ blockCreateId: '1' }));
+        dispatch(onMovingBlock(true));
+      }
+      if (e.keyCode === 82) {
+        dispatch(createBlock({ blockCreateId: '4' }));
         dispatch(onMovingBlock(true));
       }
       if (e.keyCode === 27) {

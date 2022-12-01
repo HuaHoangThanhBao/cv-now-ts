@@ -248,8 +248,10 @@ const blogSlice = createReducer(initialState, (builder) => {
           pages[childFound.i][childFound.j].splice(childFound.z, 1);
           pages[childFound.i + 1][childFound.j].splice(1, 0, ...store);
         }
-      }
-      if (max.a > 0 || (max.a === 0 && childFound.z < pages[childFound.i][childFound.j].length)) {
+      } else if (
+        max.a > 0 ||
+        (max.a === 0 && childFound.z < pages[childFound.i][childFound.j].length)
+      ) {
         pages[childFound.i][childFound.j].splice(childFound.z, 1);
         pages[max.a][max.b].splice(max.c, 0, ...store);
       }
@@ -289,8 +291,7 @@ const blogSlice = createReducer(initialState, (builder) => {
           pages[childFound.i][childFound.j].splice(childFound.z, 1);
           pages[childFound.i - 1][childFound.j].splice(min.c, 0, ...store);
         }
-      }
-      if (min.a > 0 || (min.a === 0 && childFound.z > 0)) {
+      } else if (min.a > 0 || (min.a === 0 && childFound.z > 0)) {
         pages[childFound.i][childFound.j].splice(childFound.z, 1);
         pages[min.a][min.b].splice(min.c, 0, ...store);
       }
