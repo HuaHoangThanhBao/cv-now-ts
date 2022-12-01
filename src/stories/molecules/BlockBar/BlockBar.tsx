@@ -52,6 +52,7 @@ export const BlockBar = ({ block, blockId, blockChildIndex }: BlockBarProps) => 
   const moveContentDown = () => {
     console.log('block content to move down:', block);
     handleDisableBlockContentBar();
+    dispatch(onMovingBlock(true));
     dispatch(movingBlockContentDown(block));
   };
 

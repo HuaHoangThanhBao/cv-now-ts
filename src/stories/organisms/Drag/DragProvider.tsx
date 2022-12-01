@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../store';
+import { moveChildBlockToParentBlock } from '../../../utils';
 import { DragItem } from '../../atoms/DragItem';
 import { DragItemProps } from '../../atoms/DragItem/DragItem';
 import { DragGroup, DragGroupProps } from '../../molecules/DragGroup/DragGroup';
@@ -35,6 +36,7 @@ const DragContext = createContext<IDragContext>({
 });
 
 const DragProvider = (props: DragComposition) => {
+  const rootBlockState = useSelector((state: RootState) => state.block);
   const pages = useSelector((state: RootState) => state.drag.pages);
   const dispatch = useDispatch();
   const [dragging, setDragging] = useState(false);
@@ -94,7 +96,14 @@ const DragProvider = (props: DragComposition) => {
 
   useEffect(() => {
     if (isFinishDrag) {
-      dispatch(updatePages({ pages: pages }));
+      let _pages = JSON.parse(JSON.stringify(pages));
+      _pages = _pages.map((page: any) =>
+        page.map((column: any) => column.filter((block: any) => !block.includes('/')))
+      );
+      /*Move child to parent*/
+      _pages = moveChildBlockToParentBlock(_pages, rootBlockState);
+      /**/
+      dispatch(updatePages({ pages: _pages }));
       dispatch(onMovingBlock(true));
       dragItem.current = null;
       dragItemNode.current = null;

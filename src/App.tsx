@@ -11,7 +11,7 @@ import {
   updatePages,
   updateSelectedBlock,
 } from './stories/organisms/Block/block.slice';
-import { convert } from './utils';
+import { convert, moveChildBlockToParentBlock } from './utils';
 import { Common } from './types/Block';
 import { Drag } from './stories/organisms/Drag/Drag';
 import { updateDragPages } from './stories/organisms/Drag/drag.slice';
@@ -42,14 +42,16 @@ function App() {
                 rootBlockState
               );
               return blocks.map((blockChild, blockChildIndex) => {
-                return (
-                  <Block
-                    key={blockChild.uid}
-                    data={blockChild}
-                    blockChildIndex={blockChildIndex}
-                    ref={blocksRef}
-                  />
-                );
+                if (blockChild.id === block) {
+                  return (
+                    <Block
+                      key={blockChild.uid}
+                      data={blockChild}
+                      blockChildIndex={blockChildIndex}
+                      ref={blocksRef}
+                    />
+                  );
+                } else return null;
               });
             })}
           </div>
@@ -62,14 +64,16 @@ function App() {
                     rootBlockState
                   );
                   return blocks.map((blockChild, blockChildIndex) => {
-                    return (
-                      <Block
-                        key={blockChild.uid}
-                        data={blockChild}
-                        blockChildIndex={blockChildIndex}
-                        ref={blocksRef}
-                      />
-                    );
+                    if (blockChild.id === block) {
+                      return (
+                        <Block
+                          key={blockChild.uid}
+                          data={blockChild}
+                          blockChildIndex={blockChildIndex}
+                          ref={blocksRef}
+                        />
+                      );
+                    } else return null;
                   });
                 } else return null;
               })}
@@ -97,19 +101,29 @@ function App() {
     let sum = 0;
     const blockIdFormat = blockId.split('/')[0];
     const blocks: any = blocksRef.current[Number(blockIdFormat)];
+    // console.log('blocks:', blocks);
     for (let i = 0; i < Object.keys(blocks).length; i++) {
       const block = blocks[Object.keys(blocks)[i]];
-      if (block.id.split('/')[0] === blockId) {
-        sum += blocks[Object.keys(blocks)[i]].el.offsetHeight;
+      // console.log('block:', block);
+      if (block.id === blockId) {
+        sum += block.el.offsetHeight;
       }
     }
     return sum;
   };
 
-  const transformBlocks = useCallback(() => {
+  const transformBlocks = () => {
     console.log(blocksRef.current);
     let _pages = JSON.parse(JSON.stringify(rootBlockState.pages));
+    console.log('_pages:', JSON.parse(JSON.stringify(_pages)));
     const maxHeight = 1000;
+
+    /*Move child to parent*/
+    _pages = _pages.map((page: any) =>
+      page.map((column: any) => column.filter((block: any) => !block.includes('/')))
+    );
+    _pages = moveChildBlockToParentBlock(_pages, rootBlockState);
+    /**/
 
     let columnFirst = 0;
     let columnSecond = 1;
@@ -120,11 +134,14 @@ function App() {
       const firstColumn = _pages[i][columnFirst];
       const secondColumn = _pages[i][columnSecond];
       for (let a = 0; a < firstColumn.length; a++) {
+        // console.log('firstColumn[a]:', firstColumn[a]);
         sumFirstCol += findBlockRef(firstColumn[a]);
         if (sumFirstCol > maxHeight) {
+          // console.log('over:', firstColumn[a]);
           if (i < _pages.length - 1) {
             const nextFirstColumn = _pages[i + 1][columnFirst];
             for (let z = firstColumn.length - 1; z >= a; z--) {
+              // console.log('firstColumn[z]:', firstColumn[z]);
               nextFirstColumn.unshift(firstColumn[z]);
             }
             firstColumn.splice(a, firstColumn.length);
@@ -244,9 +261,9 @@ function App() {
     const filtered = _pages.map((page: any) =>
       page.map((column: any) => column.filter((block: any) => !block.includes('/')))
     );
-    dispatch(updatePages({ pages: filtered }));
+    dispatch(updatePages({ pages: _pages }));
     dispatch(updateDragPages({ pages: filtered }));
-  }, [rootBlockState.pages, dispatch]);
+  };
 
   // console.log(blocksRef.current);
 
@@ -260,6 +277,7 @@ function App() {
 
   useEffect(() => {
     if (rootBlockState.isMovingBlock) {
+      console.log('rootBlockState 0:', rootBlockState);
       transformBlocks();
       dispatch(onMovingBlock(false));
     }

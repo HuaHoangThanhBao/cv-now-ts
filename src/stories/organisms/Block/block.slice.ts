@@ -28,7 +28,7 @@ import {
   WorkExperience,
 } from '../../../types/Block';
 import { InputType } from '../../../types/Input';
-import { convert, create, getChildWithId } from '../../../utils';
+import { convert, create, getChildWithId, moveChildBlockToParentBlock } from '../../../utils';
 
 export interface PageState {
   pages: string[][][];
@@ -195,6 +195,14 @@ const blogSlice = createReducer(initialState, (builder) => {
     const _id = action.payload.blockMovingId;
     const blockId = _id.split('/')[0];
     let pages = JSON.parse(JSON.stringify(state.pages));
+
+    pages = pages.map((page: any) =>
+      page.map((column: any) => column.filter((block: any) => !block.includes('/')))
+    );
+    /*Move child to parent*/
+    pages = moveChildBlockToParentBlock(pages, state);
+    /**/
+
     const temp: any = [];
     for (let a = 0; a < pages.length; a++) {
       for (let b = 0; b < pages[a].length; b++) {
@@ -253,7 +261,7 @@ const blogSlice = createReducer(initialState, (builder) => {
             const _block = pages[a][b][c].split('/')[0];
             if (_block !== blockId) {
               if (a === childFound.i && b === childFound.j) {
-                if (c < childFound.z) {
+                if (c < childFound.z && !pages[a][b][c].includes('/')) {
                   min = { a, b, c };
                 }
               }
@@ -264,12 +272,22 @@ const blogSlice = createReducer(initialState, (builder) => {
       console.log('min:', min);
       if (Object.keys(min).length === 0) {
         if (childFound.z === 0 && childFound.i - 1 >= 0) {
+          for (let a = 0; a < pages.length; a++) {
+            for (let b = 0; b < pages[a].length; b++) {
+              for (let c = 0; c < pages[a][b].length; c++) {
+                const _block = pages[a][b][c].split('/')[0];
+                if (_block !== blockId) {
+                  if (a === childFound.i - 1 && b === childFound.j) {
+                    if (c < pages[a][b].length && !pages[a][b][c].includes('/')) {
+                      min = { a, b, c };
+                    }
+                  }
+                }
+              }
+            }
+          }
           pages[childFound.i][childFound.j].splice(childFound.z, 1);
-          pages[childFound.i - 1][childFound.j].splice(
-            pages[childFound.i - 1][childFound.j].length - 1,
-            0,
-            ...store
-          );
+          pages[childFound.i - 1][childFound.j].splice(min.c, 0, ...store);
         }
       }
       if (min.a > 0 || (min.a === 0 && childFound.z > 0)) {
@@ -294,7 +312,7 @@ const blogSlice = createReducer(initialState, (builder) => {
     const blocks: Common[] = convert(blockId, state);
     const foundBlock: any = blocks.find((block: Common) => block.id === currentBlockContentId);
     const foundIndex = blocks.findIndex((block: Common) => block.id === currentBlockContentId);
-    console.log('blocks:', blocks);
+    console.log('blocks:', JSON.parse(JSON.stringify(blocks)));
     console.log('foundIndex:', foundIndex);
     if (foundIndex > 1) {
       blocks.splice(foundIndex - 1, 0, foundBlock);
@@ -312,7 +330,8 @@ const blogSlice = createReducer(initialState, (builder) => {
     const blocks: Common[] = convert(blockId, state);
     const foundBlock: any = blocks.find((block: Common) => block.id === currentBlockContentId);
     const foundIndex = blocks.findIndex((block: Common) => block.id === currentBlockContentId);
-    console.log('blocks:', blocks);
+    console.log('currentBlockContentId:', currentBlockContentId);
+    console.log('blocks:', JSON.parse(JSON.stringify(blocks)));
     console.log('foundIndex:', foundIndex);
     if (foundIndex === 0) {
       blocks.splice(foundIndex + 2, 0, foundBlock);
@@ -344,6 +363,7 @@ const blogSlice = createReducer(initialState, (builder) => {
       newData.id = newBlockId;
     }
     blocks.push(newData);
+    console.log('blocks created:', JSON.parse(JSON.stringify(blocks)));
   });
   builder.addCase(updateBlock, (state, action) => {
     const payload = action.payload;
