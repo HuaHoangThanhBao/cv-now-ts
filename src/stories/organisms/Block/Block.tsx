@@ -1,17 +1,10 @@
 import React from 'react';
-import {
-  Common,
-  DetailDetail,
-  Education,
-  GlobalIterator,
-  Publication,
-  WorkExperience,
-} from '../../../types/Block';
+import { Common, DetailDetail } from '../../../types/Block';
 import { Icon } from '../../atoms/Icon/Icon';
 import { BlockProvider } from './BlockProvider';
 
 interface BlockProps {
-  data: Education | WorkExperience | Publication | Common;
+  data: Common;
   className?: string;
   blockChildIndex: number;
 }

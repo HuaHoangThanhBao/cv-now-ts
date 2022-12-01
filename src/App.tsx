@@ -59,7 +59,7 @@ function App() {
             {oddColumn &&
               oddColumn.map((block: string, blockIndex: number) => {
                 if (oddColumn[blockIndex]) {
-                  const blocks: Education[] | WorkExperience[] | Publication[] | Common[] = convert(
+                  const blocks: Common[] = convert(
                     oddColumn[blockIndex].split('/')[0],
                     rootBlockState
                   );

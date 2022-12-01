@@ -11,7 +11,7 @@ export interface InputProps {
   className?: string;
   detailChild?: DetailDetail;
   type: string;
-  data: Education | WorkExperience | Publication | Common;
+  data: Common;
   title?: JSX.Element;
   blockChildIndex: number;
 }
