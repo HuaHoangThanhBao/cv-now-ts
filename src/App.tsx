@@ -12,7 +12,7 @@ import {
   updateSelectedBlock,
 } from './stories/organisms/Block/block.slice';
 import { convert, moveChildBlockToParentBlock } from './utils';
-import { Common, Education, GlobalIterator, Publication, WorkExperience } from './types/Block';
+import { Common, GlobalIterator } from './types/Block';
 import { Drag } from './stories/organisms/Drag/Drag';
 import { updateDragPages } from './stories/organisms/Drag/drag.slice';
 

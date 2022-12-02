@@ -87,7 +87,7 @@ export interface BlockState {
 }
 
 export interface BlockUpdateState {
-  data: Education | WorkExperience | Publication | Common;
+  data: Education | WorkExperience | Publication | Common | DetailDetail;
   type: string;
   value: string;
   child?: DetailDetail;
@@ -334,8 +334,13 @@ const blogSlice = createReducer(initialState, (builder) => {
   });
   builder.addCase(createBlock, (state, action) => {
     const blockCreateId = action.payload.blockCreateId;
-    let newData = { ...create(blockCreateId) };
+    let newData = JSON.parse(JSON.stringify(create(blockCreateId)));
+    //create new uid for block
     newData.uid = uuidv4();
+    //create new uid for block content bullet child
+    if (newData.content_bullet) {
+      newData.content_bullet.child[0].uid = uuidv4();
+    }
     const blocks: Common[] = convert(blockCreateId, state);
     let newBlockId = '';
     if (blocks.length >= 1) {
@@ -354,17 +359,29 @@ const blogSlice = createReducer(initialState, (builder) => {
     if (fieldType !== InputType.contentBullet) {
       data = JSON.parse(JSON.stringify(payload.data));
       data[fieldType as keyof GlobalIterator].text = value;
-    } else {
-      const childData = payload.child;
-      const foundChild = data[fieldType].child.findIndex(
-        (child: DetailDetail) => child === childData
-      );
-      data = JSON.parse(JSON.stringify(payload.data));
-      data.content_bullet.child[foundChild].text = value;
+
+      const blocks: Common[] = convert(blockId, state);
+      const dir: number = blocks.findIndex((d: Common) => d.uid === data.uid);
+      blocks[dir] = data;
+      console.log('block updated:', JSON.parse(JSON.stringify(blocks[dir])))
     }
-    const blocks: Common[] = convert(blockId, state);
-    const dir: number = blocks.findIndex((d: Common) => d.uid === data.uid);
-    blocks[dir] = data;
+    else {
+      const blocks: Common[] = convert(blockId, state);
+      for (let i = 0; i < blocks.length; i++) {
+        const block = blocks[i]
+        const contentBullet = block.content_bullet.child
+        let found = false
+        for (let j = 0; j < contentBullet.length; j++) {
+          if (contentBullet[j].uid === data.uid) {
+            contentBullet[j].text = value
+            found = true;
+            break;
+          }
+        }
+        if (found) break;
+      }
+      console.log('block content bullet updated:', JSON.parse(JSON.stringify(blocks)))
+    }
   });
 });
 

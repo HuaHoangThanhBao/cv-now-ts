@@ -79,10 +79,9 @@ export const Block = React.memo(
             <div className="block-content-detail">
               {data.content_bullet.child.map((child: DetailDetail) => (
                 <BlockProvider.Input
-                  key={child.text}
+                  key={child.uid}
                   type="content_bullet"
-                  detailChild={child}
-                  data={data}
+                  data={child}
                   blockChildIndex={blockChildIndex}
                 />
               ))}

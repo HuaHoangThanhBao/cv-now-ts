@@ -1,41 +1,33 @@
-import React, { createRef, useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import ContentEditable, { ContentEditableEvent } from 'react-contenteditable';
 import { InputType } from '../../../types/Input';
 import { useBlock } from '../../organisms/Block/BlockProvider';
 import './input.scss';
 import { BlockUpdateState, updateBlock } from '../../organisms/Block/block.slice';
-import { Common, DetailDetail, Education, Publication, WorkExperience } from '../../../types/Block';
+import { Common, DetailDetail } from '../../../types/Block';
 
 export interface InputProps {
   className?: string;
-  detailChild?: DetailDetail;
   type: string;
-  data: Common;
+  data: Common | DetailDetail;
   title?: JSX.Element;
   blockChildIndex: number;
 }
 
-export const Input = ({
-  className,
-  detailChild,
-  type,
-  title,
-  data,
-  blockChildIndex,
-}: InputProps) => {
+export const Input = ({ className, type, title, data, blockChildIndex }: InputProps) => {
   const id = data.id.split('/')[0];
   const textVal = useMemo(() => {
     if (type !== InputType.contentBullet) return data[type].text;
-    else return detailChild?.text;
-  }, [data, detailChild, type]);
+    else return data.text;
+  }, [data, type]);
+
   const placeHolderVal = useMemo(() => {
     if (type !== InputType.contentBullet) return data[type].placeHolder;
-    else return detailChild?.placeHolder;
-  }, [data, detailChild, type]);
+    else return data.placeHolder;
+  }, [data, type]);
 
-  // const contentEditable = createRef<any>();
-  const [html, setHTML] = useState(textVal);
+  const [html, setHTML] = useState('');
   const [placeHolder, setPlaceHolder] = useState('');
   const { handleShowBlockContentBar, handleShowBlockHeaderBar, selectedBlock } = useBlock();
   const dispatch = useDispatch();
@@ -44,13 +36,16 @@ export const Input = ({
     setPlaceHolder(placeHolderVal);
   }, [placeHolderVal]);
 
+  useEffect(() => {
+    setHTML(textVal);
+  }, [textVal]);
+
   const handleChange = (evt: ContentEditableEvent) => {
     const value = evt.target.value;
     const clone: BlockUpdateState = {
       data,
       type,
       value,
-      child: detailChild,
     };
     dispatch(updateBlock(clone));
     setHTML(value);
@@ -78,12 +73,11 @@ export const Input = ({
   return (
     <div className={`field${title ? ' title' : ''}${getFieldStatus()}`} onFocus={onFocus}>
       {title && title}
-      {detailChild && <span className="field-bullet"></span>}
+      {type === InputType.contentBullet && <span className="field-bullet"></span>}
       <ContentEditable
         className={`field-input ${type}${className ? ` ${className}` : ''}${
-          detailChild ? ` detail` : ''
+          type === InputType.contentBullet ? ` detail` : ''
         }`}
-        // innerRef={contentEditable}
         html={html}
         placeholder={placeHolder}
         onChange={handleChange}
