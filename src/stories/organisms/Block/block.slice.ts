@@ -54,10 +54,22 @@ export interface BlockSelectState {
   };
 }
 
+export interface BlockBulletSelectState {
+  selectedBulletBlock: {
+    blockId: string;
+    blockBulletUid: string;
+  };
+}
+
 export enum BlockMoveType {
-  down = 'down',
-  up = 'up',
-  drag = 'drag',
+  DOWN = 'down',
+  UP = 'up',
+}
+
+export enum BlockContentControlType {
+  DEFAULT = 'default',
+  CREATE = 'create',
+  DELETE = 'up',
 }
 
 export interface BlockMovingState {
@@ -97,10 +109,17 @@ export interface BlockCreateState {
   blockCreateId: string;
 }
 
+export interface BlockBulletCreateState extends BlockCreateState {
+  blockBulletUid: string;
+  blockBulletStatus: BlockContentControlType;
+}
+
 const initialState: BlockState &
   BlockCreateState &
+  BlockBulletCreateState &
   BlockMovingState &
   BlockSelectState &
+  BlockBulletSelectState &
   PageState &
   PageTransformState &
   PageColumnFormatState = {
@@ -119,13 +138,19 @@ const initialState: BlockState &
   blockMovingId: '-1',
   isMovingBlock: false,
   blockCreateId: '-1',
+  blockBulletUid: '-1',
   selectedBlock: {
     blockType: '',
     blockId: '-1',
     blockChildIndex: -1,
     selectedElement: '',
   },
-  blockMoveType: BlockMoveType.down,
+  selectedBulletBlock: {
+    blockBulletUid: '-1',
+    blockId: '-1',
+  },
+  blockMoveType: BlockMoveType.DOWN,
+  blockBulletStatus: BlockContentControlType.DEFAULT,
   education: [educationMetaData],
   workExperience: [workExperienceMetaData],
   organization: [organizationMetaData],
@@ -148,6 +173,7 @@ const initialState: BlockState &
 export const updateSelectedBlock = createAction<BlockSelectState>('block/updateSelectedBlock');
 export const updateBlock = createAction<BlockUpdateState>('block/updateBlock');
 export const createBlock = createAction<BlockCreateState>('block/createBlock');
+export const controlBlockBullet = createAction<BlockBulletCreateState>('block/controlBlockBullet');
 export const onMovingBlock = createAction<boolean>('block/onMovingBlock');
 export const movingBlockContentUp = createAction<string>('block/movingBlockContentUp');
 export const movingBlockContentDown = createAction<string>('block/movingBlockContentDown');
@@ -174,7 +200,7 @@ const blogSlice = createReducer(initialState, (builder) => {
     const _id = action.payload.blockMovingId;
     const blockId = _id.split('/')[0];
     let pages = JSON.parse(JSON.stringify(state.pages));
-    console.log('pages before move block:', JSON.parse(JSON.stringify(pages)))
+    console.log('pages before move block:', JSON.parse(JSON.stringify(pages)));
 
     const tmp: PositionB[] = [];
     for (let a = 0; a < pages.length; a++) {
@@ -193,7 +219,7 @@ const blogSlice = createReducer(initialState, (builder) => {
     console.log('childFound:', childFound);
     let store = tmp.map((t: PositionB) => t.block);
     let found = false;
-    if (type === BlockMoveType.down) {
+    if (type === BlockMoveType.DOWN) {
       let max: PositionB = { a: -1, b: -1, c: -1 };
       for (let a = 0; a < pages.length; a++) {
         for (let b = 0; b < pages[a].length; b++) {
@@ -226,10 +252,10 @@ const blogSlice = createReducer(initialState, (builder) => {
                   if (a === childFound.i + 1 && b === childFound.j) {
                     if (c < pages[a][b].length && !pages[a][b][c].includes('/')) {
                       max = { a, b, c };
-                      count++
+                      count++;
                       if (count > 1) {
-                        found = true
-                        break
+                        found = true;
+                        break;
                       }
                     }
                   }
@@ -240,15 +266,15 @@ const blogSlice = createReducer(initialState, (builder) => {
             if (found) break;
           }
           console.log('max 1:', max);
-          const nextPage = pages[childFound.i + 1][childFound.j]
+          const nextPage = pages[childFound.i + 1][childFound.j];
           if (max.c === nextPage.length - 1 && nextPage.length > 1) {
             if (nextPage[nextPage.length - 2].split('/')[0] === blockId) {
-              console.log('move to last')
-              max.c = pages[childFound.i + 1][childFound.j].length
+              console.log('move to last');
+              max.c = pages[childFound.i + 1][childFound.j].length;
             }
           } else if (nextPage.length === 1) {
-            console.log('move to last 2')
-            max.c = pages[childFound.i + 1][childFound.j].length
+            console.log('move to last 2');
+            max.c = pages[childFound.i + 1][childFound.j].length;
           }
           console.log('max result:', max);
           pages[childFound.i][childFound.j].splice(childFound.z, 1);
@@ -261,7 +287,7 @@ const blogSlice = createReducer(initialState, (builder) => {
         pages[childFound.i][childFound.j].splice(childFound.z, 1);
         pages[max.a][max.b].splice(max.c, 0, ...store);
       }
-    } else if (type === BlockMoveType.up) {
+    } else if (type === BlockMoveType.UP) {
       let min: PositionB = { a: -1, b: -1, c: -1 };
       for (let a = 0; a < pages.length; a++) {
         for (let b = 0; b < pages[a].length; b++) {
@@ -329,8 +355,6 @@ const blogSlice = createReducer(initialState, (builder) => {
     const blocks: Common[] = convert(blockId, state);
     const foundBlock = blocks.find((block: Common) => block.id === currentBlockContentId);
     const foundIndex = blocks.findIndex((block: Common) => block.id === currentBlockContentId);
-    console.log('blocks:', JSON.parse(JSON.stringify(blocks)));
-    console.log('foundIndex:', foundIndex);
     if (foundBlock) {
       if (foundIndex > 1) {
         blocks.splice(foundIndex - 1, 0, foundBlock);
@@ -349,9 +373,6 @@ const blogSlice = createReducer(initialState, (builder) => {
     const blocks: Common[] = convert(blockId, state);
     const foundBlock = blocks.find((block: Common) => block.id === currentBlockContentId);
     const foundIndex = blocks.findIndex((block: Common) => block.id === currentBlockContentId);
-    console.log('currentBlockContentId:', currentBlockContentId);
-    console.log('blocks:', JSON.parse(JSON.stringify(blocks)));
-    console.log('foundIndex:', foundIndex);
     if (foundBlock) {
       if (foundIndex === 0) {
         blocks.splice(foundIndex + 2, 0, foundBlock);
@@ -390,6 +411,53 @@ const blogSlice = createReducer(initialState, (builder) => {
     blocks.push(newData);
     console.log('blocks created:', JSON.parse(JSON.stringify(blocks)));
   });
+  builder.addCase(controlBlockBullet, (state, action) => {
+    const blockId = action.payload.blockCreateId;
+    const blockBulletUid = action.payload.blockBulletUid;
+    const controlStatus = action.payload.blockBulletStatus;
+    const blocks: Common[] = convert(blockId, state);
+    for (let i = 0; i < blocks.length; i++) {
+      const block = blocks[i];
+      const contentBullet = block.content_bullet.child;
+      const foundIndex = contentBullet.findIndex(
+        (bullet: DetailDetail) => bullet.uid === blockBulletUid
+      );
+      if (foundIndex !== -1) {
+        if (controlStatus === BlockContentControlType.CREATE) {
+          let newBlock = JSON.parse(JSON.stringify(create(blockId)));
+          const bullet = newBlock.content_bullet.child[0];
+          if (newBlock.content_bullet) {
+            bullet.uid = uuidv4();
+            contentBullet.splice(foundIndex + 1, 0, bullet);
+          }
+          state.selectedBulletBlock = { blockId: blockId, blockBulletUid: bullet.uid };
+        } else if (controlStatus === BlockContentControlType.DELETE) {
+          if (contentBullet.length > 1) {
+            let prevBullet = null;
+            //detect which bullet to be next selected
+            if (foundIndex > 0) {
+              if (foundIndex < contentBullet.length - 1) {
+                if (contentBullet.length > 2) {
+                  prevBullet = contentBullet[foundIndex + 1];
+                } else if (contentBullet.length === 2) {
+                  prevBullet = contentBullet[foundIndex];
+                } else {
+                  prevBullet = contentBullet[foundIndex - 1];
+                }
+              } else {
+                prevBullet = contentBullet[foundIndex - 1];
+              }
+            } else {
+              prevBullet = contentBullet[foundIndex + 1];
+            }
+            contentBullet.splice(foundIndex, 1);
+            state.selectedBulletBlock = { blockId: blockId, blockBulletUid: prevBullet.uid };
+          }
+        }
+        break;
+      }
+    }
+  });
   builder.addCase(updateBlock, (state, action) => {
     const payload = action.payload;
     let data = payload.data;
@@ -399,28 +467,25 @@ const blogSlice = createReducer(initialState, (builder) => {
     if (fieldType !== InputType.contentBullet) {
       data = JSON.parse(JSON.stringify(payload.data));
       data[fieldType as keyof GlobalIterator].text = value;
-
+      //
       const blocks: Common[] = convert(blockId, state);
       const dir: number = blocks.findIndex((d: Common) => d.uid === data.uid);
       blocks[dir] = data;
-      console.log('block updated:', JSON.parse(JSON.stringify(blocks[dir])))
-    }
-    else {
+    } else {
       const blocks: Common[] = convert(blockId, state);
       for (let i = 0; i < blocks.length; i++) {
-        const block = blocks[i]
-        const contentBullet = block.content_bullet.child
-        let found = false
+        const block = blocks[i];
+        const contentBullet = block.content_bullet.child;
+        let found = false;
         for (let j = 0; j < contentBullet.length; j++) {
           if (contentBullet[j].uid === data.uid) {
-            contentBullet[j].text = value
+            contentBullet[j].text = value;
             found = true;
             break;
           }
         }
         if (found) break;
       }
-      console.log('block content bullet updated:', JSON.parse(JSON.stringify(blocks)))
     }
   });
 });
