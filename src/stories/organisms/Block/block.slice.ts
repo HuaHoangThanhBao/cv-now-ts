@@ -174,13 +174,7 @@ const blogSlice = createReducer(initialState, (builder) => {
     const _id = action.payload.blockMovingId;
     const blockId = _id.split('/')[0];
     let pages = JSON.parse(JSON.stringify(state.pages));
-
-    pages = pages.map((page: string[][]) =>
-      page.map((column: string[]) => column.filter((block: string) => !block.includes('/')))
-    );
-    /*Move child to parent*/
-    pages = moveChildBlockToParentBlock(pages, state);
-    /**/
+    console.log('pages before move block:', JSON.parse(JSON.stringify(pages)))
 
     const tmp: PositionB[] = [];
     for (let a = 0; a < pages.length; a++) {
@@ -195,6 +189,7 @@ const blogSlice = createReducer(initialState, (builder) => {
     }
     console.log('temp:', tmp);
     let childFound: PositionA = getChildWithId(pages, action.payload.blockMovingId);
+    console.log('blockMovingId:', blockId);
     console.log('childFound:', childFound);
     let store = tmp.map((t: PositionB) => t.block);
     let found = false;
@@ -219,10 +214,45 @@ const blogSlice = createReducer(initialState, (builder) => {
         if (found) break;
       }
       console.log('max:', max);
-      if (max.a === -1 && childFound.z <= pages[childFound.i][childFound.j].length - 1) {
+      if (max.a === -1) {
+        let count = 0;
+        let found = false;
         if (childFound.i + 1 < pages.length) {
+          for (let a = 0; a < pages.length; a++) {
+            for (let b = 0; b < pages[a].length; b++) {
+              for (let c = 0; c < pages[a][b].length; c++) {
+                const _block = pages[a][b][c].split('/')[0];
+                if (_block !== blockId) {
+                  if (a === childFound.i + 1 && b === childFound.j) {
+                    if (c < pages[a][b].length && !pages[a][b][c].includes('/')) {
+                      max = { a, b, c };
+                      count++
+                      if (count > 1) {
+                        found = true
+                        break
+                      }
+                    }
+                  }
+                }
+              }
+              if (found) break;
+            }
+            if (found) break;
+          }
+          console.log('max 1:', max);
+          const nextPage = pages[childFound.i + 1][childFound.j]
+          if (max.c === nextPage.length - 1 && nextPage.length > 1) {
+            if (nextPage[nextPage.length - 2].split('/')[0] === blockId) {
+              console.log('move to last')
+              max.c = pages[childFound.i + 1][childFound.j].length
+            }
+          } else if (nextPage.length === 1) {
+            console.log('move to last 2')
+            max.c = pages[childFound.i + 1][childFound.j].length
+          }
+          console.log('max result:', max);
           pages[childFound.i][childFound.j].splice(childFound.z, 1);
-          pages[childFound.i + 1][childFound.j].splice(1, 0, ...store);
+          nextPage.splice(max.c, 0, ...store);
         }
       } else if (
         max.a > 0 ||
@@ -249,7 +279,7 @@ const blogSlice = createReducer(initialState, (builder) => {
       }
       console.log('min:', min);
       if (min.a === -1) {
-        if (childFound.z === 0 && childFound.i - 1 >= 0) {
+        if (childFound.i - 1 >= 0) {
           for (let a = 0; a < pages.length; a++) {
             for (let b = 0; b < pages[a].length; b++) {
               for (let c = 0; c < pages[a][b].length; c++) {
@@ -264,6 +294,7 @@ const blogSlice = createReducer(initialState, (builder) => {
               }
             }
           }
+          console.log('min 1:', min);
           pages[childFound.i][childFound.j].splice(childFound.z, 1);
           pages[childFound.i - 1][childFound.j].splice(min.c, 0, ...store);
         }
@@ -272,6 +303,15 @@ const blogSlice = createReducer(initialState, (builder) => {
         pages[min.a][min.b].splice(min.c, 0, ...store);
       }
     }
+
+    //after we move block, we do filter and move child blocks to parent again
+    pages = pages.map((page: string[][]) =>
+      page.map((column: string[]) => column.filter((block: string) => !block.includes('/')))
+    );
+    /*Move child to parent*/
+    pages = moveChildBlockToParentBlock(pages, state);
+    /**/
+
     if (state.isOneColumn) {
       state.pagesOneColumn = pages;
     } else {

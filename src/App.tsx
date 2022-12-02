@@ -261,6 +261,7 @@ function App() {
     const filtered = _pages.map((page: string[][]) =>
       page.map((column: string[]) => column.filter((block: string) => !block.includes('/')))
     );
+    console.log('pages result:', _pages);
     dispatch(updatePages({ pages: _pages }));
     dispatch(updateDragPages({ pages: filtered }));
   };
