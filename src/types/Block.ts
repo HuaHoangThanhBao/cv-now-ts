@@ -1,6 +1,6 @@
 export interface Common extends Year, GlobalIterator {
   id: string;
-  uid?: string;
+  uid: string;
   header?: {
     text: string;
     placeHolder: string;
@@ -112,26 +112,26 @@ export interface Contact extends GlobalIterator {
   };
 }
 
-export interface Education extends Common, Detail, DetailDashed, IObjectKeys { }
+export interface Education extends Common, Detail, DetailDashed, IObjectKeys {}
 export interface WorkExperience
   extends Common,
-  Detail,
-  DetailDashed,
-  DetailDashed2,
-  DetailDashed3,
-  IObjectKeys { }
+    Detail,
+    DetailDashed,
+    DetailDashed2,
+    DetailDashed3,
+    IObjectKeys {}
 
 export interface Publication
   extends Common,
-  DetailDashed2,
-  DetailDashed3,
-  DetailDashed4,
-  DetailDashed5,
-  IObjectKeys { }
+    DetailDashed2,
+    DetailDashed3,
+    DetailDashed4,
+    DetailDashed5,
+    IObjectKeys {}
 
 export interface DetailDetail extends Common {
   id: string;
-  uid?: string;
+  uid: string;
   text: string;
   placeHolder: string;
   status: boolean;
@@ -152,4 +152,4 @@ interface IObjectKeys {
   [key: string]: any;
 }
 
-export interface GlobalIterator extends IObjectKeys { }
+export interface GlobalIterator extends IObjectKeys {}

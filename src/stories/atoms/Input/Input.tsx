@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import ContentEditable, { ContentEditableEvent } from 'react-contenteditable';
 import { InputType } from '../../../types/Input';
@@ -18,37 +18,32 @@ export interface InputProps {
   className?: string;
   type: string;
   data: Common | DetailDetail;
+  parentData?: Common;
   title?: JSX.Element;
   blockChildIndex: number;
 }
 
-export const Input = ({ className, type, title, data, blockChildIndex }: InputProps) => {
+export const Input = ({
+  className,
+  type,
+  title,
+  data,
+  parentData,
+  blockChildIndex,
+}: InputProps) => {
   const uid = data.uid;
+  const parentUid = parentData?.uid || '-1'; //use only for content bullet
   const id = data.id.split('/')[0];
-  const textVal = useMemo(() => {
-    if (type !== InputType.contentBullet) return data[type].text;
-    else return data.text;
-  }, [data, type]);
-
-  const placeHolderVal = useMemo(() => {
-    if (type !== InputType.contentBullet) return data[type].placeHolder;
-    else return data.placeHolder;
-  }, [data, type]);
+  const textVal = type !== InputType.CONTENT_BULLET ? data[type].text : data.text;
+  const placeHolderVal =
+    type !== InputType.CONTENT_BULLET ? data[type].placeHolder : data.placeHolder;
 
   const ref = useRef<HTMLDivElement>(null);
-  const html = useRef('');
-  const [placeHolder, setPlaceHolder] = useState('');
+  const html = useRef(textVal);
+  const placeHolder = useRef(placeHolderVal);
   const { handleShowBlockContentBar, handleShowBlockHeaderBar, selectedBlock } = useBlock();
   const block = useSelector((state: RootState) => state.block);
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    setPlaceHolder(placeHolderVal);
-  }, [placeHolderVal]);
-
-  useEffect(() => {
-    html.current = textVal;
-  }, [textVal]);
 
   useEffect(() => {
     if (block.selectedBulletBlock.blockBulletUid === uid) {
@@ -70,14 +65,16 @@ export const Input = ({ className, type, title, data, blockChildIndex }: InputPr
   };
 
   const onFocus = () => {
-    if (type === InputType.header) handleShowBlockHeaderBar(type, id, blockChildIndex);
-    else {
-      handleShowBlockContentBar(type, id, blockChildIndex);
+    if (type === InputType.HEADER) handleShowBlockHeaderBar(type, id, uid, blockChildIndex);
+    else if (type !== InputType.CONTENT_BULLET) {
+      handleShowBlockContentBar(type, id, uid, blockChildIndex);
+    } else {
+      handleShowBlockContentBar(type, id, parentUid, blockChildIndex);
     }
   };
 
   const onKeyDown = (evt: React.KeyboardEvent) => {
-    if (type !== InputType.contentBullet) return;
+    if (type !== InputType.CONTENT_BULLET) return;
     if (evt.key === KeyEvent.ENTER) {
       evt.preventDefault();
       dispatch(
@@ -115,14 +112,14 @@ export const Input = ({ className, type, title, data, blockChildIndex }: InputPr
   return (
     <div className={`field${title ? ' title' : ''}${getFieldStatus()}`} onFocus={onFocus}>
       {title && title}
-      {type === InputType.contentBullet && <span className="field-bullet"></span>}
+      {type === InputType.CONTENT_BULLET && <span className="field-bullet"></span>}
       <ContentEditable
         className={`field-input ${type}${className ? ` ${className}` : ''}${
-          type === InputType.contentBullet ? ` detail` : ''
+          type === InputType.CONTENT_BULLET ? ` detail` : ''
         }`}
         innerRef={ref}
         html={html.current}
-        placeholder={placeHolder}
+        placeholder={placeHolder.current}
         onChange={handleChange}
         onKeyDown={onKeyDown}
       />

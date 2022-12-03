@@ -1,5 +1,6 @@
 import React from 'react';
 import { Common, DetailDetail } from '../../../types/Block';
+import { InputType } from '../../../types/Input';
 import { Icon } from '../../atoms/Icon/Icon';
 import { BlockProvider } from './BlockProvider';
 
@@ -22,7 +23,7 @@ export const Block = React.memo(
     };
     console.log('render block');
     return (
-      <BlockProvider>
+      <BlockProvider blockRootData={data}>
         <div
           className={`block ${className || ''} ${blockChildIndex > 0 ? 'is-child' : ''}`}
           ref={(el: HTMLDivElement) => update(el)}
@@ -30,47 +31,56 @@ export const Block = React.memo(
           <BlockProvider.Header>
             <>{data?.uid}</>
             <BlockProvider.Input
-              type="header"
+              type={InputType.HEADER}
               data={data}
               blockChildIndex={blockChildIndex}
               title={<Icon iconType={blockId} />}
             />
           </BlockProvider.Header>
-          <BlockProvider.Input type="title" data={data} blockChildIndex={blockChildIndex} />
+          <>{data?.uid}</>
+          <BlockProvider.Input
+            type={InputType.TITLE}
+            data={data}
+            blockChildIndex={blockChildIndex}
+          />
           {data.desc && (
-            <BlockProvider.Input type="desc" data={data} blockChildIndex={blockChildIndex} />
+            <BlockProvider.Input
+              type={InputType.DESC}
+              data={data}
+              blockChildIndex={blockChildIndex}
+            />
           )}
           {data.optional_dashed && (
             <BlockProvider.Input
-              type="optional_dashed"
+              type={InputType.OPTIONAL_DASHED}
               data={data}
               blockChildIndex={blockChildIndex}
             />
           )}
           {data.optional_dashed2 && (
             <BlockProvider.Input
-              type="optional_dashed2"
+              type={InputType.OPTIONAL_DASHED2}
               data={data}
               blockChildIndex={blockChildIndex}
             />
           )}
           {data.optional_dashed3 && (
             <BlockProvider.Input
-              type="optional_dashed3"
+              type={InputType.OPTIONAL_DASHED3}
               data={data}
               blockChildIndex={blockChildIndex}
             />
           )}
           {data.optional_dashed4 && (
             <BlockProvider.Input
-              type="optional_dashed4"
+              type={InputType.OPTIONAL_DASHED4}
               data={data}
               blockChildIndex={blockChildIndex}
             />
           )}
           {data.optional_dashed5 && (
             <BlockProvider.Input
-              type="optional_dashed5"
+              type={InputType.OPTIONAL_DASHED5}
               data={data}
               blockChildIndex={blockChildIndex}
             />
@@ -80,8 +90,9 @@ export const Block = React.memo(
               {data.content_bullet.child.map((child: DetailDetail) => (
                 <BlockProvider.Input
                   key={child.uid}
-                  type="content_bullet"
+                  type={InputType.CONTENT_BULLET}
                   data={child}
+                  parentData={data}
                   blockChildIndex={blockChildIndex}
                 />
               ))}
@@ -89,14 +100,18 @@ export const Block = React.memo(
           )}
           {data.contact && (
             <>
-              <BlockProvider.Input type="contact" data={data} blockChildIndex={blockChildIndex} />
               <BlockProvider.Input
-                type="contact_person"
+                type={InputType.CONTACT}
                 data={data}
                 blockChildIndex={blockChildIndex}
               />
               <BlockProvider.Input
-                type="contact_info"
+                type={InputType.CONTACT_PERSON}
+                data={data}
+                blockChildIndex={blockChildIndex}
+              />
+              <BlockProvider.Input
+                type={InputType.CONTACT_INFO}
                 data={data}
                 blockChildIndex={blockChildIndex}
               />

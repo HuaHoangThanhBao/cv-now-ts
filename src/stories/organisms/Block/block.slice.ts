@@ -49,6 +49,7 @@ export interface BlockSelectState {
   selectedBlock: {
     blockType?: string;
     blockId?: string;
+    blockUid?: string;
     blockChildIndex?: number;
     selectedElement: string;
   };
@@ -142,6 +143,7 @@ const initialState: BlockState &
   selectedBlock: {
     blockType: '',
     blockId: '-1',
+    blockUid: '-1',
     blockChildIndex: -1,
     selectedElement: '',
   },
@@ -464,7 +466,7 @@ const blogSlice = createReducer(initialState, (builder) => {
     const blockId = payload.data.id.split('/')[0];
     const fieldType = payload.type;
     const value = payload.value;
-    if (fieldType !== InputType.contentBullet) {
+    if (fieldType !== InputType.CONTENT_BULLET) {
       data = JSON.parse(JSON.stringify(payload.data));
       data[fieldType as keyof GlobalIterator].text = value;
       //
