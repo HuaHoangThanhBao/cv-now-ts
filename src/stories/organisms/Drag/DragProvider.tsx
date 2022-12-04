@@ -74,7 +74,7 @@ const DragProvider = (props: DragComposition) => {
         )[0]
       );
       dragItem.current = targetItem;
-      dispatch(updateDragPages({ pages: [..._pages] }));
+      dispatch(updateDragPages({ pages: _pages }));
     }
   };
 

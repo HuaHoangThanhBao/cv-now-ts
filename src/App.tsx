@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import './App.css';
 import { Block } from './stories/organisms/Block/Block';
@@ -112,7 +112,7 @@ function App() {
     return sum;
   };
 
-  const transformBlocks = () => {
+  const transformBlocks = useCallback(() => {
     console.log(blocksRef.current);
     let _pages = JSON.parse(JSON.stringify(rootBlockState.pages));
     console.log('_pages:', JSON.parse(JSON.stringify(_pages)));
@@ -264,7 +264,7 @@ function App() {
     console.log('pages result:', _pages);
     dispatch(updatePages({ pages: _pages }));
     dispatch(updateDragPages({ pages: filtered }));
-  };
+  }, [dispatch, rootBlockState]);
 
   const onChangeColumnTransform = () => {
     const status = !rootBlockState.isOneColumn;

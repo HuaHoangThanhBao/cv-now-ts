@@ -37,7 +37,7 @@ export const Block = React.memo(
               title={<Icon iconType={blockId} />}
             />
           </BlockProvider.Header>
-          <>{data?.uid}</>
+          {/* <>{data?.uid}</> */}
           <BlockProvider.Input
             type={InputType.TITLE}
             data={data}
