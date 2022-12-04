@@ -115,7 +115,7 @@ export interface BlockBulletCreateState extends BlockCreateState {
   blockBulletStatus: BlockContentControlType;
 }
 
-const initialState: BlockState &
+export type BlockInitialState = BlockState &
   BlockCreateState &
   BlockBulletCreateState &
   BlockMovingState &
@@ -123,7 +123,9 @@ const initialState: BlockState &
   BlockBulletSelectState &
   PageState &
   PageTransformState &
-  PageColumnFormatState = {
+  PageColumnFormatState;
+
+const initialState: BlockInitialState = {
   pages: [
     [
       ['3', '4', '1'],

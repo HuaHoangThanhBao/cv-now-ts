@@ -1,18 +1,26 @@
 import { useDispatch } from 'react-redux';
-import { onMovingBlock, updatePages } from '../stories/organisms/Block/block.slice';
+import {
+  BlockInitialState,
+  onMovingBlock,
+  updatePages,
+} from '../stories/organisms/Block/block.slice';
 import { moveChildBlockToParentBlock } from '../utils';
 import { useTransformPages } from './useTransformPages';
 
 interface MoveChild {
   pages: string[][][];
-  state: any;
+  state: BlockInitialState;
 }
 
 export const useMoveChild = ({
   pages,
   state,
 }: MoveChild): [() => string[][][], () => string[][][]] => {
-  const [callTransformPages] = useTransformPages({ isOneColumn: state.isOneColumn });
+  const [callTransformPages] = useTransformPages({
+    isOneColumn: state.isOneColumn || false,
+    pagesOneColumn: [],
+    pagesTwoColumn: [],
+  });
   const dispatch = useDispatch();
 
   const moveChildBefore = () => {

@@ -3,8 +3,8 @@ import { transformPages } from '../stories/organisms/Block/block.slice';
 
 interface TransformPagesProps {
   isOneColumn: boolean;
-  pagesOneColumn?: any;
-  pagesTwoColumn?: any;
+  pagesOneColumn: string[][][];
+  pagesTwoColumn: string[][][];
 }
 
 export const useTransformPages = ({

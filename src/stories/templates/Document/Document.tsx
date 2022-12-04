@@ -5,15 +5,19 @@ import { Panel } from '../../organisms/Panel';
 import './document.scss';
 import { convert } from '../../../utils';
 import { Block } from '../../organisms/Block';
-import { createBlock, updateSelectedBlock } from '../../organisms/Block/block.slice';
+import {
+  BlockInitialState,
+  createBlock,
+  updateSelectedBlock,
+} from '../../organisms/Block/block.slice';
 import { useTransformBlock } from '../../../hooks';
 
 interface DocumentProps {
-  pages?: any;
-  state?: any;
+  pages: string[][][];
+  state: BlockInitialState;
   isOneColumn: boolean;
-  pagesOneColumn: any;
-  pagesTwoColumn: any;
+  pagesOneColumn: string[][][];
+  pagesTwoColumn: string[][][];
 }
 
 export const Document = ({
@@ -106,7 +110,7 @@ export const Document = ({
   };
 
   useEffect(() => {
-    window.addEventListener('keydown', (e: any) => {
+    window.addEventListener('keydown', (e: KeyboardEvent) => {
       if (e.keyCode === 81) {
         dispatch(createBlock({ blockCreateId: '2' }));
         callMovingBlock(true);
@@ -127,11 +131,12 @@ export const Document = ({
         callMovingBlock(true);
       }
     });
-    window.addEventListener('mousedown', (e: any) => {
+    window.addEventListener('mousedown', (e: MouseEvent) => {
       e.stopPropagation();
-      const element = e.target;
-      const parentElement = e.target.parentElement;
-      const parentParentElement = e.target?.parentElement?.parentElement;
+      const element = e.target as HTMLDivElement;
+      if (!element) return;
+      const parentElement = element?.parentElement;
+      const parentParentElement = element?.parentElement?.parentElement;
       if (element.tagName === 'DIV') {
         dispatch(
           updateSelectedBlock({
@@ -143,7 +148,9 @@ export const Document = ({
       } else if (
         parentElement &&
         parentElement.tagName === 'DIV' &&
-        parentElement.className.includes('block', 'block-bar', 'block-bar-icon')
+        parentElement.className.includes('block') &&
+        parentElement.className.includes('block-bar') &&
+        parentElement.className.includes('block-bar-icon')
       ) {
         dispatch(
           updateSelectedBlock({

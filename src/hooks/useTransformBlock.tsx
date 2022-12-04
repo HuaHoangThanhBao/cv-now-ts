@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../store';
-import { onMovingBlock } from '../stories/organisms/Block/block.slice';
+import { BlockInitialState, onMovingBlock } from '../stories/organisms/Block/block.slice';
 import { updateDragPages } from '../stories/organisms/Drag/drag.slice';
 import { GlobalIterator } from '../types/Block';
 import { useEffectOnce } from './useEffectOnce';
@@ -9,15 +9,17 @@ import { useMoveChild } from './useMoveChild';
 import { useTransformPages } from './useTransformPages';
 
 interface TransformBlockProps {
-  pages: any;
-  state: any;
+  pages: string[][][];
+  state: BlockInitialState;
   isOneColumn: boolean;
-  pagesOneColumn: any;
-  pagesTwoColumn: any;
-  blocksRef: any;
+  pagesOneColumn: string[][][];
+  pagesTwoColumn: string[][][];
+  blocksRef: React.RefObject<HTMLDivElement[]>;
 }
 
-export const useTransformBlock = (props: TransformBlockProps): [any, (status: boolean) => void] => {
+export const useTransformBlock = (
+  props: TransformBlockProps
+): [string[][][], (status: boolean) => void] => {
   const { pages, state, blocksRef, isOneColumn, pagesOneColumn, pagesTwoColumn } = props;
   const isMovingBlock = useSelector((state: RootState) => state.block.isMovingBlock);
   const [pagesD, setPagesD] = useState(pages);
@@ -30,6 +32,9 @@ export const useTransformBlock = (props: TransformBlockProps): [any, (status: bo
     (blockId: string): number => {
       let sum = 0;
       const blockIdFormat = blockId.split('/')[0];
+      if (!blocksRef.current) {
+        return sum;
+      }
       const blocks: GlobalIterator = blocksRef.current[Number(blockIdFormat)];
       // console.log('blocks:', blocks);
       for (let i = 0; i < Object.keys(blocks).length; i++) {

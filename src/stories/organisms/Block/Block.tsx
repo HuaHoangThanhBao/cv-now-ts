@@ -11,13 +11,13 @@ interface BlockProps {
 }
 
 export const Block = React.memo(
-  React.forwardRef((props: BlockProps, blocksRef: any) => {
+  React.forwardRef((props: BlockProps, ref: any) => {
     const { className, data, blockChildIndex } = props;
     const block = data.id;
     const blockId = block.split('/')[0];
     const update = (el: HTMLDivElement) => {
-      blocksRef.current[blockId] = {
-        ...blocksRef.current[blockId],
+      ref.current[blockId] = {
+        ...ref.current[blockId],
         [data.uid as string]: { id: block, el: el },
       };
     };
