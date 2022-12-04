@@ -168,6 +168,7 @@ const BlockProvider = (props: BlockComposition) => {
         console.log('update block because has changed');
         //when block changed, we update new data to old block
         setBlockRoot(props.blockRootData);
+        dispatch(onMovingBlock(true));
 
         //call update api
         //
@@ -183,6 +184,7 @@ const BlockProvider = (props: BlockComposition) => {
     handleDisableBlockContentBar,
     handleDisableBlockHeaderBar,
     compare,
+    dispatch,
   ]);
 
   return (
