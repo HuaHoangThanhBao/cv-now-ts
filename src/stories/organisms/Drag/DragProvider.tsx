@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useMoveChild } from '../../../hooks/useMoveChild';
+import { useMoveChild } from '../../../hooks';
 import { RootState } from '../../../store';
 import { DragColumnPosition, DragPosition } from '../../../types/Drag';
 import { DragItem } from '../../atoms/DragItem';
