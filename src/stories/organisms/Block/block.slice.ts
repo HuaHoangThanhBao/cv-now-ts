@@ -182,6 +182,7 @@ export const movingBlockContentDown = createAction<string>('block/movingBlockCon
 export const movingBlock = createAction<BlockMovingState>('block/movingBlock');
 export const updatePages = createAction<PageState>('block/updatePages');
 export const transformPages = createAction<PageTransformState>('block/transformPages');
+export const updateBlocks = createAction<BlockState>('block/updateBlocks');
 
 const blogSlice = createReducer(initialState, (builder) => {
   builder.addCase(transformPages, (state, action) => {

@@ -5,9 +5,6 @@ import { Document } from './Document';
 export default {
   title: 'Templates/Document',
   component: Document,
-  argTypes: {
-    backgroundColor: { control: 'color' },
-  },
   parameters: {
     layout: 'fullscreen',
   },
@@ -16,6 +13,3 @@ export default {
 const Template: ComponentStory<typeof Document> = (args) => <Document {...args} />;
 
 export const Primary = Template.bind({});
-Primary.args = {
-  backgroundColor: '',
-};
