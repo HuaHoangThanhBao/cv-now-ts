@@ -2,7 +2,6 @@ import { useRef, KeyboardEvent } from 'react';
 import { useDispatch } from 'react-redux';
 import { Common } from '../../../types/Block';
 import { Panel } from '../../organisms/Panel';
-import './document.scss';
 import { convert } from '../../../utils';
 import { Block } from '../../organisms/Block';
 import {
@@ -10,10 +9,10 @@ import {
   createBlock,
   updateSelectedBlock,
 } from '../../organisms/Block/block.slice';
-import { useTransformBlock } from '../../../hooks';
-import { useEventListener } from '../../../hooks/useEventListener';
+import { useTransformBlock, useEventListener, useFetchDocumentFromParam } from '../../../hooks';
+import './resume.scss';
 
-interface DocumentProps {
+interface ResumeProps {
   pages: string[][][];
   state: BlockInitialState;
   isOneColumn: boolean;
@@ -21,13 +20,13 @@ interface DocumentProps {
   pagesTwoColumn: string[][][];
 }
 
-export const Document = ({
+export const Resume = ({
   pages,
   state,
   isOneColumn,
   pagesOneColumn,
   pagesTwoColumn,
-}: DocumentProps) => {
+}: ResumeProps) => {
   const blocksRef = useRef([]);
   const dispatch = useDispatch();
   const [pagesD, callMovingBlock] = useTransformBlock({
@@ -38,6 +37,7 @@ export const Document = ({
     pagesTwoColumn,
     blocksRef,
   });
+  useFetchDocumentFromParam();
 
   const renderDocuments = (_pages: string[][][]) => {
     if (_pages.length > 0) {

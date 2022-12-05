@@ -1,6 +1,6 @@
 import React from 'react';
 import { Transform } from '../../templates/Transform';
-import { Document } from '../../templates/Document';
+import { Resume } from '../../templates/Resume';
 import './myDocument.scss';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../store';
@@ -10,7 +10,7 @@ export const MyDocument: React.FC = () => {
   return (
     <>
       <Transform />
-      <Document
+      <Resume
         pages={rootBlockState.pages}
         state={rootBlockState}
         isOneColumn={rootBlockState.isOneColumn || false}

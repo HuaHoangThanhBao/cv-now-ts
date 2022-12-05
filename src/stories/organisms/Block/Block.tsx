@@ -21,7 +21,6 @@ export const Block = React.memo(
         [data.uid as string]: { id: block, el: el },
       };
     };
-    console.log('render block');
     return (
       <BlockProvider blockRootData={data}>
         <div
