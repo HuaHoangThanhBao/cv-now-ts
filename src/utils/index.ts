@@ -1,2 +1,2 @@
-export * from './block';
-export * from './moving';
+export { convert, create } from './block';
+export { getChildWithId, moveChildBlockToParentBlock } from './moving';

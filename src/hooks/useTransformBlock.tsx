@@ -25,7 +25,7 @@ export const useTransformBlock = (
   const [pagesD, setPagesD] = useState(pages);
   const [isMovingBlockD, setIsMovingBlockD] = useState(isMovingBlock || false);
   const [callTransformPages] = useTransformPages({ isOneColumn, pagesOneColumn, pagesTwoColumn });
-  const [, moveChildAfter] = useMoveChild({ pages, state });
+  const [, moveChildAfter] = useMoveChild({ pages: pagesD, state });
   const dispatch = useDispatch();
 
   const findBlockRef = useCallback(
@@ -220,6 +220,7 @@ export const useTransformBlock = (
 
   useEffect(() => {
     setPagesD([...pages]);
+    callMovingBlock(true);
     const filtered = pages.map((page: string[][]) =>
       page.map((column: string[]) => column.filter((block: string) => !block.includes('/')))
     );

@@ -1,4 +1,4 @@
-import { useRef, useEffect } from 'react';
+import { useRef, KeyboardEvent } from 'react';
 import { useDispatch } from 'react-redux';
 import { Common } from '../../../types/Block';
 import { Panel } from '../../organisms/Panel';
@@ -11,6 +11,7 @@ import {
   updateSelectedBlock,
 } from '../../organisms/Block/block.slice';
 import { useTransformBlock } from '../../../hooks';
+import { useEventListener } from '../../../hooks/useEventListener';
 
 interface DocumentProps {
   pages: string[][][];
@@ -109,67 +110,67 @@ export const Document = ({
     }
   };
 
-  useEffect(() => {
-    window.addEventListener('keydown', (e: KeyboardEvent) => {
-      if (e.keyCode === 81) {
-        dispatch(createBlock({ blockCreateId: '2' }));
-        callMovingBlock(true);
-      }
-      if (e.keyCode === 87) {
-        dispatch(createBlock({ blockCreateId: '3' }));
-        callMovingBlock(true);
-      }
-      if (e.keyCode === 69) {
-        dispatch(createBlock({ blockCreateId: '1' }));
-        callMovingBlock(true);
-      }
-      if (e.keyCode === 82) {
-        dispatch(createBlock({ blockCreateId: '4' }));
-        callMovingBlock(true);
-      }
-      if (e.keyCode === 27) {
-        callMovingBlock(true);
-      }
-    });
-    window.addEventListener('mousedown', (e: MouseEvent) => {
-      e.stopPropagation();
-      const element = e.target as HTMLDivElement;
-      if (!element) return;
-      const parentElement = element?.parentElement;
-      const parentParentElement = element?.parentElement?.parentElement;
-      if (element.tagName === 'DIV') {
-        dispatch(
-          updateSelectedBlock({
-            selectedBlock: {
-              selectedElement: element?.className ? element.className : 'none',
-            },
-          })
-        );
-      } else if (
-        parentElement &&
-        parentElement.tagName === 'DIV' &&
-        parentElement.className.includes('block') &&
-        parentElement.className.includes('block-bar') &&
-        parentElement.className.includes('block-bar-icon')
-      ) {
-        dispatch(
-          updateSelectedBlock({
-            selectedBlock: { selectedElement: parentElement.className },
-          })
-        );
-      } else if (
-        parentParentElement &&
-        parentParentElement.tagName === 'DIV' &&
-        parentParentElement?.className.includes('block-bottom')
-      ) {
-        dispatch(
-          updateSelectedBlock({
-            selectedBlock: { selectedElement: parentParentElement.className },
-          })
-        );
-      } else dispatch(updateSelectedBlock({ selectedBlock: { selectedElement: 'none' } }));
-    });
-  }, [dispatch]);
+  useEventListener('keydown', (e: KeyboardEvent) => {
+    if (e.key === 'q') {
+      console.log('one');
+      dispatch(createBlock({ blockCreateId: '2' }));
+      callMovingBlock(true);
+    }
+    if (e.key === 'w') {
+      dispatch(createBlock({ blockCreateId: '3' }));
+      callMovingBlock(true);
+    }
+    if (e.key === 'e') {
+      dispatch(createBlock({ blockCreateId: '1' }));
+      callMovingBlock(true);
+    }
+    if (e.key === 'r') {
+      dispatch(createBlock({ blockCreateId: '4' }));
+      callMovingBlock(true);
+    }
+    if (e.key === 'Escape') {
+      callMovingBlock(true);
+    }
+  });
+
+  useEventListener('mousedown', (e: MouseEvent) => {
+    e.stopPropagation();
+    const element = e.target as HTMLDivElement;
+    if (!element) return;
+    const parentElement = element?.parentElement;
+    const parentParentElement = element?.parentElement?.parentElement;
+    if (element.tagName === 'DIV') {
+      dispatch(
+        updateSelectedBlock({
+          selectedBlock: {
+            selectedElement: element?.className ? element.className : 'none',
+          },
+        })
+      );
+    } else if (
+      parentElement &&
+      parentElement.tagName === 'DIV' &&
+      parentElement.className.includes('block') &&
+      parentElement.className.includes('block-bar') &&
+      parentElement.className.includes('block-bar-icon')
+    ) {
+      dispatch(
+        updateSelectedBlock({
+          selectedBlock: { selectedElement: parentElement.className },
+        })
+      );
+    } else if (
+      parentParentElement &&
+      parentParentElement.tagName === 'DIV' &&
+      parentParentElement?.className.includes('block-bottom')
+    ) {
+      dispatch(
+        updateSelectedBlock({
+          selectedBlock: { selectedElement: parentParentElement.className },
+        })
+      );
+    } else dispatch(updateSelectedBlock({ selectedBlock: { selectedElement: 'none' } }));
+  });
 
   return <>{renderDocuments(pagesD)}</>;
 };
