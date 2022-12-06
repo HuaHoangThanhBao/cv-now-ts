@@ -18,6 +18,7 @@ interface IDragContext {
   handleDragEnter: (e: React.DragEvent<HTMLDivElement>, targetItem: any) => void;
   handleDragEnd: (e: React.DragEvent<HTMLDivElement>) => void;
   getStyles: (item: DragColumnPosition) => string;
+  getNoNeedStyles: (item: DragColumnPosition) => string;
 }
 
 interface DragComposition {
@@ -35,6 +36,7 @@ const DragContext = createContext<IDragContext>({
   handleDragEnter: () => {},
   handleDragEnd: () => {},
   getStyles: () => '',
+  getNoNeedStyles: () => '',
 });
 
 const DragProvider = (props: DragComposition) => {
@@ -163,6 +165,11 @@ const DragProvider = (props: DragComposition) => {
     return 'drag-item';
   };
 
+  const getNoNeedStyles = (item: DragColumnPosition) => {
+    if (item.block === currentNoNeedItem.current) return 'drag-item current';
+    return '';
+  };
+
   useEffect(() => {
     if (isFinishDrag.current) {
       console.log('finsh drag');
@@ -182,6 +189,7 @@ const DragProvider = (props: DragComposition) => {
     handleDragEnd,
     handleDragEnter,
     getStyles,
+    getNoNeedStyles,
   };
 
   return (

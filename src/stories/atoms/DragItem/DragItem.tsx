@@ -11,7 +11,8 @@ export interface DragItemProps {
 }
 
 export const DragItem = ({ page, pageI, column, columnI, block, blockI }: DragItemProps) => {
-  const { dragging, draggingNoNeed, handleDragStart, handleDragEnter, getStyles } = useDrag();
+  const { dragging, draggingNoNeed, handleDragStart, handleDragEnter, getStyles, getNoNeedStyles } =
+    useDrag();
   return (
     <div
       draggable
@@ -23,7 +24,11 @@ export const DragItem = ({ page, pageI, column, columnI, block, blockI }: DragIt
             }
           : () => {}
       }
-      className={dragging ? getStyles({ pageI, columnI, blockI, block }) : 'drag-item'}
+      className={
+        dragging
+          ? getStyles({ pageI, columnI, blockI, block })
+          : `drag-item ${getNoNeedStyles({ pageI, columnI, blockI, block })}`
+      }
     >
       {block}
     </div>
