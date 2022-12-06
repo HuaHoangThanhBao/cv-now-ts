@@ -11,6 +11,7 @@ import {
 import { useTransformPages } from '../../../hooks';
 import { Resume } from '../../templates/Resume/Resume';
 import './documentList.scss';
+import { updateNoNeeds } from '../../organisms/Drag/drag.slice';
 
 export const DocumentList = () => {
   const documentList = useSelector((state: RootState) => state.document.documentList);
@@ -25,6 +26,7 @@ export const DocumentList = () => {
   const navigateToMyDocument = (document: DocumentRes) => {
     callTransformPages(document.pagesOneColumn, document.pagesTwoColumn, document.isOneColumn);
     dispatch(getSelectedDocument(document._id));
+    dispatch(updateNoNeeds({ noNeeds: document.noNeeds }));
     navigate(`/resume/${document._id}`);
   };
 

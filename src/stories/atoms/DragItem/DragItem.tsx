@@ -11,13 +11,13 @@ export interface DragItemProps {
 }
 
 export const DragItem = ({ page, pageI, column, columnI, block, blockI }: DragItemProps) => {
-  const { dragging, handleDragStart, handleDragEnter, getStyles } = useDrag();
+  const { dragging, draggingNoNeed, handleDragStart, handleDragEnter, getStyles } = useDrag();
   return (
     <div
       draggable
       onDragStart={(e) => handleDragStart(e, { page, pageI, column, columnI, block, blockI })}
       onDragEnter={
-        dragging
+        dragging || draggingNoNeed
           ? (e) => {
               handleDragEnter(e, { page, pageI, column, columnI, block, blockI });
             }

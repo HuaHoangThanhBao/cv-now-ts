@@ -214,6 +214,7 @@ export const useTransformBlock = (
         pagesOneColumn: state.pagesOneColumn,
         pagesTwoColumn: state.pagesTwoColumn,
       };
+      console.log('update document request:', request);
       setIsDoneTransform(false);
       return dispatch(sendUpdatePages({ id: documentId, body: request }));
     }

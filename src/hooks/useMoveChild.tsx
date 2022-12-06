@@ -1,9 +1,12 @@
-import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
+import { RootState, useAppDispatch } from '../store';
 import {
   BlockInitialState,
   onMovingBlock,
   updatePages,
 } from '../stories/organisms/Block/block.slice';
+import { NoNeedRequestState, sendUpdateNoNeeds } from '../stories/organisms/Drag/drag.slice';
 import { moveChildBlockToParentBlock } from '../utils';
 import { useTransformPages } from './useTransformPages';
 
@@ -16,22 +19,44 @@ export const useMoveChild = ({
   pages,
   state,
 }: MoveChild): [() => string[][][], () => string[][][]] => {
+  const noNeeds = useSelector((state: RootState) => state.drag.noNeeds);
+  const params = useParams();
+  const { documentId } = params;
   const [callTransformPages] = useTransformPages({
     isOneColumn: state.isOneColumn || false,
     pagesOneColumn: [],
     pagesTwoColumn: [],
   });
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const moveChildBefore = () => {
     let _pages = JSON.parse(JSON.stringify(pages));
-    callTransformPages(_pages, _pages);
+    noNeeds.forEach((n) => {
+      console.log(n);
+      _pages = _pages.map((page: string[][]) =>
+        page.map((column: string[]) => column.filter((block: string) => block !== n))
+      );
+    });
+
     _pages = _pages.map((page: string[][]) =>
       page.map((column: string[]) => column.filter((block: string) => !block.includes('/')))
     );
     /*Move child to parent*/
     _pages = moveChildBlockToParentBlock(_pages, state);
     /**/
+
+    callTransformPages(_pages, _pages);
+    if (documentId && documentId !== '-1') {
+      const request: NoNeedRequestState = {
+        isOneColumn: state.isOneColumn,
+        noNeeds,
+        pagesOneColumn: state.isOneColumn ? _pages : state.pagesOneColumn,
+        pagesTwoColumn: !state.isOneColumn ? _pages : state.pagesTwoColumn,
+      };
+      // console.log('request:', request);
+      dispatch(sendUpdateNoNeeds({ id: documentId, body: request }));
+    }
+
     dispatch(updatePages({ pages: [..._pages] }));
     dispatch(onMovingBlock(true));
     return _pages;

@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { RootState, useAppDispatch } from '../store';
 import { resetBlockState, updateState } from '../stories/organisms/Block/block.slice';
+import { updateNoNeeds } from '../stories/organisms/Drag/drag.slice';
 import { getResume, resetResume } from '../stories/pages/DocumentList/documentList.slice';
 import { useEffectOnce } from './useEffectOnce';
 
@@ -26,6 +27,7 @@ export const useFetchDocumentFromParam = (): [boolean] => {
     if (resume && resume._id !== '-1') {
       setIsUpdated(false);
       dispatch(updateState(resume));
+      dispatch(updateNoNeeds({ noNeeds: resume.noNeeds }));
       setIsUpdated(true);
     }
   }, [resume, dispatch]);

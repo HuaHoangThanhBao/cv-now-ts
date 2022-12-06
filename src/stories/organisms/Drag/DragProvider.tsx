@@ -6,11 +6,12 @@ import { DragColumnPosition, DragPosition } from '../../../types/Drag';
 import { DragItem } from '../../atoms/DragItem';
 import { DragItemProps } from '../../atoms/DragItem/DragItem';
 import { DragGroup, DragGroupProps } from '../../molecules/DragGroup/DragGroup';
-import { updateDragPages } from './drag.slice';
+import { addNewItem, removeItem, updateDragPages } from './drag.slice';
 import './drag.scss';
 
 interface IDragContext {
   dragging: boolean;
+  draggingNoNeed: boolean;
   dragItem: any;
   dragItemNode: any;
   handleDragStart: (e: React.DragEvent<HTMLDivElement>, item: DragPosition) => void;
@@ -27,6 +28,7 @@ interface DragComposition {
 
 const DragContext = createContext<IDragContext>({
   dragging: false,
+  draggingNoNeed: false,
   dragItem: null,
   dragItemNode: null,
   handleDragStart: () => {},
@@ -37,6 +39,7 @@ const DragContext = createContext<IDragContext>({
 
 const DragProvider = (props: DragComposition) => {
   const blockState = useSelector((state: RootState) => state.block);
+  const noNeeds = useSelector((state: RootState) => state.drag.noNeeds);
   const pages = useSelector((state: RootState) => state.drag.pages);
   const dispatch = useDispatch();
   const [dragging, setDragging] = useState(false);
@@ -44,6 +47,12 @@ const DragProvider = (props: DragComposition) => {
   const dragItem = useRef<any>();
   const dragItemNode = useRef<any>();
   const currentDragItem = useRef<any>();
+  //
+  const [draggingNoNeed, setDraggingNoNeed] = useState(false);
+  const noNeedItem = useRef<any>();
+  const noNeedItemNode = useRef<any>();
+  const currentNoNeedItem = useRef<any>();
+
   const [moveChildBefore] = useMoveChild({ pages, state: blockState });
 
   const handleDragStart = (e: React.DragEvent<HTMLDivElement>, item: DragPosition) => {
@@ -60,22 +69,17 @@ const DragProvider = (props: DragComposition) => {
       setDragging(true);
     }, 0);
   };
-  const handleDragEnter = (e: React.DragEvent<HTMLDivElement>, targetItem: any) => {
-    const _pages = JSON.parse(JSON.stringify(pages));
-    // console.log('Entering a drag target', targetItem);
-    if (dragItemNode.current !== e.target) {
-      // console.log('Target is NOT the same as dragged item');
-      _pages[targetItem.pageI][targetItem.columnI].splice(
-        targetItem.blockI,
-        0,
-        _pages[dragItem.current.pageI][dragItem.current.columnI].splice(
-          dragItem.current.blockI,
-          1
-        )[0]
-      );
-      dragItem.current = targetItem;
-      dispatch(updateDragPages({ pages: [..._pages] }));
-    }
+
+  const dragNoNeedStart = (e: React.DragEvent<HTMLDivElement>, item: string) => {
+    isFinishDrag.current = false;
+    noNeedItemNode.current = e.target;
+    noNeedItemNode.current.addEventListener('dragend', handleDragNoNeedEnd);
+    currentNoNeedItem.current = item;
+    noNeedItem.current = item;
+
+    setTimeout(() => {
+      setDraggingNoNeed(true);
+    }, 0);
   };
 
   const handleDragEnd = (e: React.DragEvent<HTMLDivElement>) => {
@@ -84,6 +88,68 @@ const DragProvider = (props: DragComposition) => {
     dragItemNode.current.removeEventListener('dragend', handleDragEnd);
     dragItem.current = null;
     dragItemNode.current = null;
+  };
+
+  const handleDragNoNeedEnd = () => {
+    setDraggingNoNeed(false);
+    isFinishDrag.current = true;
+    noNeedItemNode.current.removeEventListener('dragend', handleDragNoNeedEnd);
+    noNeedItem.current = null;
+    noNeedItemNode.current = null;
+  };
+
+  const handleDragEnter = (e: React.DragEvent<HTMLDivElement>, targetItem: any) => {
+    if (dragging) {
+      if (currentDragItem.current) {
+        console.log('remove on leave');
+        const { block } = currentDragItem.current;
+        dispatch(removeItem(block));
+      }
+
+      const _pages = JSON.parse(JSON.stringify(pages));
+      // console.log('Entering a drag target', targetItem);
+      if (dragItemNode.current !== e.target) {
+        // console.log('Target is NOT the same as dragged item');
+        _pages[targetItem.pageI][targetItem.columnI].splice(
+          targetItem.blockI,
+          0,
+          _pages[dragItem.current.pageI][dragItem.current.columnI].splice(
+            dragItem.current.blockI,
+            1
+          )[0]
+        );
+        dragItem.current = targetItem;
+        dispatch(updateDragPages({ pages: [..._pages] }));
+      }
+    } else if (draggingNoNeed) {
+      console.log('targetItem:', targetItem);
+      //insert from no need list into pages
+      console.log('currentNoNeedItem:', currentNoNeedItem);
+      let _pages = JSON.parse(JSON.stringify(pages));
+      const block = currentNoNeedItem.current;
+      _pages = _pages.map((page: string[][]) =>
+        page.map((column: string[]) => column.filter((b: string) => b !== block))
+      );
+      _pages[targetItem.pageI][targetItem.columnI].splice(targetItem.blockI, 0, block);
+      dispatch(updateDragPages({ pages: [..._pages] }));
+      dispatch(removeItem(block));
+    }
+  };
+
+  const dragToNoNeed = () => {
+    if (currentDragItem.current) {
+      console.log('drag pages:', pages);
+      console.log('drag into no need:', currentDragItem.current);
+      const { block } = currentDragItem.current;
+      dispatch(addNewItem(block));
+    }
+    if (currentNoNeedItem.current) {
+      console.log('noNeeds:', noNeeds);
+      console.log('drag pages 1:', pages);
+      console.log('drag over no need:', currentNoNeedItem.current);
+      const block = currentNoNeedItem.current;
+      dispatch(addNewItem(block));
+    }
   };
 
   const getStyles = (item: DragColumnPosition) => {
@@ -99,8 +165,11 @@ const DragProvider = (props: DragComposition) => {
 
   useEffect(() => {
     if (isFinishDrag.current) {
+      console.log('finsh drag');
       moveChildBefore();
       isFinishDrag.current = false;
+      currentDragItem.current = null;
+      currentNoNeedItem.current = null;
     }
   }, [isFinishDrag, dispatch, moveChildBefore]);
 
@@ -108,6 +177,7 @@ const DragProvider = (props: DragComposition) => {
     dragItem,
     dragItemNode,
     dragging,
+    draggingNoNeed,
     handleDragStart,
     handleDragEnd,
     handleDragEnter,
@@ -116,8 +186,23 @@ const DragProvider = (props: DragComposition) => {
 
   return (
     <DragContext.Provider value={value} {...props}>
-      <div className={`drag-n-drop ${pages[0].length === 1 ? 'one-column' : ''}`}>
-        {props.children}
+      <div className="drag">
+        <div className={`drag-n-drop ${pages[0].length === 1 ? 'one-column' : ''}`}>
+          {props.children}
+        </div>
+        <div onDragEnter={dragToNoNeed} className="no-need">
+          {noNeeds &&
+            noNeeds.map((noNeed) => (
+              <div
+                draggable
+                onDragStart={(e) => dragNoNeedStart(e, noNeed)}
+                className="drag-item"
+                key={noNeed}
+              >
+                {noNeed}
+              </div>
+            ))}
+        </div>
       </div>
     </DragContext.Provider>
   );
