@@ -1,8 +1,14 @@
 import { useCallback, useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../store';
-import { BlockInitialState, onMovingBlock } from '../stories/organisms/Block/block.slice';
+import { useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
+import { RootState, useAppDispatch } from '../store';
+import {
+  BlockInitialState,
+  onMovingBlock,
+  PageTransformState,
+} from '../stories/organisms/Block/block.slice';
 import { updateDragPages } from '../stories/organisms/Drag/drag.slice';
+import { sendUpdatePages } from '../stories/pages/DocumentList/documentList.slice';
 import { GlobalIterator } from '../types/Block';
 import { useEffectOnce } from './useEffectOnce';
 import { useMoveChild } from './useMoveChild';
@@ -23,10 +29,13 @@ export const useTransformBlock = (
   const { pages, state, blocksRef, isOneColumn, pagesOneColumn, pagesTwoColumn } = props;
   const isMovingBlock = useSelector((state: RootState) => state.block.isMovingBlock);
   const [pagesD, setPagesD] = useState(pages);
+  const [isDoneTransform, setIsDoneTransform] = useState(false);
   const [isMovingBlockD, setIsMovingBlockD] = useState(isMovingBlock || false);
   const [callTransformPages] = useTransformPages({ isOneColumn, pagesOneColumn, pagesTwoColumn });
   const [, moveChildAfter] = useMoveChild({ pages: pagesD, state });
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
+  const params = useParams();
+  const { documentId } = params;
 
   const findBlockRef = useCallback(
     (blockId: string): number => {
@@ -198,16 +207,37 @@ export const useTransformBlock = (
     setIsMovingBlockD(status);
   };
 
+  const sendUpdateDocument = useCallback(() => {
+    if (documentId && documentId !== '-1') {
+      const request: PageTransformState = {
+        isOneColumn: state.isOneColumn,
+        pagesOneColumn: state.pagesOneColumn,
+        pagesTwoColumn: state.pagesTwoColumn,
+      };
+      setIsDoneTransform(false);
+      return dispatch(sendUpdatePages({ id: documentId, body: request }));
+    }
+  }, [dispatch, documentId, state.isOneColumn, state.pagesOneColumn, state.pagesTwoColumn]);
+
   useEffectOnce(() => {
     callMovingBlock(true);
     dispatch(onMovingBlock(true));
     callTransformPages();
   });
 
+  //if we done transform, we call update pages data to api
+  useEffect(() => {
+    let promise = isDoneTransform ? sendUpdateDocument() : null;
+    return () => {
+      promise?.abort();
+    };
+  }, [isDoneTransform, sendUpdateDocument]);
+
   useEffect(() => {
     if (isMovingBlockD) {
       transformBlocks();
       callMovingBlock(false);
+      setIsDoneTransform(true);
       dispatch(onMovingBlock(false));
     }
   }, [dispatch, isMovingBlockD, transformBlocks]);

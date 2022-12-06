@@ -1,6 +1,11 @@
 import { AsyncThunk, createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { http } from '../../../utils';
-import { blockInitialState, BlockInitialState, PageState } from '../../organisms/Block/block.slice';
+import {
+  blockInitialState,
+  BlockInitialState,
+  PageState,
+  PageTransformState,
+} from '../../organisms/Block/block.slice';
 
 export interface DocumentRes extends PageState {
   _id: string;
@@ -55,6 +60,15 @@ export const getResume = createAsyncThunk(
   'document/getResume',
   async ({ documentId }: { documentId: string }, thunkAPI) => {
     const response = await http.get<DocumentRes>(`documents/${documentId}`, {
+      signal: thunkAPI.signal,
+    });
+    return response.data;
+  }
+);
+export const sendUpdatePages = createAsyncThunk(
+  'document/sendUpdatePages',
+  async ({ id, body }: { id: string; body: PageTransformState }, thunkAPI) => {
+    const response = await http.put<PageTransformState>(`documents/${id}`, body, {
       signal: thunkAPI.signal,
     });
     return response.data;

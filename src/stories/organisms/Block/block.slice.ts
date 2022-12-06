@@ -512,6 +512,7 @@ const blockSlice = createSlice({
     updateState(state, action) {
       const { block, pagesOneColumn, pagesTwoColumn, isOneColumn } = action.payload;
       update(block, state);
+      state.pages = isOneColumn ? pagesOneColumn : pagesTwoColumn;
       state.isOneColumn = isOneColumn;
       state.pagesOneColumn = pagesOneColumn;
       state.pagesTwoColumn = pagesTwoColumn;
