@@ -68,7 +68,7 @@ const BlockProvider = (props: BlockComposition) => {
   const [showBlockContentBar, setShowBlockContentBar] = useState(false);
   const [showBlockHeaderBar, setShowBlockHeaderBar] = useState(false);
   const [blockRoot, setBlockRoot] = useState(props.blockRootData);
-  const [set, compare] = useCompareBlock(blockRoot);
+  const [set, compare, send] = useCompareBlock(blockRoot);
 
   const handleShowBlockContentBar = (
     type: string,
@@ -171,7 +171,7 @@ const BlockProvider = (props: BlockComposition) => {
         dispatch(onMovingBlock(true));
 
         //call update api
-        //
+        send();
       }
       handleDisableBlockContentBar();
       handleDisableBlockHeaderBar();
@@ -185,6 +185,7 @@ const BlockProvider = (props: BlockComposition) => {
     handleDisableBlockHeaderBar,
     compare,
     dispatch,
+    send,
   ]);
 
   return (

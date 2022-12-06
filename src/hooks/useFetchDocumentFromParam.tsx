@@ -1,37 +1,34 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { RootState, useAppDispatch } from '../store';
-import { getResume } from '../stories/pages/DocumentList/documentList.slice';
+import { resetBlockState, updateState } from '../stories/organisms/Block/block.slice';
+import { getResume, resetResume } from '../stories/pages/DocumentList/documentList.slice';
 import { useEffectOnce } from './useEffectOnce';
-import { useTransformPages } from './useTransformPages';
 
-export const useFetchDocumentFromParam = () => {
-  const documentSelectId = useSelector((state: RootState) => state.document.documentSelectedId);
-  const resume = useSelector((state: RootState) => state.document.resume);
-  const [callTransformPages] = useTransformPages({
-    isOneColumn: false,
-    pagesOneColumn: [],
-    pagesTwoColumn: [],
-  });
-  const dispatch = useAppDispatch();
+export const useFetchDocumentFromParam = (): [boolean] => {
   const params = useParams();
   const { documentId } = params;
-  const isUpdated = useRef<boolean>(false);
+  const [isUpdated, setIsUpdated] = useState(false);
+  const resume = useSelector((state: RootState) => state.document.resume);
+  const dispatch = useAppDispatch();
 
   useEffectOnce(() => {
-    const conA = !documentSelectId || documentSelectId === '' || documentSelectId === '-1';
-    const conB = documentId && documentId !== '-1';
-    let promise = conA && conB ? dispatch(getResume({ documentId: documentId })) : null;
+    const promise = dispatch(getResume({ documentId: documentId || '-1' }));
     return () => {
-      promise?.abort();
+      dispatch(resetResume());
+      dispatch(resetBlockState());
+      promise.abort();
     };
   });
 
   useEffect(() => {
-    if (resume._id !== '-1' && !isUpdated.current) {
-      callTransformPages(resume.pagesOneColumn, resume.pagesTwoColumn, resume.isOneColumn);
-      isUpdated.current = true;
+    if (resume && resume._id !== '-1') {
+      setIsUpdated(false);
+      dispatch(updateState(resume));
+      setIsUpdated(true);
     }
-  }, [resume, callTransformPages]);
+  }, [resume, dispatch]);
+
+  return [isUpdated];
 };

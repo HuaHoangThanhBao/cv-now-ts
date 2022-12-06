@@ -101,3 +101,23 @@ export const create = (blockType: string): Common => {
       return educationMetaData;
   }
 };
+
+export const update = (block: BlockState, state: BlockState) => {
+  state.education = block.education;
+  state.workExperience = block.workExperience;
+  state.organization = block.organization;
+  state.certificate = block.certificate;
+  state.personalProject = block.personalProject;
+  state.achievement = block.achievement;
+  state.conference = block.conference;
+  state.award = block.award;
+  state.teachingExperience = block.teachingExperience;
+  state.volunteer = block.volunteer;
+  state.support = block.support;
+  state.language = block.language;
+  state.publication = block.publication;
+  state.skill = block.skill;
+  state.interest = block.interest;
+  state.softSkill = block.softSkill;
+  state.reference = block.reference;
+};

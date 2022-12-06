@@ -9,7 +9,7 @@ import {
   createBlock,
   updateSelectedBlock,
 } from '../../organisms/Block/block.slice';
-import { useTransformBlock, useEventListener, useFetchDocumentFromParam } from '../../../hooks';
+import { useTransformBlock, useEventListener } from '../../../hooks';
 import './resume.scss';
 
 interface ResumeProps {
@@ -37,7 +37,6 @@ export const Resume = ({
     pagesTwoColumn,
     blocksRef,
   });
-  useFetchDocumentFromParam();
 
   const renderDocuments = (_pages: string[][][]) => {
     if (_pages.length > 0) {

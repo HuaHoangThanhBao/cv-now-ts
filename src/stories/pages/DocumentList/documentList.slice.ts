@@ -21,16 +21,18 @@ interface DocumentSelect {
   resume: DocumentRes;
 }
 
+const resumeInitialData = {
+  _id: '-1',
+  block: blockInitialState,
+  isOneColumn: false,
+  pagesOneColumn: [],
+  pagesTwoColumn: [],
+  pages: [],
+};
+
 const initialState: DocumentListState & DocumentSelect = {
   documentList: [],
-  resume: {
-    _id: '-1',
-    block: blockInitialState,
-    isOneColumn: false,
-    pagesOneColumn: [],
-    pagesTwoColumn: [],
-    pages: [],
-  },
+  resume: resumeInitialData,
   documentSelectedId: '-1',
   loading: false,
   currentRequestId: undefined,
@@ -66,6 +68,12 @@ const documentSlice = createSlice({
     getSelectedDocument: (state, action: PayloadAction<string>) => {
       state.documentSelectedId = action.payload;
     },
+    resetDocumentList: (state) => {
+      state.documentList = [];
+    },
+    resetResume: (state) => {
+      state.resume = resumeInitialData;
+    },
   },
   extraReducers(builder) {
     builder
@@ -99,7 +107,7 @@ const documentSlice = createSlice({
   },
 });
 
-export const { getSelectedDocument } = documentSlice.actions;
+export const { getSelectedDocument, resetResume, resetDocumentList } = documentSlice.actions;
 const documentReducer = documentSlice.reducer;
 
 export default documentReducer;

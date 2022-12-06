@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { AsyncThunk, createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { v4 as uuidv4 } from 'uuid';
 import { pagesOneColumn, pagesTwoColumn } from '../../../contants/ColumnFormat';
 import {
@@ -30,7 +30,8 @@ import {
 } from '../../../types/Block';
 import { InputType } from '../../../types/Input';
 import { PositionA, PositionB } from '../../../types/Position';
-import { convert, create, getChildWithId, moveChildBlockToParentBlock } from '../../../utils';
+import { convert, create, getChildWithId, http, moveChildBlockToParentBlock } from '../../../utils';
+import { update } from '../../../utils/block';
 
 export interface PageState {
   pages: string[][][];
@@ -80,6 +81,7 @@ export interface BlockMovingState {
 }
 
 export interface BlockState {
+  _id?: string;
   education: Education[];
   workExperience: WorkExperience[];
   organization: Common[];
@@ -97,6 +99,11 @@ export interface BlockState {
   interest: Common[];
   softSkill: Common[];
   reference: Common[];
+}
+
+interface BlockRequestState {
+  loading: boolean;
+  currentRequestId: undefined | string;
 }
 
 export interface BlockUpdateState {
@@ -125,7 +132,9 @@ export type BlockInitialState = BlockState &
   PageTransformState &
   PageColumnFormatState;
 
-export const blockInitialState: BlockInitialState = {
+export const blockInitialState: BlockInitialState & BlockRequestState = {
+  loading: false,
+  currentRequestId: '-1',
   pages: [
     [
       ['3', '4', '1'],
@@ -173,6 +182,22 @@ export const blockInitialState: BlockInitialState = {
   softSkill: [softSkillMetaData],
   reference: [referenceMetaData],
 };
+
+type GenericAsyncThunk = AsyncThunk<unknown, unknown, any>;
+
+type PendingAction = ReturnType<GenericAsyncThunk['pending']>;
+type RejectedAction = ReturnType<GenericAsyncThunk['rejected']>;
+type FulfilledAction = ReturnType<GenericAsyncThunk['fulfilled']>;
+
+export const sendUpdateBlock = createAsyncThunk(
+  'block/sendUpdateBlock',
+  async ({ id, body }: { id: string; body: BlockState }, thunkAPI) => {
+    const response = await http.put<BlockState>(`blocks/${id}`, body, {
+      signal: thunkAPI.signal,
+    });
+    return response.data;
+  }
+);
 
 const blockSlice = createSlice({
   name: 'block',
@@ -484,6 +509,52 @@ const blockSlice = createSlice({
         }
       }
     },
+    updateState(state, action) {
+      const { block, pagesOneColumn, pagesTwoColumn, isOneColumn } = action.payload;
+      update(block, state);
+      state.isOneColumn = isOneColumn;
+      state.pagesOneColumn = pagesOneColumn;
+      state.pagesTwoColumn = pagesTwoColumn;
+    },
+    resetBlockState(state) {
+      state.blockMovingId = '-1';
+      state.isMovingBlock = false;
+      state.blockCreateId = '-1';
+      state.blockBulletUid = '-1';
+      state.selectedBlock = {
+        blockType: '',
+        blockId: '-1',
+        blockUid: '-1',
+        blockChildIndex: -1,
+        selectedElement: '',
+      };
+      state.selectedBulletBlock = {
+        blockBulletUid: '-1',
+        blockId: '-1',
+      };
+    },
+  },
+  extraReducers(builder) {
+    builder
+      .addMatcher<PendingAction>(
+        (action) => action.type.endsWith('/pending'),
+        (state, action) => {
+          state.loading = true;
+          state.currentRequestId = action.meta.requestId;
+        }
+      )
+      .addMatcher<RejectedAction | FulfilledAction>(
+        (action) => action.type.endsWith('/rejected') || action.type.endsWith('/fulfilled'),
+        (state, action) => {
+          if (state.loading && state.currentRequestId === action.meta.requestId) {
+            state.loading = false;
+            state.currentRequestId = undefined;
+          }
+        }
+      )
+      .addDefaultCase((state, action) => {
+        // console.log(`action type: ${action.type}`, current(state))
+      });
   },
 });
 
@@ -498,6 +569,8 @@ export const {
   createBlock,
   controlBlockBullet,
   updateBlock,
+  updateState,
+  resetBlockState,
 } = blockSlice.actions;
 const blockReducer = blockSlice.reducer;
 

@@ -1,18 +1,21 @@
 import { useRef } from 'react';
 import { useSelector } from 'react-redux';
-import { RootState } from '../store';
+import { RootState, useAppDispatch } from '../store';
+import { BlockState, sendUpdateBlock } from '../stories/organisms/Block/block.slice';
 import { Common } from '../types/Block';
 import { InputType } from '../types/Input';
 import { convert } from '../utils';
 
 export const useCompareBlock = (
   blockRoot: Common
-): [(blockId: string, blockUid: string) => void, () => boolean] => {
+): [(blockId: string, blockUid: string) => void, () => boolean, () => void] => {
   const currentBlock = useRef<{ blockId: string; blockUid: string }>({
     blockId: '-1',
     blockUid: '-1',
   });
   const blockState = useSelector((state: RootState) => state.block);
+  const documentState = useSelector((state: RootState) => state.document);
+  const dispatch = useAppDispatch();
 
   const set = (blockId: string, blockUid: string) => {
     currentBlock.current = { blockId, blockUid };
@@ -51,5 +54,28 @@ export const useCompareBlock = (
     return isEqual;
   };
 
-  return [set, compare];
+  const send = () => {
+    const updatedBlock: BlockState = {
+      education: blockState.education,
+      workExperience: blockState.workExperience,
+      organization: blockState.organization,
+      certificate: blockState.certificate,
+      personalProject: blockState.personalProject,
+      achievement: blockState.achievement,
+      conference: blockState.conference,
+      award: blockState.award,
+      teachingExperience: blockState.teachingExperience,
+      volunteer: blockState.volunteer,
+      support: blockState.support,
+      language: blockState.language,
+      publication: blockState.publication,
+      skill: blockState.skill,
+      interest: blockState.interest,
+      softSkill: blockState.softSkill,
+      reference: blockState.reference,
+    };
+    dispatch(sendUpdateBlock({ id: documentState.resume.block._id || '-1', body: updatedBlock }));
+  };
+
+  return [set, compare, send];
 };
