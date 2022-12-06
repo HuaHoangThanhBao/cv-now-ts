@@ -1,11 +1,11 @@
-import { Resume } from '../../templates/Resume';
-import './documentList.scss';
 import { useEffect } from 'react';
 import { RootState, useAppDispatch } from '../../../store';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { getResumeList, DocumentRes, getSelectedDocument } from './documentList.slice';
 import { useTransformPages } from '../../../hooks';
+import { Resume } from '../../templates/Resume/Resume';
+import './documentList.scss';
 
 export const DocumentList = () => {
   const documentList = useSelector((state: RootState) => state.document.documentList);
