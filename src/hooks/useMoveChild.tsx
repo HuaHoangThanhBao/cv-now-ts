@@ -19,7 +19,11 @@ export const useMoveChild = ({
   pages,
   state,
 }: MoveChild): [() => string[][][], () => string[][][]] => {
-  const noNeeds = useSelector((state: RootState) => state.drag.noNeeds);
+  const blockState = useSelector((state: RootState) => state.block);
+  const noNeedsOneColumn = useSelector((state: RootState) => state.drag.noNeedsOneColumn);
+  const noNeedsTwoColumn = useSelector((state: RootState) => state.drag.noNeedsTwoColumn);
+  const noNeeds = !blockState.isOneColumn ? noNeedsTwoColumn : noNeedsOneColumn;
+
   const params = useParams();
   const { documentId } = params;
   const [callTransformPages] = useTransformPages({
@@ -49,7 +53,8 @@ export const useMoveChild = ({
     if (documentId && documentId !== '-1') {
       const request: NoNeedRequestState = {
         isOneColumn: state.isOneColumn,
-        noNeeds,
+        noNeedsOneColumn: state.isOneColumn ? noNeeds : noNeedsOneColumn,
+        noNeedsTwoColumn: !state.isOneColumn ? noNeeds : noNeedsTwoColumn,
         pagesOneColumn: state.isOneColumn ? _pages : state.pagesOneColumn,
         pagesTwoColumn: !state.isOneColumn ? _pages : state.pagesTwoColumn,
       };

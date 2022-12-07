@@ -6,8 +6,15 @@ import { PageTransformState } from '../Block/block.slice';
 export interface DragState {
   pages: string[][][];
 }
+
 export interface NoNeedState {
-  noNeeds: string[];
+  noNeedsOneColumn: string[];
+  noNeedsTwoColumn: string[];
+}
+
+export interface NoNeedUpdateState {
+  isOneColumn: boolean;
+  noNeedItem: string;
 }
 
 export type NoNeedRequestState = NoNeedState & PageTransformState;
@@ -17,11 +24,14 @@ interface DragRequestState {
   currentRequestId: undefined | string;
 }
 
-const initialState: DragState & NoNeedState & DragRequestState = {
+const initialState: DragState & NoNeedState & NoNeedUpdateState & DragRequestState = {
   loading: false,
   currentRequestId: '-1',
+  isOneColumn: false,
+  noNeedItem: '',
   pages: pagesTwoColumn,
-  noNeeds: [],
+  noNeedsOneColumn: [],
+  noNeedsTwoColumn: [],
 };
 
 type GenericAsyncThunk = AsyncThunk<unknown, unknown, any>;
@@ -49,24 +59,30 @@ const dragSlice = createSlice({
       state.pages = pages;
     },
     updateNoNeeds: (state, action: PayloadAction<NoNeedState>) => {
-      const noNeeds = action.payload.noNeeds;
-      state.noNeeds = noNeeds;
+      const noNeedsTwoColumn = action.payload.noNeedsTwoColumn;
+      const noNeedsOneColumn = action.payload.noNeedsOneColumn;
+      state.noNeedsOneColumn = noNeedsOneColumn;
+      state.noNeedsTwoColumn = noNeedsTwoColumn;
     },
-    addNewItem: (state, action: PayloadAction<string>) => {
-      const block = action.payload;
-      const noNeeds = state.noNeeds;
-      const isExisted = noNeeds.find((n) => n === block);
+    addNewItem: (state, action: PayloadAction<NoNeedUpdateState>) => {
+      const { noNeedItem, isOneColumn } = action.payload;
+      const noNeeds = !isOneColumn ? state.noNeedsTwoColumn : state.noNeedsOneColumn;
+      const isExisted = noNeeds.find((n) => n === noNeedItem);
       console.log('isExisted:', isExisted);
       if (!isExisted) {
-        noNeeds.push(block);
+        noNeeds.push(noNeedItem);
         console.log('no needs update:', JSON.parse(JSON.stringify(noNeeds)));
       }
-      state.noNeeds = noNeeds;
+      if (!isOneColumn) {
+        state.noNeedsTwoColumn = noNeeds;
+      } else {
+        state.noNeedsOneColumn = noNeeds;
+      }
     },
-    removeItem: (state, action: PayloadAction<string>) => {
-      const block = action.payload;
-      const noNeeds = state.noNeeds;
-      const foundIndex = noNeeds.findIndex((n) => n === block);
+    removeItem: (state, action: PayloadAction<NoNeedUpdateState>) => {
+      const { noNeedItem, isOneColumn } = action.payload;
+      const noNeeds = !isOneColumn ? state.noNeedsTwoColumn : state.noNeedsOneColumn;
+      const foundIndex = noNeeds.findIndex((n) => n === noNeedItem);
       if (foundIndex !== -1) {
         noNeeds.splice(foundIndex, 1);
       }

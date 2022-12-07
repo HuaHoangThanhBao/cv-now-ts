@@ -11,7 +11,8 @@ export interface DocumentRes extends PageState {
   _id: string;
   block: BlockInitialState;
   isOneColumn: boolean;
-  noNeeds: string[];
+  noNeedsOneColumn: string[];
+  noNeedsTwoColumn: string[];
   pagesOneColumn: string[][][];
   pagesTwoColumn: string[][][];
 }
@@ -34,7 +35,8 @@ const resumeInitialData = {
   pagesOneColumn: [],
   pagesTwoColumn: [],
   pages: [],
-  noNeeds: [],
+  noNeedsOneColumn: [],
+  noNeedsTwoColumn: [],
 };
 
 const initialState: DocumentListState & DocumentSelect = {

@@ -26,7 +26,12 @@ export const DocumentList = () => {
   const navigateToMyDocument = (document: DocumentRes) => {
     callTransformPages(document.pagesOneColumn, document.pagesTwoColumn, document.isOneColumn);
     dispatch(getSelectedDocument(document._id));
-    dispatch(updateNoNeeds({ noNeeds: document.noNeeds }));
+    dispatch(
+      updateNoNeeds({
+        noNeedsOneColumn: document.noNeedsOneColumn,
+        noNeedsTwoColumn: document.noNeedsTwoColumn,
+      })
+    );
     navigate(`/resume/${document._id}`);
   };
 

@@ -27,7 +27,12 @@ export const useFetchDocumentFromParam = (): [boolean] => {
     if (resume && resume._id !== '-1') {
       setIsUpdated(false);
       dispatch(updateState(resume));
-      dispatch(updateNoNeeds({ noNeeds: resume.noNeeds }));
+      dispatch(
+        updateNoNeeds({
+          noNeedsOneColumn: resume.noNeedsOneColumn,
+          noNeedsTwoColumn: resume.noNeedsTwoColumn,
+        })
+      );
       setIsUpdated(true);
     }
   }, [resume, dispatch]);

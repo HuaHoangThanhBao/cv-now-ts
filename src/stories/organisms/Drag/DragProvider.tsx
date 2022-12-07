@@ -41,8 +41,14 @@ const DragContext = createContext<IDragContext>({
 
 const DragProvider = (props: DragComposition) => {
   const blockState = useSelector((state: RootState) => state.block);
-  const noNeeds = useSelector((state: RootState) => state.drag.noNeeds);
   const pages = useSelector((state: RootState) => state.drag.pages);
+  const noNeedsOneColumn = useSelector((state: RootState) => state.drag.noNeedsOneColumn);
+  const noNeedsTwoColumn = useSelector((state: RootState) => state.drag.noNeedsTwoColumn);
+  const noNeeds = !blockState.isOneColumn ? noNeedsTwoColumn : noNeedsOneColumn;
+  console.log('noNeedsTwoColumn:', noNeedsTwoColumn);
+  console.log('noNeedsOneColumn:', noNeedsOneColumn);
+  console.log('noNeeds:', noNeeds);
+
   const dispatch = useDispatch();
   const [dragging, setDragging] = useState(false);
   const isFinishDrag = useRef(false);
@@ -105,7 +111,7 @@ const DragProvider = (props: DragComposition) => {
       if (currentDragItem.current) {
         console.log('remove on leave');
         const { block } = currentDragItem.current;
-        dispatch(removeItem(block));
+        dispatch(removeItem({ noNeedItem: block, isOneColumn: blockState.isOneColumn || false }));
       }
 
       const _pages = JSON.parse(JSON.stringify(pages));
@@ -134,7 +140,7 @@ const DragProvider = (props: DragComposition) => {
       );
       _pages[targetItem.pageI][targetItem.columnI].splice(targetItem.blockI, 0, block);
       dispatch(updateDragPages({ pages: [..._pages] }));
-      dispatch(removeItem(block));
+      dispatch(removeItem({ noNeedItem: block, isOneColumn: blockState.isOneColumn || false }));
     }
   };
 
@@ -143,14 +149,14 @@ const DragProvider = (props: DragComposition) => {
       console.log('drag pages:', pages);
       console.log('drag into no need:', currentDragItem.current);
       const { block } = currentDragItem.current;
-      dispatch(addNewItem(block));
+      dispatch(addNewItem({ noNeedItem: block, isOneColumn: blockState.isOneColumn || false }));
     }
     if (currentNoNeedItem.current) {
       console.log('noNeeds:', noNeeds);
       console.log('drag pages 1:', pages);
       console.log('drag over no need:', currentNoNeedItem.current);
       const block = currentNoNeedItem.current;
-      dispatch(addNewItem(block));
+      dispatch(addNewItem({ noNeedItem: block, isOneColumn: blockState.isOneColumn || false }));
     }
   };
 
@@ -195,7 +201,7 @@ const DragProvider = (props: DragComposition) => {
   return (
     <DragContext.Provider value={value} {...props}>
       <div className="drag">
-        <div className={`drag-n-drop ${pages[0].length === 1 ? 'one-column' : ''}`}>
+        <div className={`drag-n-drop ${blockState.isOneColumn ? 'one-column' : ''}`}>
           {props.children}
         </div>
         <div onDragEnter={dragToNoNeed} className="no-need">
