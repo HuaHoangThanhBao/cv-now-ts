@@ -1,11 +1,11 @@
 export interface Common extends Year, GlobalIterator {
   id: string;
-  uid?: string;
-  header: {
+  uid: string;
+  header?: {
     text: string;
     placeHolder: string;
   };
-  title: {
+  title?: {
     text: string;
     placeHolder: string;
     status: boolean;
@@ -129,7 +129,9 @@ export interface Publication
     DetailDashed5,
     IObjectKeys {}
 
-export interface DetailDetail {
+export interface DetailDetail extends Common {
+  id: string;
+  uid: string;
   text: string;
   placeHolder: string;
   status: boolean;

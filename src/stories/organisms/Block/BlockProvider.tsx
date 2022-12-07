@@ -1,6 +1,8 @@
 import { createContext, useCallback, useContext, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useCompareBlock } from '../../../hooks';
 import { RootState } from '../../../store';
+import { Common } from '../../../types/Block';
 import { Input, InputProps } from '../../atoms/Input/Input';
 import { BlockBar } from '../../molecules/BlockBar';
 import { BlockBarProps } from '../../molecules/BlockBar/BlockBar';
@@ -15,9 +17,19 @@ interface IBlockContext {
   showBlockContentBar: boolean;
   showBlockHeaderBar: boolean;
   selectedBlock: BlockSelectState;
-  handleShowBlockContentBar: (type: string, blockId: string, childIndex: number) => void;
+  handleShowBlockContentBar: (
+    type: string,
+    blockId: string,
+    blockUid: string,
+    childIndex: number
+  ) => void;
   handleDisableBlockContentBar: () => void;
-  handleShowBlockHeaderBar: (type: string, blockId: string, childIndex: number) => void;
+  handleShowBlockHeaderBar: (
+    type: string,
+    blockId: string,
+    blockUid: string,
+    childIndex: number
+  ) => void;
   handleDisableBlockHeaderBar: () => void;
   handleCreateBlock: (blockId: string) => void;
 }
@@ -29,6 +41,7 @@ interface BlockComposition {
   Bar?: React.FC<BlockBarProps>;
   Input?: React.FC<InputProps>;
   children?: JSX.Element | JSX.Element[];
+  blockRootData: Common;
 }
 
 const BlockContext = createContext<IBlockContext>({
@@ -54,10 +67,25 @@ const BlockProvider = (props: BlockComposition) => {
   const selectedBlock = useSelector((state: RootState) => state.block.selectedBlock);
   const [showBlockContentBar, setShowBlockContentBar] = useState(false);
   const [showBlockHeaderBar, setShowBlockHeaderBar] = useState(false);
-  const handleShowBlockContentBar = (type: string, blockId: string, childIndex: number) => {
+  const [blockRoot, setBlockRoot] = useState(props.blockRootData);
+  const [set, compare, send] = useCompareBlock(blockRoot);
+
+  const handleShowBlockContentBar = (
+    type: string,
+    blockId: string,
+    blockUid: string,
+    childIndex: number
+  ) => {
+    set(blockId, blockUid);
     dispatch(
       updateSelectedBlock({
-        selectedBlock: { ...selectedBlock, blockId, blockChildIndex: childIndex, blockType: type },
+        selectedBlock: {
+          ...selectedBlock,
+          blockId,
+          blockUid,
+          blockChildIndex: childIndex,
+          blockType: type,
+        },
       })
     );
     setShowBlockHeaderBar(false);
@@ -67,16 +95,34 @@ const BlockProvider = (props: BlockComposition) => {
   const handleDisableBlockContentBar = useCallback(() => {
     dispatch(
       updateSelectedBlock({
-        selectedBlock: { blockId: '-1', blockType: '', blockChildIndex: -1, selectedElement: '' },
+        selectedBlock: {
+          blockId: '-1',
+          blockType: '',
+          blockUid: '-1',
+          blockChildIndex: -1,
+          selectedElement: '',
+        },
       })
     );
     setShowBlockContentBar(false);
   }, [dispatch]);
 
-  const handleShowBlockHeaderBar = (type: string, blockId: string, childIndex: number) => {
+  const handleShowBlockHeaderBar = (
+    type: string,
+    blockId: string,
+    blockUid: string,
+    childIndex: number
+  ) => {
+    set(blockId, blockUid);
     dispatch(
       updateSelectedBlock({
-        selectedBlock: { ...selectedBlock, blockId, blockType: type, blockChildIndex: childIndex },
+        selectedBlock: {
+          ...selectedBlock,
+          blockId,
+          blockUid,
+          blockType: type,
+          blockChildIndex: childIndex,
+        },
       })
     );
     setShowBlockHeaderBar(true);
@@ -106,18 +152,41 @@ const BlockProvider = (props: BlockComposition) => {
     handleCreateBlock,
   };
 
+  //when we click outside the block
   useEffect(() => {
     const selectElement = selectedBlock.selectedElement;
     if (
+      selectElement &&
       !selectElement.includes('field-input') &&
       !selectElement.includes('block-bar') &&
       !selectElement.includes('block-bar-icon') &&
-      !selectElement.includes('block-bottom')
+      !selectElement.includes('block-bottom') &&
+      selectedBlock.blockUid === props.blockRootData.uid
     ) {
+      const isEqual = compare();
+      if (!isEqual) {
+        console.log('update block because has changed');
+        //when block changed, we update new data to old block
+        setBlockRoot(props.blockRootData);
+        dispatch(onMovingBlock(true));
+
+        //call update api
+        send();
+      }
       handleDisableBlockContentBar();
       handleDisableBlockHeaderBar();
     }
-  }, [selectedBlock.selectedElement, handleDisableBlockContentBar, handleDisableBlockHeaderBar]);
+  }, [
+    selectedBlock.selectedElement,
+    props.blockRootData,
+    props.blockRootData.uid,
+    selectedBlock.blockUid,
+    handleDisableBlockContentBar,
+    handleDisableBlockHeaderBar,
+    compare,
+    dispatch,
+    send,
+  ]);
 
   return (
     <BlockContext.Provider value={value} {...props}>

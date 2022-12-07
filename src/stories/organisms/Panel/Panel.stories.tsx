@@ -1,19 +1,18 @@
-import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import { Document } from './Document';
+import { Panel } from './Panel';
 
 export default {
-  title: 'Templates/Document',
-  component: Document,
+  title: 'Templates/Panel',
+  component: Panel,
   argTypes: {
     backgroundColor: { control: 'color' },
   },
   parameters: {
     layout: 'fullscreen',
   },
-} as ComponentMeta<typeof Document>;
+} as ComponentMeta<typeof Panel>;
 
-const Template: ComponentStory<typeof Document> = (args) => <Document {...args} />;
+const Template: ComponentStory<typeof Panel> = (args) => <Panel {...args} />;
 
 export const Primary = Template.bind({});
 Primary.args = {

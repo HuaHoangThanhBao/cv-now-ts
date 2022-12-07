@@ -1,64 +1,99 @@
-import { createRef, useState, useMemo, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import ContentEditable from 'react-contenteditable';
+import React, { useEffect, useRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import ContentEditable, { ContentEditableEvent } from 'react-contenteditable';
 import { InputType } from '../../../types/Input';
 import { useBlock } from '../../organisms/Block/BlockProvider';
 import './input.scss';
-import { BlockUpdateState, updateBlock } from '../../organisms/Block/block.slice';
+import {
+  BlockContentControlType,
+  BlockUpdateState,
+  controlBlockBullet,
+  updateBlock,
+} from '../../organisms/Block/block.slice';
+import { Common, DetailDetail } from '../../../types/Block';
+import { KeyEvent } from '../../../types/KeyEvent';
+import { RootState } from '../../../store';
 
 export interface InputProps {
   className?: string;
-  detailChild?: any;
   type: string;
-  data?: any;
-  title?: any;
+  data: Common | DetailDetail;
+  parentData?: Common;
+  title?: JSX.Element;
   blockChildIndex: number;
 }
 
 export const Input = ({
   className,
-  detailChild,
   type,
   title,
   data,
+  parentData,
   blockChildIndex,
 }: InputProps) => {
+  const uid = data.uid;
+  const parentUid = parentData?.uid || '-1'; //use only for content bullet
   const id = data.id.split('/')[0];
-  const textVal = useMemo(() => {
-    if (type !== InputType.contentBullet) return data[type].text;
-    else return detailChild.text;
-  }, [data, detailChild, type]);
-  const placeHolderVal = useMemo(() => {
-    if (type !== InputType.contentBullet) return data[type].placeHolder;
-    else return detailChild.placeHolder;
-  }, [data, detailChild, type]);
+  const textVal = type !== InputType.CONTENT_BULLET ? data[type].text : data.text;
+  const placeHolderVal =
+    type !== InputType.CONTENT_BULLET ? data[type].placeHolder : data.placeHolder;
 
-  // const contentEditable = createRef<any>();
-  const [html, setHTML] = useState(textVal);
-  const [placeHolder, setPlaceHolder] = useState('');
+  const ref = useRef<HTMLDivElement>(null);
+  const html = useRef(textVal);
+  const placeHolder = useRef(placeHolderVal);
   const { handleShowBlockContentBar, handleShowBlockHeaderBar, selectedBlock } = useBlock();
+  const block = useSelector((state: RootState) => state.block);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    setPlaceHolder(placeHolderVal);
-  }, [placeHolderVal]);
+    if (block.selectedBulletBlock.blockBulletUid === uid) {
+      if (ref.current) {
+        ref.current.focus();
+      }
+    }
+  }, [ref, block.selectedBulletBlock.blockBulletUid, uid]);
 
-  const handleChange = (evt: any) => {
+  const handleChange = (evt: ContentEditableEvent) => {
     const value = evt.target.value;
     const clone: BlockUpdateState = {
       data,
       type,
       value,
-      child: detailChild,
     };
     dispatch(updateBlock(clone));
-    setHTML(value);
+    html.current = value;
   };
 
   const onFocus = () => {
-    if (type === InputType.header) handleShowBlockHeaderBar(type, id, blockChildIndex);
-    else {
-      handleShowBlockContentBar(type, id, blockChildIndex);
+    if (type === InputType.HEADER) handleShowBlockHeaderBar(type, id, uid, blockChildIndex);
+    else if (type !== InputType.CONTENT_BULLET) {
+      handleShowBlockContentBar(type, id, uid, blockChildIndex);
+    } else {
+      handleShowBlockContentBar(type, id, parentUid, blockChildIndex);
+    }
+  };
+
+  const onKeyDown = (evt: React.KeyboardEvent) => {
+    if (type !== InputType.CONTENT_BULLET) return;
+    if (evt.key === KeyEvent.ENTER) {
+      evt.preventDefault();
+      dispatch(
+        controlBlockBullet({
+          blockCreateId: id,
+          blockBulletUid: uid || '',
+          blockBulletStatus: BlockContentControlType.CREATE,
+        })
+      );
+    } else if (evt.key === KeyEvent.DELETE) {
+      if (html.current.length === 0) {
+        dispatch(
+          controlBlockBullet({
+            blockCreateId: id,
+            blockBulletUid: uid || '',
+            blockBulletStatus: BlockContentControlType.DELETE,
+          })
+        );
+      }
     }
   };
 
@@ -77,15 +112,16 @@ export const Input = ({
   return (
     <div className={`field${title ? ' title' : ''}${getFieldStatus()}`} onFocus={onFocus}>
       {title && title}
-      {detailChild && <span className="field-bullet"></span>}
+      {type === InputType.CONTENT_BULLET && <span className="field-bullet"></span>}
       <ContentEditable
         className={`field-input ${type}${className ? ` ${className}` : ''}${
-          detailChild ? ` detail` : ''
+          type === InputType.CONTENT_BULLET ? ` detail` : ''
         }`}
-        // innerRef={contentEditable}
-        html={html}
-        placeholder={placeHolder}
+        innerRef={ref}
+        html={html.current}
+        placeholder={placeHolder.current}
         onChange={handleChange}
+        onKeyDown={onKeyDown}
       />
     </div>
   );

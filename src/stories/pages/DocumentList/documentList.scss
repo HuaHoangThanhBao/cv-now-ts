@@ -1,0 +1,24 @@
+.preview {
+  height: 20rem;
+  width: 20rem;
+  padding: 0;
+  border: none;
+  float: left;
+  margin-left: 2rem;
+  &-box {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    border-radius: 0.25rem;
+    &-inner {
+      transform: scale(0.27);
+      left: -7.5rem;
+      top: -7.5rem;
+      position: absolute;
+      right: 0;
+      height: 100%;
+      width: 100%;
+    }
+  }
+}

@@ -77,6 +77,8 @@ export const educationMetaData: Education = {
   content_bullet: {
     child: [
       {
+        id: '1',
+        uid: uuidv4(),
         text: '',
         placeHolder: 'Course/Thesis/Project',
         status: false,
@@ -124,6 +126,8 @@ export const workExperienceMetaData: WorkExperience = {
   content_bullet: {
     child: [
       {
+        id: '2',
+        uid: uuidv4(),
         text: '',
         placeHolder: 'Accomplishment/Responsibility/Task',
         status: false,
@@ -198,6 +202,8 @@ export const personalProjectMetaData: Common = {
   content_bullet: {
     child: [
       {
+        id: '5',
+        uid: uuidv4(),
         text: '',
         placeHolder: 'Description of Achievements',
         status: false,
@@ -255,6 +261,8 @@ export const conferenceMetaData: Education = {
   content_bullet: {
     child: [
       {
+        id: '7',
+        uid: uuidv4(),
         text: '',
         placeHolder: 'Description (optional)',
         status: false,
@@ -290,6 +298,8 @@ export const awardMetaData: Education = {
   content_bullet: {
     child: [
       {
+        id: '8',
+        uid: uuidv4(),
         text: '',
         placeHolder: 'Description (optional)',
         status: false,
@@ -331,6 +341,8 @@ export const teachingExperienceMetaData: Education = {
   content_bullet: {
     child: [
       {
+        id: '9',
+        uid: uuidv4(),
         text: '',
         placeHolder: 'Task/Responsibility/Accomplishment',
         status: false,
@@ -384,6 +396,8 @@ export const volunteerMetaData: WorkExperience = {
   content_bullet: {
     child: [
       {
+        id: '10',
+        uid: uuidv4(),
         text: '',
         placeHolder: 'Tasks/Achievements',
         status: false,

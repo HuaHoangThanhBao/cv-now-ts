@@ -35,13 +35,13 @@ export const BlockBar = ({ block, blockId, blockChildIndex }: BlockBarProps) => 
     handleDisableBlockHeaderBar();
     handleDisableBlockContentBar();
     dispatch(onMovingBlock(true));
-    dispatch(movingBlock({ blockMovingId: blockId, blockMoveType: BlockMoveType.up }));
+    dispatch(movingBlock({ blockMovingId: blockId, blockMoveType: BlockMoveType.UP }));
   };
   const moveBlockDown = () => {
     handleDisableBlockHeaderBar();
     handleDisableBlockContentBar();
     dispatch(onMovingBlock(true));
-    dispatch(movingBlock({ blockMovingId: blockId, blockMoveType: BlockMoveType.down }));
+    dispatch(movingBlock({ blockMovingId: blockId, blockMoveType: BlockMoveType.DOWN }));
   };
   const moveContentUp = () => {
     console.log('block content to move up:', block);

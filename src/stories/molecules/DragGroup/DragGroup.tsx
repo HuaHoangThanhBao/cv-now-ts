@@ -1,10 +1,11 @@
+import { DragColumnPosition } from '../../../types/Drag';
 import { useDrag } from '../../organisms/Drag/DragProvider';
 import './dragGroup.scss';
 
-export interface DragGroupProps {
+export interface DragGroupProps extends DragColumnPosition {
   className?: string;
-  page: any;
-  pageI: any;
+  page: string[][];
+  pageI: number;
   children?: JSX.Element | JSX.Element[];
 }
 
