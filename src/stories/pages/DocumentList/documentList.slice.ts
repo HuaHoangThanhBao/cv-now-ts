@@ -3,6 +3,7 @@ import { http } from '../../../utils';
 import {
   blockInitialState,
   BlockInitialState,
+  BlockState,
   PageState,
   PageTransformState,
 } from '../../organisms/Block/block.slice';
@@ -15,6 +16,15 @@ export interface DocumentRes extends PageState {
   noNeedsTwoColumn: string[];
   pagesOneColumn: string[][][];
   pagesTwoColumn: string[][][];
+}
+
+export interface DocumentCreateReq {
+  blocks: BlockState;
+  pagesOneColumn: string[][][];
+  pagesTwoColumn: string[][][];
+  isOneColumn: boolean;
+  noNeedsOneColumn: [];
+  noNeedsTwoColumn: [];
 }
 
 interface DocumentListState {
@@ -78,6 +88,29 @@ export const sendUpdatePages = createAsyncThunk(
     return response.data;
   }
 );
+export const createNewResume = createAsyncThunk(
+  'document/createNewResume',
+  async (
+    { body, callback }: { body: PageTransformState; callback: (documentId: string) => void },
+    thunkAPI
+  ) => {
+    const response = await http.post<DocumentRes>(`documents`, body, {
+      signal: thunkAPI.signal,
+    });
+    console.log('callback');
+    callback(response.data._id);
+    return response.data;
+  }
+);
+export const deleteResume = createAsyncThunk(
+  'document/deleteResume',
+  async ({ id }: { id: string }, thunkAPI) => {
+    const response = await http.delete<DocumentRes>(`documents/${id}`, {
+      signal: thunkAPI.signal,
+    });
+    return response.data;
+  }
+);
 
 const documentSlice = createSlice({
   name: 'document',
@@ -87,6 +120,7 @@ const documentSlice = createSlice({
       state.documentSelectedId = action.payload;
     },
     resetDocumentList: (state) => {
+      state.documentSelectedId = '-1';
       state.documentList = [];
     },
     resetResume: (state) => {
@@ -102,6 +136,17 @@ const documentSlice = createSlice({
       .addCase(getResume.fulfilled, (state, action) => {
         console.log('document by id:', action.payload);
         state.resume = action.payload;
+      })
+      .addCase(createNewResume.fulfilled, (state, action) => {
+        state.documentList.push(action.payload);
+      })
+      .addCase(deleteResume.fulfilled, (state, action) => {
+        const documentId = action.payload._id;
+        const deleteDocumentIndex = state.documentList.findIndex((doc) => doc._id === documentId);
+        if (deleteDocumentIndex !== -1) {
+          state.documentList.splice(deleteDocumentIndex, 1);
+        }
+        state.documentSelectedId = '-1';
       })
       .addMatcher<PendingAction>(
         (action) => action.type.endsWith('/pending'),

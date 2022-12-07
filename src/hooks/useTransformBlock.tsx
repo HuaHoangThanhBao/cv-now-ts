@@ -198,8 +198,8 @@ export const useTransformBlock = (
       }
     } else {
       for (let i = _pages.length - 1; i >= 0; i--) {
-        if (_pages[i][0].length === 0) {
-          _pages.pop();
+        if (_pages[i].length === 0 || (_pages[i][0] && _pages[i][0].length === 0)) {
+          _pages.splice(i, 1);
         }
       }
     }

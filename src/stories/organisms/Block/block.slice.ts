@@ -132,7 +132,7 @@ export type BlockInitialState = BlockState &
   PageTransformState &
   PageColumnFormatState;
 
-export const blockRootData = {
+export const blockRootData: BlockState = {
   education: [educationMetaData],
   workExperience: [workExperienceMetaData],
   organization: [organizationMetaData],

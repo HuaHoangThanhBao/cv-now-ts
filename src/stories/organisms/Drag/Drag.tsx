@@ -1,12 +1,22 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../store';
 import { DragPosition } from '../../../types/Drag';
 import { DragProvider } from './DragProvider';
 import { v4 as uuidv4 } from 'uuid';
+import { useOnClickOutside } from '../../../hooks';
 
-export const Drag = () => {
+interface DragProps {
+  option: string;
+  setOption: (option: string) => void;
+}
+
+export const Drag = ({ option, setOption }: DragProps) => {
   const pages = useSelector((state: RootState) => state.drag.pages);
+  const ref = useRef(null);
+  useOnClickOutside(ref, () => {
+    setOption('');
+  });
 
   const getFirstColumn = () => {
     const res: DragPosition[] = [];
@@ -118,6 +128,10 @@ export const Drag = () => {
   };
 
   if (pages) {
-    return <DragProvider>{renderDragGroup()}</DragProvider>;
+    return (
+      <div className={`${option === 'layout' ? 'active' : 'unactive'}`} ref={ref}>
+        <DragProvider>{renderDragGroup()}</DragProvider>
+      </div>
+    );
   } else return null;
 };
