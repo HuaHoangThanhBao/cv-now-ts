@@ -4,12 +4,15 @@ import { useParams } from 'react-router-dom';
 import { RootState, useAppDispatch } from '../store';
 import {
   BlockInitialState,
+  blockRootData,
+  doneCreateBlock,
   onMovingBlock,
   PageTransformState,
 } from '../stories/organisms/Block/block.slice';
 import { updateDragPages } from '../stories/organisms/Drag/drag.slice';
 import { sendUpdatePages } from '../stories/pages/DocumentList/documentList.slice';
 import { GlobalIterator } from '../types/Block';
+import { useCompareBlock } from './useCompareBlock';
 import { useEffectOnce } from './useEffectOnce';
 import { useMoveChild } from './useMoveChild';
 import { useTransformPages } from './useTransformPages';
@@ -28,11 +31,13 @@ export const useTransformBlock = (
 ): [string[][][], (status: boolean) => void] => {
   const { pages, state, blocksRef, isOneColumn, pagesOneColumn, pagesTwoColumn } = props;
   const isMovingBlock = useSelector((state: RootState) => state.block.isMovingBlock);
+  const blockCreateId = useSelector((state: RootState) => state.block.blockCreateId);
   const [pagesD, setPagesD] = useState(pages);
   const [isDoneTransform, setIsDoneTransform] = useState(false);
   const [isMovingBlockD, setIsMovingBlockD] = useState(isMovingBlock || false);
   const [callTransformPages] = useTransformPages({ isOneColumn, pagesOneColumn, pagesTwoColumn });
   const [, moveChildAfter] = useMoveChild({ pages: pagesD, state });
+  const [, , send] = useCompareBlock(blockRootData.education[0]);
   const dispatch = useAppDispatch();
   const params = useParams();
   const { documentId } = params;
@@ -226,12 +231,23 @@ export const useTransformBlock = (
     callTransformPages();
   });
 
+  //if new block content is created, call update to api
+  useEffect(() => {
+    if (blockCreateId !== '-1') {
+      send();
+      // callMovingBlock(true);
+      dispatch(doneCreateBlock());
+    }
+  }, [blockCreateId, send, dispatch]);
+
   //if we done transform, we call update pages data to api
   useEffect(() => {
     let promise = isDoneTransform ? sendUpdateDocument() : null;
+    transformBlocks();
     return () => {
       promise?.abort();
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isDoneTransform, sendUpdateDocument]);
 
   useEffect(() => {

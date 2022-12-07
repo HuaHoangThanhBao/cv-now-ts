@@ -132,6 +132,26 @@ export type BlockInitialState = BlockState &
   PageTransformState &
   PageColumnFormatState;
 
+export const blockRootData = {
+  education: [educationMetaData],
+  workExperience: [workExperienceMetaData],
+  organization: [organizationMetaData],
+  certificate: [certificateMetaData],
+  personalProject: [personalProjectMetaData],
+  achievement: [achievementMetaData],
+  conference: [conferenceMetaData],
+  award: [awardMetaData],
+  teachingExperience: [teachingExperienceMetaData],
+  volunteer: [volunteerMetaData],
+  support: [supportMetaData],
+  language: [languageMetaData],
+  publication: [publicationMetaData],
+  skill: [skillMetaData],
+  interest: [interestMetaData],
+  softSkill: [softSkillMetaData],
+  reference: [referenceMetaData],
+};
+
 export const blockInitialState: BlockInitialState & BlockRequestState = {
   loading: false,
   currentRequestId: '-1',
@@ -164,23 +184,7 @@ export const blockInitialState: BlockInitialState & BlockRequestState = {
   },
   blockMoveType: BlockMoveType.DOWN,
   blockBulletStatus: BlockContentControlType.DEFAULT,
-  education: [educationMetaData],
-  workExperience: [workExperienceMetaData],
-  organization: [organizationMetaData],
-  certificate: [certificateMetaData],
-  personalProject: [personalProjectMetaData],
-  achievement: [achievementMetaData],
-  conference: [conferenceMetaData],
-  award: [awardMetaData],
-  teachingExperience: [teachingExperienceMetaData],
-  volunteer: [volunteerMetaData],
-  support: [supportMetaData],
-  language: [languageMetaData],
-  publication: [publicationMetaData],
-  skill: [skillMetaData],
-  interest: [interestMetaData],
-  softSkill: [softSkillMetaData],
-  reference: [referenceMetaData],
+  ...blockRootData,
 };
 
 type GenericAsyncThunk = AsyncThunk<unknown, unknown, any>;
@@ -416,6 +420,7 @@ const blockSlice = createSlice({
     },
     createBlock(state, action: PayloadAction<BlockCreateState>) {
       const blockCreateId = action.payload.blockCreateId;
+      state.blockCreateId = blockCreateId;
       let newData = JSON.parse(JSON.stringify(create(blockCreateId)));
       //create new uid for block
       newData.uid = uuidv4();
@@ -431,6 +436,9 @@ const blockSlice = createSlice({
       }
       blocks.push(newData);
       console.log('blocks created:', JSON.parse(JSON.stringify(blocks)));
+    },
+    doneCreateBlock(state) {
+      state.blockCreateId = '-1';
     },
     controlBlockBullet(state, action: PayloadAction<BlockBulletCreateState>) {
       const blockId = action.payload.blockCreateId;
@@ -572,6 +580,7 @@ export const {
   updateBlock,
   updateState,
   resetBlockState,
+  doneCreateBlock,
 } = blockSlice.actions;
 const blockReducer = blockSlice.reducer;
 

@@ -40,6 +40,10 @@ export const useCompareBlock = (
           for (let j = 0; j < rootItem.child.length; j++) {
             const rootChild = rootItem.child[j];
             const child = item.child[j];
+            if (!child) {
+              isEqual = false;
+              break;
+            }
             if (rootChild.text !== child.text) {
               isEqual = false;
               break;
