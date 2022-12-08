@@ -31,6 +31,20 @@
       fill: currentColor;
     }
   }
+  &.primary {
+    background-color: #00c8aa;
+    color: white;
+    border-radius: 1.5rem;
+    padding-right: 1rem;
+    padding-left: 1rem;
+  }
+  &.remove {
+    background-color: #ee4539;
+    color: white;
+    padding-right: 1rem;
+    padding-left: 1rem;
+    border-radius: 0;
+  }
   path {
     fill: currentColor;
   }

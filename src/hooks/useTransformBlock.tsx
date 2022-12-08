@@ -8,6 +8,7 @@ import {
   doneCreateBlock,
   onMovingBlock,
   PageTransformState,
+  resetBlockState,
 } from '../stories/organisms/Block/block.slice';
 import { updateDragPages } from '../stories/organisms/Drag/drag.slice';
 import { sendUpdatePages } from '../stories/pages/DocumentList/documentList.slice';
@@ -198,8 +199,8 @@ export const useTransformBlock = (
       }
     } else {
       for (let i = _pages.length - 1; i >= 0; i--) {
-        if (_pages[i][0].length === 0) {
-          _pages.pop();
+        if (_pages[i].length === 0 || (_pages[i][0] && _pages[i][0].length === 0)) {
+          _pages.splice(i, 1);
         }
       }
     }
@@ -229,6 +230,9 @@ export const useTransformBlock = (
     callMovingBlock(true);
     dispatch(onMovingBlock(true));
     callTransformPages();
+    return () => {
+      dispatch(resetBlockState());
+    };
   });
 
   //if new block content is created, call update to api

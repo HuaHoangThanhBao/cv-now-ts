@@ -1,0 +1,15 @@
+.menu {
+  height: 10rem;
+  position: relative;
+  z-index: 999;
+  &-panel {
+    top: 5rem;
+    position: fixed;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #425061;
+  }
+  .unactive {
+    display: none;
+  }
+}

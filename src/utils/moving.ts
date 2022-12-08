@@ -18,6 +18,17 @@ export const getChildWithId = (pages: string[][][], blockChildId: string): Posit
   return result;
 };
 
+export const countTotalChildOfColumn = (pages: string[][][], columnI: number) => {
+  let count = 0;
+  for (let i = 0; i < pages.length; i++) {
+    const column = pages[i][columnI];
+    for (let z = 0; z < column.length; z++) {
+      count++;
+    }
+  }
+  return count;
+};
+
 //This function is to move all child blocks of each block from blocks state to right after their parents
 export const moveChildBlockToParentBlock = (
   pages: string[][][],

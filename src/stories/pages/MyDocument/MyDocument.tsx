@@ -1,10 +1,10 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../store';
-import { Transform } from '../../templates/Transform';
 import { Resume } from '../../templates/Resume/Resume';
-import './myDocument.scss';
 import { useFetchDocumentFromParam } from '../../../hooks';
+import { Menu } from '../../templates/Menu';
+import './myDocument.scss';
 
 export const MyDocument: React.FC = () => {
   const rootBlockState = useSelector((state: RootState) => state.block);
@@ -12,7 +12,7 @@ export const MyDocument: React.FC = () => {
 
   return (
     <>
-      <Transform />
+      <Menu />
       {isUpdated && (
         <Resume
           pages={rootBlockState.pages}

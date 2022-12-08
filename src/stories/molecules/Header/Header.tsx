@@ -8,13 +8,17 @@ import { ReactComponent as LayoutIcon } from '../../assets/layout.svg';
 import { ReactComponent as SettingIcon } from '../../assets/settings.svg';
 import { ReactComponent as DownloadIcon } from '../../assets/download.svg';
 
-export const Header = () => {
+interface HeaderProps {
+  setOption: (option: string) => void;
+}
+
+export const Header = ({ setOption }: HeaderProps) => {
   return (
     <header>
       <Button text="Font" icon={<FontIcon />} />
       <Button text="Theme" icon={<ThemeIcon />} />
       <Button text="Template" icon={<TemplateIcon />} />
-      <Button text="Layout" icon={<LayoutIcon />} />
+      <Button text="Layout" icon={<LayoutIcon />} onClick={() => setOption('layout')} />
       <Button text="Setting" icon={<SettingIcon />} />
       <Button text="Download" className={'download'} icon={<DownloadIcon />} />
     </header>

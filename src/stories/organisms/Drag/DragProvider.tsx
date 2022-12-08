@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useMoveChild } from '../../../hooks';
+import { useColumnTransform, useMoveChild } from '../../../hooks';
 import { RootState } from '../../../store';
 import { DragColumnPosition, DragPosition } from '../../../types/Drag';
 import { DragItem } from '../../atoms/DragItem';
@@ -8,6 +8,7 @@ import { DragItemProps } from '../../atoms/DragItem/DragItem';
 import { DragGroup, DragGroupProps } from '../../molecules/DragGroup/DragGroup';
 import { addNewItem, removeItem, updateDragPages } from './drag.slice';
 import './drag.scss';
+import { countTotalChildOfColumn } from '../../../utils/moving';
 
 interface IDragContext {
   dragging: boolean;
@@ -62,10 +63,16 @@ const DragProvider = (props: DragComposition) => {
   const currentNoNeedItem = useRef<any>();
 
   const [moveChildBefore] = useMoveChild({ pages, state: blockState });
+  const [onChangeColumnTransform] = useColumnTransform();
 
   const handleDragStart = (e: React.DragEvent<HTMLDivElement>, item: DragPosition) => {
     // console.log('item', item);
     // console.log('Starting to drag', item);
+
+    const { columnI } = item;
+    const count = countTotalChildOfColumn(pages, columnI);
+    //if there is only one block left of column we do drag, we prevent it from dragging
+    if (count <= 1) return;
 
     isFinishDrag.current = false;
     dragItemNode.current = e.target;
@@ -204,18 +211,25 @@ const DragProvider = (props: DragComposition) => {
         <div className={`drag-n-drop ${blockState.isOneColumn ? 'one-column' : ''}`}>
           {props.children}
         </div>
-        <div onDragEnter={dragToNoNeed} className="no-need">
-          {noNeeds &&
-            noNeeds.map((noNeed) => (
-              <div
-                draggable
-                onDragStart={(e) => dragNoNeedStart(e, noNeed)}
-                className="drag-item"
-                key={noNeed}
-              >
-                {noNeed}
-              </div>
-            ))}
+        <div className="option">
+          <input
+            type="checkbox"
+            onChange={onChangeColumnTransform}
+            checked={blockState.isOneColumn}
+          />
+          <div onDragEnter={dragToNoNeed} className="no-need">
+            {noNeeds &&
+              noNeeds.map((noNeed) => (
+                <div
+                  draggable
+                  onDragStart={(e) => dragNoNeedStart(e, noNeed)}
+                  className="drag-item no-need-item"
+                  key={noNeed}
+                >
+                  {noNeed}
+                </div>
+              ))}
+          </div>
         </div>
       </div>
     </DragContext.Provider>
