@@ -541,6 +541,10 @@ const blockSlice = createSlice({
         blockBulletUid: '-1',
         blockId: '-1',
       };
+      state.isOneColumn = false;
+      state.pagesOneColumn = pagesOneColumn;
+      state.pagesTwoColumn = pagesTwoColumn;
+      update(blockRootData, state);
     },
   },
   extraReducers(builder) {
