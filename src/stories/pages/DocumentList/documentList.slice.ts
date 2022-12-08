@@ -120,10 +120,10 @@ const documentSlice = createSlice({
       state.documentSelectedId = action.payload;
     },
     resetDocumentList: (state) => {
-      state.documentSelectedId = '-1';
       state.documentList = [];
     },
     resetResume: (state) => {
+      state.documentSelectedId = '-1';
       state.resume = resumeInitialData;
     },
   },

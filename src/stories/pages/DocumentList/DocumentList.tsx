@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { RootState, useAppDispatch } from '../../../store';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -11,7 +11,7 @@ import {
   DocumentCreateReq,
   deleteResume,
 } from './documentList.slice';
-import { useTransformPages } from '../../../hooks';
+import { useEffectOnce, useTransformPages } from '../../../hooks';
 import { Resume } from '../../templates/Resume/Resume';
 import './documentList.scss';
 import { updateNoNeeds } from '../../organisms/Drag/drag.slice';
@@ -30,6 +30,10 @@ export const DocumentList = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
+  const doNavigate = (documentId: string) => {
+    navigate(`/resume/${documentId}`);
+  };
+
   const navigateToMyDocument = (document: DocumentRes) => {
     callTransformPages(document.pagesOneColumn, document.pagesTwoColumn, document.isOneColumn);
     dispatch(getSelectedDocument(document._id));
@@ -40,10 +44,6 @@ export const DocumentList = () => {
       })
     );
     doNavigate(document._id);
-  };
-
-  const doNavigate = (documentId: string) => {
-    navigate(`/resume/${documentId}`);
   };
 
   const createNewDocument = () => {
@@ -60,17 +60,16 @@ export const DocumentList = () => {
   };
 
   const deleteDocument = (document: DocumentRes) => {
-    console.log('delete');
     dispatch(deleteResume({ id: document._id }));
   };
 
-  useEffect(() => {
+  useEffectOnce(() => {
     const promise = dispatch(getResumeList());
     return () => {
       dispatch(resetDocumentList());
       promise.abort();
     };
-  }, [dispatch]);
+  });
 
   return (
     <div className="document-list">
