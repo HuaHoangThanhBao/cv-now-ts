@@ -10,6 +10,7 @@ import {
   createNewResume,
   DocumentCreateReq,
   deleteResume,
+  resetResume,
 } from './documentList.slice';
 import { useEffectOnce, useTransformPages } from '../../../hooks';
 import { Resume } from '../../templates/Resume/Resume';
@@ -31,6 +32,7 @@ export const DocumentList = () => {
   const navigate = useNavigate();
 
   const doNavigate = (documentId: string) => {
+    dispatch(resetResume());
     navigate(`/resume/${documentId}`);
   };
 

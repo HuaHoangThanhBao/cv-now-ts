@@ -46,9 +46,6 @@ const DragProvider = (props: DragComposition) => {
   const noNeedsOneColumn = useSelector((state: RootState) => state.drag.noNeedsOneColumn);
   const noNeedsTwoColumn = useSelector((state: RootState) => state.drag.noNeedsTwoColumn);
   const noNeeds = !blockState.isOneColumn ? noNeedsTwoColumn : noNeedsOneColumn;
-  console.log('noNeedsTwoColumn:', noNeedsTwoColumn);
-  console.log('noNeedsOneColumn:', noNeedsOneColumn);
-  console.log('noNeeds:', noNeeds);
 
   const dispatch = useDispatch();
   const [dragging, setDragging] = useState(false);
@@ -185,7 +182,6 @@ const DragProvider = (props: DragComposition) => {
 
   useEffect(() => {
     if (isFinishDrag.current) {
-      console.log('finsh drag');
       moveChildBefore();
       isFinishDrag.current = false;
       currentDragItem.current = null;

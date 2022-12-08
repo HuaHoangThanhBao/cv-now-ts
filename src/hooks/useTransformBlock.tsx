@@ -8,7 +8,6 @@ import {
   doneCreateBlock,
   onMovingBlock,
   PageTransformState,
-  resetBlockState,
 } from '../stories/organisms/Block/block.slice';
 import { updateDragPages } from '../stories/organisms/Drag/drag.slice';
 import { sendUpdatePages } from '../stories/pages/DocumentList/documentList.slice';
@@ -56,7 +55,7 @@ export const useTransformBlock = (
         const block = blocks[Object.keys(blocks)[i]];
         // console.log('block:', block);
         if (block.id === blockId) {
-          sum += block.el.offsetHeight;
+          sum += block.el ? block.el.offsetHeight : 0;
         }
       }
       return sum;
@@ -230,9 +229,6 @@ export const useTransformBlock = (
     callMovingBlock(true);
     dispatch(onMovingBlock(true));
     callTransformPages();
-    return () => {
-      dispatch(resetBlockState());
-    };
   });
 
   //if new block content is created, call update to api
