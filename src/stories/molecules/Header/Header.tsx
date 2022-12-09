@@ -17,7 +17,7 @@ export const Header = ({ setOption }: HeaderProps) => {
     <header>
       <Button text="Font" icon={<FontIcon />} />
       <Button text="Theme" icon={<ThemeIcon />} />
-      <Button text="Template" icon={<TemplateIcon />} />
+      <Button text="Template" icon={<TemplateIcon />} onClick={() => setOption('template')} />
       <Button text="Layout" icon={<LayoutIcon />} onClick={() => setOption('layout')} />
       <Button text="Setting" icon={<SettingIcon />} />
       <Button text="Download" className={'download'} icon={<DownloadIcon />} />

@@ -88,6 +88,7 @@ export const DocumentList = () => {
                   isOneColumn={document.isOneColumn}
                   pagesOneColumn={document.pagesOneColumn}
                   pagesTwoColumn={document.pagesTwoColumn}
+                  template=""
                 />
               )}
             </div>

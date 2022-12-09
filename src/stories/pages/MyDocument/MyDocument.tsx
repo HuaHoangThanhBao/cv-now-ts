@@ -8,6 +8,7 @@ import './myDocument.scss';
 
 export const MyDocument: React.FC = () => {
   const rootBlockState = useSelector((state: RootState) => state.block);
+  const template = useSelector((state: RootState) => state.template.currentTemplate);
   const [isUpdated] = useFetchDocumentFromParam();
 
   return (
@@ -20,6 +21,7 @@ export const MyDocument: React.FC = () => {
           isOneColumn={rootBlockState.isOneColumn || false}
           pagesOneColumn={rootBlockState.pagesOneColumn}
           pagesTwoColumn={rootBlockState.pagesTwoColumn}
+          template={template}
         />
       )}
     </>

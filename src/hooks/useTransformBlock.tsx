@@ -24,12 +24,14 @@ interface TransformBlockProps {
   pagesOneColumn: string[][][];
   pagesTwoColumn: string[][][];
   blocksRef: React.RefObject<HTMLDivElement[]>;
+  isOnPreview?: boolean;
 }
 
 export const useTransformBlock = (
   props: TransformBlockProps
 ): [string[][][], (status: boolean) => void] => {
-  const { pages, state, blocksRef, isOneColumn, pagesOneColumn, pagesTwoColumn } = props;
+  const { pages, state, blocksRef, isOneColumn, pagesOneColumn, pagesTwoColumn, isOnPreview } =
+    props;
   const isMovingBlock = useSelector((state: RootState) => state.block.isMovingBlock);
   const blockCreateId = useSelector((state: RootState) => state.block.blockCreateId);
   const [pagesD, setPagesD] = useState(pages);
@@ -226,9 +228,11 @@ export const useTransformBlock = (
   }, [dispatch, documentId, state.isOneColumn, state.pagesOneColumn, state.pagesTwoColumn]);
 
   useEffectOnce(() => {
-    callMovingBlock(true);
-    dispatch(onMovingBlock(true));
-    callTransformPages();
+    if (!isOnPreview) {
+      callMovingBlock(true);
+      dispatch(onMovingBlock(true));
+      callTransformPages();
+    }
   });
 
   //if new block content is created, call update to api
@@ -242,8 +246,8 @@ export const useTransformBlock = (
 
   //if we done transform, we call update pages data to api
   useEffect(() => {
-    let promise = isDoneTransform ? sendUpdateDocument() : null;
-    transformBlocks();
+    let promise = isDoneTransform && !isOnPreview ? sendUpdateDocument() : null;
+    if (!isOnPreview) transformBlocks();
     return () => {
       promise?.abort();
     };
@@ -251,13 +255,13 @@ export const useTransformBlock = (
   }, [isDoneTransform, sendUpdateDocument]);
 
   useEffect(() => {
-    if (isMovingBlockD) {
+    if (isMovingBlockD && !isOnPreview) {
       transformBlocks();
       callMovingBlock(false);
       setIsDoneTransform(true);
       dispatch(onMovingBlock(false));
     }
-  }, [dispatch, isMovingBlockD, transformBlocks]);
+  }, [dispatch, isMovingBlockD, isOnPreview, transformBlocks]);
 
   useEffect(() => {
     if (isMovingBlock) {
@@ -266,13 +270,15 @@ export const useTransformBlock = (
   }, [isMovingBlock]);
 
   useEffect(() => {
-    setPagesD([...pages]);
-    callMovingBlock(true);
-    const filtered = pages.map((page: string[][]) =>
-      page.map((column: string[]) => column.filter((block: string) => !block.includes('/')))
-    );
-    dispatch(updateDragPages({ pages: filtered }));
-  }, [dispatch, pages]);
+    if (!isOnPreview) {
+      setPagesD([...pages]);
+      callMovingBlock(true);
+      const filtered = pages.map((page: string[][]) =>
+        page.map((column: string[]) => column.filter((block: string) => !block.includes('/')))
+      );
+      dispatch(updateDragPages({ pages: filtered }));
+    }
+  }, [dispatch, isOnPreview, pages]);
 
   return [pagesD, callMovingBlock];
 };

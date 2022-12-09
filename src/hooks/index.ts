@@ -7,3 +7,4 @@ export { useMoveChild } from './useMoveChild';
 export { useEffectOnce } from './useEffectOnce';
 export { useEventListener } from './useEventListener';
 export { useFetchDocumentFromParam } from './useFetchDocumentFromParam';
+export { useTransformProfile } from './useTransformProfile';

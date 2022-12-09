@@ -9,7 +9,7 @@ import {
   createBlock,
   updateSelectedBlock,
 } from '../../organisms/Block/block.slice';
-import { useTransformBlock, useEventListener } from '../../../hooks';
+import { useTransformBlock, useEventListener, useTransformProfile } from '../../../hooks';
 import './resume.scss';
 
 interface ResumeProps {
@@ -18,6 +18,8 @@ interface ResumeProps {
   isOneColumn: boolean;
   pagesOneColumn: string[][][];
   pagesTwoColumn: string[][][];
+  isOnPreview?: boolean;
+  template: string;
 }
 
 export const Resume = ({
@@ -26,6 +28,8 @@ export const Resume = ({
   isOneColumn,
   pagesOneColumn,
   pagesTwoColumn,
+  isOnPreview,
+  template,
 }: ResumeProps) => {
   const blocksRef = useRef([]);
   const dispatch = useDispatch();
@@ -36,24 +40,30 @@ export const Resume = ({
     pagesOneColumn,
     pagesTwoColumn,
     blocksRef,
+    isOnPreview,
   });
+  const [renderProfileAvatar, renderProfileInfo, renderProfileSocial, renderProfile] =
+    useTransformProfile({ template });
 
   const renderDocuments = (_pages: string[][][]) => {
     if (_pages.length > 0) {
       return _pages.map((page: string[][], pageI: number) => (
         <Panel key={page.length + pageI} className={_pages.length > 1 ? 'two-column' : ''}>
-          {renderBlocks(page)}
+          {renderProfile(pageI)}
+          {renderBlocks(page, pageI)}
         </Panel>
       ));
     } else return <></>;
   };
-  const renderBlocks = (_pages: string[][]) => {
+  const renderBlocks = (_pages: string[][], pageI: number) => {
     if (pagesD.length > 1) {
       const evenColumn = _pages[0];
       const oddColumn = _pages[1];
       return (
         <>
           <div className="even">
+            {renderProfileAvatar(pageI, 0)}
+            {renderProfileSocial(pageI, 0)}
             {evenColumn.map((block: string, blockIndex: number) => {
               const blocks: Common[] = convert(evenColumn[blockIndex].split('/')[0], state);
               return blocks.map((blockChild, blockChildIndex) => {
@@ -71,6 +81,8 @@ export const Resume = ({
             })}
           </div>
           <div className="odd">
+            {renderProfileInfo(pageI, 1)}
+            {renderProfileSocial(pageI, 1)}
             {oddColumn &&
               oddColumn.map((block: string, blockIndex: number) => {
                 if (oddColumn[blockIndex]) {
@@ -110,6 +122,7 @@ export const Resume = ({
   };
 
   useEventListener('keydown', (e: KeyboardEvent) => {
+    if (isOnPreview) return;
     if (e.key === 'q') {
       console.log('one');
       dispatch(createBlock({ blockCreateId: '2' }));
@@ -133,6 +146,7 @@ export const Resume = ({
   });
 
   useEventListener('mousedown', (e: MouseEvent) => {
+    if (isOnPreview) return;
     e.stopPropagation();
     const element = e.target as HTMLDivElement;
     if (!element) return;

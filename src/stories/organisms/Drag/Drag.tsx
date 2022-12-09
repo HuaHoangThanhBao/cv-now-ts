@@ -7,11 +7,10 @@ import { v4 as uuidv4 } from 'uuid';
 import { useOnClickOutside } from '../../../hooks';
 
 interface DragProps {
-  option: string;
   setOption: (option: string) => void;
 }
 
-export const Drag = ({ option, setOption }: DragProps) => {
+export const Drag = ({ setOption }: DragProps) => {
   const pages = useSelector((state: RootState) => state.drag.pages);
   const ref = useRef(null);
   useOnClickOutside(ref, () => {
@@ -129,7 +128,7 @@ export const Drag = ({ option, setOption }: DragProps) => {
 
   if (pages) {
     return (
-      <div className={`${option === 'layout' ? 'active' : 'unactive'}`} ref={ref}>
+      <div ref={ref}>
         <DragProvider>{renderDragGroup()}</DragProvider>
       </div>
     );
