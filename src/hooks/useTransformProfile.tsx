@@ -36,18 +36,11 @@ export const useTransformProfile = ({
     if (pageI > 0) return null;
     if (isOneColumn) return null;
     else if (
-      template === TemplateType.combined ||
-      template === TemplateType.tech ||
-      template === TemplateType.basic ||
-      template === TemplateType.executive ||
-      template === TemplateType.simple ||
-      template === TemplateType.professional ||
-      template === TemplateType.colleage ||
-      template === TemplateType.modern ||
-      template === TemplateType.it
+      template === TemplateType.minimalist ||
+      template === TemplateType.skilled_based ||
+      template === TemplateType.functional
     )
-      return null;
-    return <ProfileInfo />;
+      return <ProfileInfo />;
   };
 
   const renderProfileSocial = (pageI: number, columnI: number) => {
@@ -55,7 +48,8 @@ export const useTransformProfile = ({
     if (isOneColumn) return null;
     if (
       (template === TemplateType.functional && columnI === 0) ||
-      (template !== TemplateType.functional && columnI === 1)
+      ((template === TemplateType.minimalist || template === TemplateType.skilled_based) &&
+        columnI === 1)
     )
       return <ProfileSocial />;
     return null;
