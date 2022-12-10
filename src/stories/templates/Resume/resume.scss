@@ -1,24 +1,104 @@
-.document {
-  width: 1200px;
-  min-height: 1180px;
-  // padding: 2rem;
-  background-color: white;
-  margin: 0 auto;
-  &:not(:first-of-type) {
-    margin-top: 3rem;
-    margin-bottom: 3rem;
-  }
+.profile {
+  position: relative;
+  @extend %clearFloat;
+}
+
+%floatLeft {
+  float: left;
+}
+
+%clearFloat {
   &::after {
     content: '';
     display: block;
     clear: both;
   }
-  .even {
-    width: 50%;
+}
+
+%profileInfo {
+  .profile-info {
     float: left;
+    width: calc(100% - 15rem);
   }
-  .odd {
-    width: 50%;
-    float: right;
+}
+
+%profileSocial {
+  .profile-social {
+    clear: left;
+    .btn {
+      @extend %floatLeft;
+      width: 50%;
+    }
+    @extend %clearFloat;
   }
+}
+
+%twoEqualColumn {
+  .profile-info {
+    @extend %floatLeft;
+    width: calc(50% - 10rem);
+    padding-right: 10rem;
+  }
+  .profile-social {
+    @extend %floatLeft;
+    width: calc(50% - 10rem);
+    padding-left: 10rem;
+  }
+}
+
+%twoLeftThanRight {
+  @extend %profileInfo;
+  .profile-social {
+    @extend %floatLeft;
+    width: 30%;
+  }
+  .profile-content {
+    @extend %floatLeft;
+    width: 70%;
+  }
+}
+
+%btnRightAlign {
+  .btn {
+    justify-content: flex-end;
+  }
+}
+
+%avatarLeft {
+  .avatar {
+    @extend %floatLeft;
+  }
+}
+
+.combined,
+.professional,
+.college {
+  @extend .profile;
+  @extend %twoEqualColumn;
+  @extend %btnRightAlign;
+  .avatar {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
+
+.executive,
+.basic,
+.simple {
+  @extend %avatarLeft;
+  @extend %profileInfo;
+  @extend %profileSocial;
+}
+
+.tech,
+.it,
+.modern {
+  @extend %twoLeftThanRight;
+  @extend %btnRightAlign;
+  @extend %avatarLeft;
+}
+
+.skilled_based {
+  @extend %profileSocial;
 }

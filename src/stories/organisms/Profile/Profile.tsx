@@ -5,8 +5,10 @@ import { ProfileSocial } from '../../molecules/ProfileSocial';
 export const Profile = () => {
   return (
     <div className="profile">
-      <Avatar />
-      <ProfileInfo />
+      <div className="profile-content">
+        <Avatar />
+        <ProfileInfo />
+      </div>
       <ProfileSocial />
     </div>
   );

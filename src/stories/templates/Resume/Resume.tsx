@@ -48,7 +48,10 @@ export const Resume = ({
   const renderDocuments = (_pages: string[][][]) => {
     if (_pages.length > 0) {
       return _pages.map((page: string[][], pageI: number) => (
-        <Panel key={page.length + pageI} className={_pages.length > 1 ? 'two-column' : ''}>
+        <Panel
+          key={page.length + pageI}
+          className={`${template}` + (_pages.length > 1 ? ' two-column' : '')}
+        >
           {renderProfile(pageI)}
           {renderBlocks(page, pageI)}
         </Panel>

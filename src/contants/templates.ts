@@ -8,7 +8,7 @@ export const templates = {
   executive: 'executive',
   simple: 'simple',
   professional: 'professional',
-  colleage: 'colleage',
+  college: 'college',
   modern: 'modern',
   it: 'it',
 };
