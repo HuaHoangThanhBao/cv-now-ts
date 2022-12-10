@@ -5,15 +5,17 @@ import './profileSocial.scss';
 export const ProfileSocial = () => {
   return (
     <div className="profile-social">
-      <Button icon={<Icon iconType="education" />} text="bao@gmail.com" />
-      <Button icon={<Icon iconType="education" />} text="bao@gmail.com" />
-      <Button icon={<Icon iconType="education" />} text="bao@gmail.com" />
-      <Button icon={<Icon iconType="education" />} text="bao@gmail.com" />
-      <Button icon={<Icon iconType="education" />} text="bao@gmail.com" />
-      <Button icon={<Icon iconType="education" />} text="bao@gmail.com" />
-      <Button icon={<Icon iconType="education" />} text="bao@gmail.com" />
-      <Button icon={<Icon iconType="education" />} text="bao@gmail.com" />
-      <Button icon={<Icon iconType="education" />} text="bao@gmail.com" />
+      <div className="profile-social-container">
+        <Button icon={<Icon iconType="education" />} text="bao@gmail.com" />
+        <Button icon={<Icon iconType="education" />} text="bao@gmail.com" />
+        <Button icon={<Icon iconType="education" />} text="bao@gmail.com" />
+        <Button icon={<Icon iconType="education" />} text="bao@gmail.com" />
+        <Button icon={<Icon iconType="education" />} text="bao@gmail.com" />
+        <Button icon={<Icon iconType="education" />} text="bao@gmail.com" />
+        <Button icon={<Icon iconType="education" />} text="bao@gmail.com" />
+        <Button icon={<Icon iconType="education" />} text="bao@gmail.com" />
+        <Button icon={<Icon iconType="education" />} text="bao@gmail.com" />
+      </div>
     </div>
   );
 };

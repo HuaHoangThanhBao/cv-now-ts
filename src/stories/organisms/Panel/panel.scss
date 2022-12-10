@@ -13,12 +13,14 @@
     display: block;
     clear: both;
   }
-  .even {
-    width: 50%;
-    float: left;
-  }
-  .odd {
-    width: 50%;
-    float: right;
+  &.two-column {
+    .even {
+      width: 50%;
+      float: left;
+    }
+    .odd {
+      width: 50%;
+      float: right;
+    }
   }
 }

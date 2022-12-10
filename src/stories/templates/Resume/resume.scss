@@ -1,8 +1,3 @@
-.profile {
-  position: relative;
-  @extend %clearFloat;
-}
-
 %floatLeft {
   float: left;
 }
@@ -34,15 +29,13 @@
 }
 
 %twoEqualColumn {
-  .profile-info {
+  .profile-content {
     @extend %floatLeft;
-    width: calc(50% - 10rem);
-    padding-right: 10rem;
+    width: 50%;
   }
   .profile-social {
     @extend %floatLeft;
-    width: calc(50% - 10rem);
-    padding-left: 10rem;
+    width: 50%;
   }
 }
 
@@ -50,17 +43,20 @@
   @extend %profileInfo;
   .profile-social {
     @extend %floatLeft;
-    width: 30%;
+    width: calc(30% - 0.5rem);
+    margin-left: 0.5rem;
   }
   .profile-content {
     @extend %floatLeft;
-    width: 70%;
+    width: calc(70% - 0.5rem);
+    margin-right: 0.5rem;
   }
 }
 
 %btnRightAlign {
   .btn {
-    justify-content: flex-end;
+    flex-direction: row-reverse;
+    justify-content: flex-start;
   }
 }
 
@@ -70,16 +66,30 @@
   }
 }
 
+.profile {
+  position: relative;
+  @extend %clearFloat;
+}
+
 .combined,
 .professional,
 .college {
-  @extend .profile;
   @extend %twoEqualColumn;
   @extend %btnRightAlign;
+  .profile {
+    display: flex;
+    min-height: 27rem;
+    padding: 2rem;
+  }
   .avatar {
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
+  }
+  .btn {
+    &:first-of-type {
+      padding-top: 0;
+    }
   }
 }
 
@@ -89,16 +99,227 @@
   @extend %avatarLeft;
   @extend %profileInfo;
   @extend %profileSocial;
+  .profile-content {
+    padding: 2rem;
+    @extend %clearFloat;
+  }
+  .profile-info {
+    padding-left: 2rem;
+    padding-top: 1rem;
+  }
+  .profile-social {
+    padding: 1rem 2rem;
+    margin-bottom: 1rem;
+  }
 }
 
 .tech,
 .it,
 .modern {
   @extend %twoLeftThanRight;
-  @extend %btnRightAlign;
+  // @extend %btnRightAlign;
   @extend %avatarLeft;
+  .profile {
+    display: flex;
+    padding: 1.5rem;
+  }
+  .profile-content {
+    padding: 1.5rem;
+    border-top-left-radius: 0.5rem;
+    border-bottom-left-radius: 0.5rem;
+  }
+  .profile-social {
+    border-top-right-radius: 0.5rem;
+    border-bottom-right-radius: 0.5rem;
+  }
+  .profile-info {
+    padding: 1rem;
+  }
+  .btn {
+    &:first-of-type {
+      padding-top: 0;
+    }
+  }
 }
 
 .skilled_based {
   @extend %profileSocial;
+}
+
+//
+.combined {
+  .profile-content {
+    background-color: #2e6aa7;
+    border-radius: 0.75rem;
+    color: white;
+  }
+  .profile-info {
+    padding: 2rem 10rem 2rem 2rem;
+  }
+  .avatar {
+    top: 5rem;
+  }
+}
+
+.professional {
+  .profile {
+    border-bottom: 1px solid black;
+  }
+}
+
+.professional,
+.college {
+  .profile-info {
+    padding: 0rem 10rem 2rem 0rem;
+  }
+}
+
+//
+.executive {
+  .profile-social {
+    background-color: #f1f1f1;
+  }
+}
+
+.basic {
+  .profile-social {
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+  }
+}
+
+.simple {
+  .profile-social {
+    background-color: #313c4e;
+    color: white;
+  }
+}
+
+//
+.tech {
+  .profile-content {
+    background-color: #ebebeb;
+  }
+  .profile-social {
+    padding: 2rem;
+    background-color: #313c4e;
+    color: white;
+  }
+}
+
+.it,
+.modern {
+  .profile {
+    padding-left: 2rem;
+  }
+  .profile-content {
+    padding-left: 0;
+  }
+}
+
+.it {
+  .profile-social {
+    padding: 2rem;
+    background-color: #313c4e;
+    color: white;
+    border-radius: 0.5rem;
+  }
+}
+
+.modern {
+  .profile-content,
+  .profile-social {
+    padding-top: 0;
+  }
+  @extend %btnRightAlign;
+}
+
+//
+.functional {
+  .avatar,
+  .profile-social {
+    padding: 0 2rem;
+    padding-top: 1rem;
+  }
+  .profile-info {
+    padding: 2rem 0 0 2rem;
+  }
+  .profile-info-container {
+    background-color: #313c4e;
+    color: white;
+    padding: 2rem;
+  }
+}
+
+//
+.minimalist {
+  .avatar,
+  .profile-info,
+  .profile-social {
+    padding: 2rem;
+  }
+  .profile-social {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+  @extend %profileSocial;
+}
+
+//
+.skilled_based {
+  .avatar,
+  .profile-info,
+  .profile-social {
+    padding: 2rem;
+  }
+  .profile-social {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+  .profile-social-container {
+    padding-top: 0;
+    padding-bottom: 0;
+    background-color: #313c4e;
+    color: white;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    @extend %clearFloat;
+  }
+  @extend %profileSocial;
+}
+
+/****/
+.one-column.skilled_based,
+.one-column.functional,
+.one-column.minimalist {
+  .avatar {
+    float: left;
+  }
+  .profile-info {
+    padding: 3rem 0 0 0;
+    width: calc(100% - 20rem);
+    float: left;
+  }
+  .profile-social {
+    padding-bottom: 1rem;
+  }
+}
+
+.one-column.functional {
+  .avatar {
+    padding: 2rem;
+  }
+  .profile-info {
+    margin-left: 2rem;
+    padding-top: 2rem;
+    width: calc(100% - 19rem);
+    &-container {
+      min-height: 9rem;
+      padding-bottom: 2rem;
+    }
+  }
+  @extend %profileSocial;
+  .profile-social {
+    padding-top: 0;
+  }
 }
