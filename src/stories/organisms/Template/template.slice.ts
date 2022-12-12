@@ -6,7 +6,7 @@ interface TemplateState {
 }
 
 const initialState: TemplateState = {
-  currentTemplate: TemplateType.combined,
+  currentTemplate: TemplateType.functional,
 };
 
 const templateSlice = createSlice({

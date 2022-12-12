@@ -9,10 +9,18 @@ import { TemplateType } from '../types/Template';
 
 interface TransformProfileProps {
   template: string;
+  profileAvatarRef: React.RefObject<HTMLDivElement>;
+  profileInfoRef: React.RefObject<HTMLDivElement>;
+  profileSocialRef: React.RefObject<HTMLDivElement>;
+  profileContainerRef: React.RefObject<HTMLDivElement>;
 }
 
 export const useTransformProfile = ({
   template,
+  profileAvatarRef,
+  profileInfoRef,
+  profileSocialRef,
+  profileContainerRef,
 }: TransformProfileProps): [
   (pageI: number, columnI: number) => JSX.Element | JSX.Element[] | ReactNode | ReactNode[],
   (pageI: number, columnI: number) => JSX.Element | JSX.Element[] | ReactNode | ReactNode[],
@@ -29,7 +37,7 @@ export const useTransformProfile = ({
       isOneColumn
     )
       return null;
-    return <Avatar />;
+    return <Avatar ref={profileAvatarRef} />;
   };
 
   const renderProfileInfo = (pageI: number, columnI: number) => {
@@ -40,7 +48,7 @@ export const useTransformProfile = ({
       template === TemplateType.skilled_based ||
       template === TemplateType.functional
     )
-      return <ProfileInfo />;
+      return <ProfileInfo ref={profileInfoRef} />;
   };
 
   const renderProfileSocial = (pageI: number, columnI: number) => {
@@ -51,7 +59,7 @@ export const useTransformProfile = ({
       ((template === TemplateType.minimalist || template === TemplateType.skilled_based) &&
         columnI === 1)
     )
-      return <ProfileSocial />;
+      return <ProfileSocial ref={profileSocialRef} />;
     return null;
   };
 
@@ -63,7 +71,7 @@ export const useTransformProfile = ({
         template !== TemplateType.minimalist) ||
       isOneColumn
     )
-      return <Profile />;
+      return <Profile ref={profileContainerRef} />;
     return null;
   };
 

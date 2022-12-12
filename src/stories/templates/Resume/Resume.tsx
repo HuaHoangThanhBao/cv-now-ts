@@ -32,6 +32,10 @@ export const Resume = ({
   template,
 }: ResumeProps) => {
   const blocksRef = useRef([]);
+  const profileAvatarRef = useRef<HTMLDivElement>(null);
+  const profileInfoRef = useRef<HTMLDivElement>(null);
+  const profileSocialRef = useRef<HTMLDivElement>(null);
+  const profileContainerRef = useRef<HTMLDivElement>(null);
   const dispatch = useDispatch();
   const [pagesD, callMovingBlock] = useTransformBlock({
     pages,
@@ -40,10 +44,20 @@ export const Resume = ({
     pagesOneColumn,
     pagesTwoColumn,
     blocksRef,
+    profileAvatarRef,
+    profileInfoRef,
+    profileSocialRef,
+    profileContainerRef,
     isOnPreview,
   });
   const [renderProfileAvatar, renderProfileInfo, renderProfileSocial, renderProfile] =
-    useTransformProfile({ template });
+    useTransformProfile({
+      template,
+      profileAvatarRef,
+      profileInfoRef,
+      profileSocialRef,
+      profileContainerRef,
+    });
 
   const renderDocuments = (_pages: string[][][]) => {
     if (_pages.length > 0) {

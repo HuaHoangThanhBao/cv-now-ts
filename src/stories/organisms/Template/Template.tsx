@@ -4,6 +4,7 @@ import { templates } from '../../../contants';
 import { useOnClickOutside } from '../../../hooks';
 import { RootState, useAppDispatch } from '../../../store';
 import { Resume } from '../../templates/Resume';
+import { onMovingBlock } from '../Block/block.slice';
 import './template.scss';
 import { updateCurrentTemplate } from './template.slice';
 
@@ -22,6 +23,7 @@ export const Template = ({ setOption }: TemplateProps) => {
 
   const onChangeTemplate = (template: string) => {
     dispatch(updateCurrentTemplate(template));
+    dispatch(onMovingBlock(true));
   };
 
   return (

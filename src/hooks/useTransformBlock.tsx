@@ -12,6 +12,7 @@ import {
 import { updateDragPages } from '../stories/organisms/Drag/drag.slice';
 import { sendUpdatePages } from '../stories/pages/DocumentList/documentList.slice';
 import { GlobalIterator } from '../types/Block';
+import { TemplateType } from '../types/Template';
 import { useCompareBlock } from './useCompareBlock';
 import { useEffectOnce } from './useEffectOnce';
 import { useMoveChild } from './useMoveChild';
@@ -24,16 +25,32 @@ interface TransformBlockProps {
   pagesOneColumn: string[][][];
   pagesTwoColumn: string[][][];
   blocksRef: React.RefObject<HTMLDivElement[]>;
+  profileAvatarRef: React.RefObject<HTMLDivElement>;
+  profileInfoRef: React.RefObject<HTMLDivElement>;
+  profileSocialRef: React.RefObject<HTMLDivElement>;
+  profileContainerRef: React.RefObject<HTMLDivElement>;
   isOnPreview?: boolean;
 }
 
 export const useTransformBlock = (
   props: TransformBlockProps
 ): [string[][][], (status: boolean) => void] => {
-  const { pages, state, blocksRef, isOneColumn, pagesOneColumn, pagesTwoColumn, isOnPreview } =
-    props;
+  const {
+    pages,
+    state,
+    blocksRef,
+    profileAvatarRef,
+    profileInfoRef,
+    profileSocialRef,
+    profileContainerRef,
+    isOneColumn,
+    pagesOneColumn,
+    pagesTwoColumn,
+    isOnPreview,
+  } = props;
   const isMovingBlock = useSelector((state: RootState) => state.block.isMovingBlock);
   const blockCreateId = useSelector((state: RootState) => state.block.blockCreateId);
+  const template = useSelector((state: RootState) => state.template.currentTemplate);
   const [pagesD, setPagesD] = useState(pages);
   const [isDoneTransform, setIsDoneTransform] = useState(false);
   const [isMovingBlockD, setIsMovingBlockD] = useState(isMovingBlock || false);
@@ -65,8 +82,44 @@ export const useTransformBlock = (
     [blocksRef]
   );
 
+  const getInitalSum = useCallback(
+    (pageI: number, isFirstColumn: boolean) => {
+      const cvBottomPadding = 180;
+      if (pageI <= 0) {
+        if (profileContainerRef.current) {
+          return profileContainerRef.current.offsetHeight + cvBottomPadding;
+        } else if (
+          template === TemplateType.minimalist ||
+          template === TemplateType.skilled_based
+        ) {
+          if (isFirstColumn && profileAvatarRef.current) {
+            return profileAvatarRef.current.offsetHeight + cvBottomPadding;
+          } else if (profileInfoRef.current && profileSocialRef.current) {
+            return (
+              profileInfoRef.current.offsetHeight +
+              profileSocialRef.current.offsetHeight +
+              cvBottomPadding
+            );
+          }
+        } else if (template === TemplateType.functional) {
+          if (isFirstColumn && profileAvatarRef.current && profileSocialRef.current) {
+            return (
+              profileAvatarRef.current.offsetHeight +
+              profileSocialRef.current.offsetHeight +
+              cvBottomPadding
+            );
+          } else if (profileInfoRef.current) {
+            return profileInfoRef.current.offsetHeight + cvBottomPadding;
+          }
+        }
+      }
+      return 0 + cvBottomPadding;
+    },
+    [profileAvatarRef, profileContainerRef, profileInfoRef, profileSocialRef, template]
+  );
+
   const transformBlocks = useCallback(() => {
-    const maxHeight = 1000;
+    const maxHeight = 1500;
 
     /*Move child to parent*/
     let _pages = moveChildAfter();
@@ -76,8 +129,8 @@ export const useTransformBlock = (
     let columnSecond = 1;
     /* Move first and second column to next page*/
     for (let i = 0; i < _pages.length; i++) {
-      let sumFirstCol = 0;
-      let sumSecondCol = 0;
+      let sumFirstCol = getInitalSum(i, true);
+      let sumSecondCol = getInitalSum(i, false);
       const firstColumn = _pages[i][columnFirst];
       const secondColumn = _pages[i][columnSecond];
       for (let a = 0; a < firstColumn.length; a++) {
@@ -104,6 +157,7 @@ export const useTransformBlock = (
           }
         }
       }
+      // console.log('sumFirstCol:', sumFirstCol);
       if (_pages[0].length > 1) {
         if (secondColumn) {
           for (let a = 0; a < secondColumn.length; a++) {
@@ -136,8 +190,8 @@ export const useTransformBlock = (
 
     /* Move first and second column to previous page*/
     for (let i = 0; i < _pages.length; i++) {
-      let sumFirstCol = 0;
-      let sumSecondCol = 0;
+      let sumFirstCol = getInitalSum(i, true);
+      let sumSecondCol = getInitalSum(i, false);
       const firstColumnDelete = [];
       const secondColumnDelete = [];
       const firstColumn = _pages[i][columnFirst];
@@ -208,7 +262,7 @@ export const useTransformBlock = (
     console.log('pages result:', _pages);
     // dispatch(updatePages({ pages: [..._pages] }));
     setPagesD(_pages);
-  }, [findBlockRef, moveChildAfter]);
+  }, [findBlockRef, getInitalSum, moveChildAfter]);
 
   const callMovingBlock = (status: boolean) => {
     setIsMovingBlockD(status);

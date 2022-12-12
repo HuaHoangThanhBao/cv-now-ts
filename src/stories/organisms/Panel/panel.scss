@@ -1,7 +1,7 @@
 .panel {
   width: 1200px;
-  min-height: 1180px;
-  // padding: 2rem;
+  min-height: 1320px; //1320 + 180 = 1500
+  padding-bottom: 180px;
   background-color: white;
   margin: 0 auto;
   &:not(:first-of-type) {
