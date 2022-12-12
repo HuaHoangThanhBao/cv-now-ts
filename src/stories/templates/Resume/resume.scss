@@ -121,7 +121,7 @@
   @extend %avatarLeft;
   .profile {
     display: flex;
-    padding: 1.5rem;
+    padding: 2rem;
   }
   .profile-content {
     padding: 1.5rem;
@@ -149,7 +149,7 @@
 //
 .combined {
   .profile-content {
-    background-color: #2e6aa7;
+    background-color: #313c4e;
     border-radius: 0.75rem;
     color: white;
   }
@@ -197,6 +197,9 @@
 
 //
 .tech {
+  .profile {
+    padding: 1rem;
+  }
   .profile-content {
     background-color: #ebebeb;
   }
@@ -218,11 +221,17 @@
 }
 
 .it {
+  .profile {
+    padding: 1rem;
+  }
   .profile-social {
     padding: 2rem;
     background-color: #313c4e;
     color: white;
     border-radius: 0.5rem;
+  }
+  .profile-content {
+    padding-left: 2rem;
   }
 }
 
@@ -239,15 +248,16 @@
   .avatar,
   .profile-social {
     padding: 0 2rem;
-    padding-top: 1rem;
+    padding-top: 2rem;
   }
   .profile-info {
     padding: 2rem 0 0 2rem;
   }
   .profile-info-container {
+    min-height: 7rem;
     background-color: #313c4e;
     color: white;
-    padding: 2rem;
+    padding: 3rem 2rem;
   }
 }
 
@@ -314,7 +324,7 @@
     padding-top: 2rem;
     width: calc(100% - 18.997rem);
     &-container {
-      min-height: 9rem;
+      min-height: 8rem;
       padding-bottom: 2rem;
     }
   }

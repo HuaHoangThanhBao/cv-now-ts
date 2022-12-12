@@ -6,7 +6,7 @@ interface TemplateState {
 }
 
 const initialState: TemplateState = {
-  currentTemplate: TemplateType.functional,
+  currentTemplate: TemplateType.skilled_based,
 };
 
 const templateSlice = createSlice({

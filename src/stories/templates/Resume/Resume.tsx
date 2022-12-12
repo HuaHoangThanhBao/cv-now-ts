@@ -11,6 +11,8 @@ import {
 } from '../../organisms/Block/block.slice';
 import { useTransformBlock, useEventListener, useTransformProfile } from '../../../hooks';
 import './resume.scss';
+import { TemplateType } from '../../../types/Template';
+import { maxHeight } from '../../../contants';
 
 interface ResumeProps {
   pages: string[][][];
@@ -59,6 +61,21 @@ export const Resume = ({
       profileContainerRef,
     });
 
+  const techHeightTemplateStyle = (pageI: number) => {
+    if ((template === TemplateType.tech || template === TemplateType.it) && pageI === 0) {
+      return maxHeight - (profileContainerRef.current?.offsetHeight || 0) - 16 + 'px';
+    } else if (pageI !== 0 && (template === TemplateType.tech || template === TemplateType.it)) {
+      return `${maxHeight - 16 * 2}px`;
+    }
+    return '';
+  };
+
+  const techMarginTopStyle = (pageI: number) => {
+    return (template === TemplateType.tech || template === TemplateType.it) && pageI !== 0
+      ? '16px'
+      : 0;
+  };
+
   const renderDocuments = (_pages: string[][][]) => {
     if (_pages.length > 0) {
       return _pages.map((page: string[][], pageI: number) => (
@@ -97,28 +114,36 @@ export const Resume = ({
               });
             })}
           </div>
-          <div className="odd">
-            {renderProfileInfo(pageI, 1)}
-            {renderProfileSocial(pageI, 1)}
-            {oddColumn &&
-              oddColumn.map((block: string, blockIndex: number) => {
-                if (oddColumn[blockIndex]) {
-                  const blocks: Common[] = convert(oddColumn[blockIndex].split('/')[0], state);
-                  return blocks.map((blockChild, blockChildIndex) => {
-                    if (blockChild.id === block) {
-                      return (
-                        <Block
-                          key={blockChild.uid}
-                          data={blockChild}
-                          blockChildIndex={blockChildIndex}
-                          ref={blocksRef}
-                        />
-                      );
-                    } else return null;
-                  });
-                } else return null;
-              })}
-          </div>
+          {!isOneColumn && (
+            <div
+              className="odd"
+              style={{
+                minHeight: techHeightTemplateStyle(pageI),
+                marginTop: techMarginTopStyle(pageI),
+              }}
+            >
+              {renderProfileInfo(pageI, 1)}
+              {renderProfileSocial(pageI, 1)}
+              {oddColumn &&
+                oddColumn.map((block: string, blockIndex: number) => {
+                  if (oddColumn[blockIndex]) {
+                    const blocks: Common[] = convert(oddColumn[blockIndex].split('/')[0], state);
+                    return blocks.map((blockChild, blockChildIndex) => {
+                      if (blockChild.id === block) {
+                        return (
+                          <Block
+                            key={blockChild.uid}
+                            data={blockChild}
+                            blockChildIndex={blockChildIndex}
+                            ref={blocksRef}
+                          />
+                        );
+                      } else return null;
+                    });
+                  } else return null;
+                })}
+            </div>
+          )}
         </>
       );
     } else {

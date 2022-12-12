@@ -131,11 +131,14 @@ export const useTransformBlock = (
     for (let i = 0; i < _pages.length; i++) {
       let sumFirstCol = getInitalSum(i, true);
       let sumSecondCol = getInitalSum(i, false);
+      console.log('///////////////');
+      console.log('sumFirstCol:', sumFirstCol);
       const firstColumn = _pages[i][columnFirst];
       const secondColumn = _pages[i][columnSecond];
       for (let a = 0; a < firstColumn.length; a++) {
         // console.log('firstColumn[a]:', firstColumn[a]);
         sumFirstCol += findBlockRef(firstColumn[a]);
+        console.log('sumFirstCol 1:', sumFirstCol);
         if (sumFirstCol > maxHeight) {
           // console.log('over:', firstColumn[a]);
           if (i < _pages.length - 1) {
