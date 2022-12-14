@@ -1,4 +1,4 @@
-import { useRef, KeyboardEvent } from 'react';
+import { useRef, useImperativeHandle, forwardRef, KeyboardEvent } from 'react';
 import { useDispatch } from 'react-redux';
 import { Common } from '../../../types/Block';
 import { Panel } from '../../organisms/Panel';
@@ -24,15 +24,10 @@ interface ResumeProps {
   template: string;
 }
 
-export const Resume = ({
-  pages,
-  state,
-  isOneColumn,
-  pagesOneColumn,
-  pagesTwoColumn,
-  isOnPreview,
-  template,
-}: ResumeProps) => {
+export const Resume = forwardRef((props: ResumeProps, ref: any) => {
+  const { pages, state, isOneColumn, pagesOneColumn, pagesTwoColumn, isOnPreview, template } =
+    props;
+  const panelsRef = useRef([]);
   const blocksRef = useRef([]);
   const profileAvatarRef = useRef<HTMLDivElement>(null);
   const profileInfoRef = useRef<HTMLDivElement>(null);
@@ -61,6 +56,12 @@ export const Resume = ({
       profileContainerRef,
     });
 
+  useImperativeHandle(ref, () => ({
+    getPanelRefs() {
+      return panelsRef;
+    },
+  }));
+
   const techHeightTemplateStyle = (pageI: number) => {
     if ((template === TemplateType.tech || template === TemplateType.it) && pageI === 0) {
       return maxHeight - (profileContainerRef.current?.offsetHeight || 0) - 16 + 'px';
@@ -80,8 +81,10 @@ export const Resume = ({
     if (_pages.length > 0) {
       return _pages.map((page: string[][], pageI: number) => (
         <Panel
+          pageI={pageI}
           key={page.length + pageI}
           className={`${template}` + (!isOneColumn ? ' two-column' : ' one-column')}
+          ref={panelsRef}
         >
           {renderProfile(pageI)}
           {renderBlocks(page, pageI)}
@@ -228,4 +231,4 @@ export const Resume = ({
   });
 
   return <>{renderDocuments(pagesD)}</>;
-};
+});

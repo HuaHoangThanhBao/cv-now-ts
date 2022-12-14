@@ -10,6 +10,8 @@ export default {
   },
 } as ComponentMeta<typeof Header>;
 
-const Template: ComponentStory<typeof Header> = (args) => <Header setOption={() => {}} />;
+const Template: ComponentStory<typeof Header> = (args) => (
+  <Header setOption={() => {}} generatePDF={() => {}} />
+);
 
 export const Menu = Template.bind({});

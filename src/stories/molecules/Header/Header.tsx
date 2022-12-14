@@ -10,9 +10,10 @@ import { ReactComponent as DownloadIcon } from '../../assets/download.svg';
 
 interface HeaderProps {
   setOption: (option: string) => void;
+  generatePDF: () => void;
 }
 
-export const Header = ({ setOption }: HeaderProps) => {
+export const Header = ({ setOption, generatePDF }: HeaderProps) => {
   return (
     <header>
       <Button text="Font" icon={<FontIcon />} />
@@ -20,7 +21,12 @@ export const Header = ({ setOption }: HeaderProps) => {
       <Button text="Template" icon={<TemplateIcon />} onClick={() => setOption('template')} />
       <Button text="Layout" icon={<LayoutIcon />} onClick={() => setOption('layout')} />
       <Button text="Setting" icon={<SettingIcon />} />
-      <Button text="Download" className={'download'} icon={<DownloadIcon />} />
+      <Button
+        text="Download"
+        className={'download'}
+        icon={<DownloadIcon />}
+        onClick={generatePDF}
+      />
     </header>
   );
 };
