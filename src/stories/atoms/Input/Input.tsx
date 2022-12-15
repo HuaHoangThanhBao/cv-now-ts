@@ -117,6 +117,7 @@ export const Input = ({
         className={`field-input ${type}${className ? ` ${className}` : ''}${
           type === InputType.CONTENT_BULLET ? ` detail` : ''
         }`}
+        aria-label="field-input"
         innerRef={ref}
         html={html.current}
         placeholder={placeHolder.current}

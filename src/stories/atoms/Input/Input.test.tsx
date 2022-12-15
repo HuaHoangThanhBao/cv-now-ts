@@ -1,4 +1,4 @@
-import { fireEvent } from '@testing-library/react'
+import { act, fireEvent } from '@testing-library/react'
 import { store } from 'src/store'
 import { blockInitialState } from 'src/stories/organisms/Block/block.slice'
 import { InputType } from 'src/types/Input'
@@ -41,7 +41,7 @@ describe('test Input component', () => {
 
 describe('test field key down event', () => {
   test('should call create/delete content bullet when press key', () => {
-    const { container } = renderWithProviders(
+    const { getByLabelText } = renderWithProviders(
       <Input
         type={InputType.CONTENT_BULLET}
         data={educationData.content_bullet.child[0]}
@@ -51,7 +51,10 @@ describe('test field key down event', () => {
         store
       }
     )
-    const inputField = container.querySelector('.field-input')
+    const inputField = getByLabelText('field-input')
+    act(() => inputField.focus())
+    expect(inputField).toHaveFocus()
+
     if (inputField) fireEvent.keyDown(inputField, { key: KeyEvent.ENTER })
 
     expect(store.getState().block.education[0].content_bullet.child.length).toEqual(2)
