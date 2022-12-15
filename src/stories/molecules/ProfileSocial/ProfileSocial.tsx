@@ -1,7 +1,7 @@
-import React from 'react';
-import { Button } from '../../atoms/Button';
-import { Icon } from '../../atoms/Icon/Icon';
-import './profileSocial.scss';
+import React from 'react'
+import { Button } from '../../atoms/Button'
+import { Icon } from '../../atoms/Icon'
+import './profileSocial.scss'
 
 export const ProfileSocial = React.forwardRef<HTMLDivElement>((props, ref) => {
   return (
@@ -18,5 +18,5 @@ export const ProfileSocial = React.forwardRef<HTMLDivElement>((props, ref) => {
         <Button icon={<Icon iconType="education" />} text="bao@gmail.com" />
       </div>
     </div>
-  );
-});
+  )
+})

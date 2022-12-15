@@ -1,9 +1,9 @@
-import React from 'react';
+import React from 'react'
 
 export interface BlockHeaderProps {
-  children?: JSX.Element | JSX.Element[];
+  children?: JSX.Element | JSX.Element[]
 }
 
-export const BlockHeader = ({ children, ...props }: BlockHeaderProps) => {
-  return <div className="block-header">{children}</div>;
-};
+export const BlockHeader = ({ children }: BlockHeaderProps) => {
+  return <div className="block-header">{children}</div>
+}

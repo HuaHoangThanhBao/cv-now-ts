@@ -1,6 +1,6 @@
-import React from 'react';
-import { InputInfo } from '../../atoms/InputInfo';
-import './profileInfo.scss';
+import React from 'react'
+import { InputInfo } from '../../atoms/InputInfo'
+import './profileInfo.scss'
 
 export const ProfileInfo = React.forwardRef<HTMLDivElement>((props, ref) => {
   return (
@@ -11,5 +11,5 @@ export const ProfileInfo = React.forwardRef<HTMLDivElement>((props, ref) => {
         <InputInfo placeHolder="Short and engaging pitch about yourself." />
       </div>
     </div>
-  );
-});
+  )
+})

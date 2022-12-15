@@ -1,156 +1,159 @@
-import { ReactComponent as EducationIcon } from '../../assets/education.svg';
-import { ReactComponent as WorkExperienceIcon } from '../../assets/work-experience.svg';
-import { ReactComponent as SoftSkillIcon } from '../../assets/soft-skill.svg';
-import { ReactComponent as SupportCauseIcon } from '../../assets/support-cause.svg';
-import { ReactComponent as InterestIcon } from '../../assets/interest.svg';
-import { ReactComponent as OrganizationIcon } from '../../assets/organization.svg';
-import { ReactComponent as CertificateIcon } from '../../assets/certificate.svg';
-import { ReactComponent as PersonalProjectIcon } from '../../assets/personal-project.svg';
-import { ReactComponent as AchievementIcon } from '../../assets/achievement.svg';
-import { ReactComponent as ConferenceIcon } from '../../assets/conference.svg';
-import { ReactComponent as HonorAwardIcon } from '../../assets/honor-award.svg';
-import { ReactComponent as TeachingExperienceIcon } from '../../assets/teaching-experience.svg';
-import { ReactComponent as VolunteerIcon } from '../../assets/volunteer.svg';
-import { ReactComponent as LanguageIcon } from '../../assets/language.svg';
-import { ReactComponent as PublicationIcon } from '../../assets/publication.svg';
-import { ReactComponent as SkillIcon } from '../../assets/skill.svg';
-import { ReactComponent as ReferenceIcon } from '../../assets/reference.svg';
+import { ReactComponent as EducationIcon } from '../../assets/education.svg'
+import { ReactComponent as WorkExperienceIcon } from '../../assets/work-experience.svg'
+import { ReactComponent as SoftSkillIcon } from '../../assets/soft-skill.svg'
+import { ReactComponent as SupportCauseIcon } from '../../assets/support-cause.svg'
+import { ReactComponent as InterestIcon } from '../../assets/interest.svg'
+import { ReactComponent as OrganizationIcon } from '../../assets/organization.svg'
+import { ReactComponent as CertificateIcon } from '../../assets/certificate.svg'
+import { ReactComponent as PersonalProjectIcon } from '../../assets/personal-project.svg'
+import { ReactComponent as AchievementIcon } from '../../assets/achievement.svg'
+import { ReactComponent as ConferenceIcon } from '../../assets/conference.svg'
+import { ReactComponent as HonorAwardIcon } from '../../assets/honor-award.svg'
+import { ReactComponent as TeachingExperienceIcon } from '../../assets/teaching-experience.svg'
+import { ReactComponent as VolunteerIcon } from '../../assets/volunteer.svg'
+import { ReactComponent as LanguageIcon } from '../../assets/language.svg'
+import { ReactComponent as PublicationIcon } from '../../assets/publication.svg'
+import { ReactComponent as SkillIcon } from '../../assets/skill.svg'
+import { ReactComponent as ReferenceIcon } from '../../assets/reference.svg'
 
-import { ReactComponent as AddIcon } from '../../assets/add.svg';
-import { ReactComponent as FontIcon } from '../../assets/font.svg';
-import { ReactComponent as BoldIcon } from '../../assets/text-bold.svg';
-import { ReactComponent as ItalicIcon } from '../../assets/text-italic.svg';
-import { ReactComponent as UnderlineIcon } from '../../assets/text-underline.svg';
-import { ReactComponent as MoveUpIcon } from '../../assets/move-up.svg';
-import { ReactComponent as MoveDownIcon } from '../../assets/move-down.svg';
-import { ReactComponent as TrashIcon } from '../../assets/trash.svg';
-import { ReactComponent as ThemeIcon } from '../../assets/theme.svg';
-import { ReactComponent as TemplateIcon } from '../../assets/template-switch.svg';
-import { ReactComponent as LayoutIcon } from '../../assets/layout.svg';
-import { ReactComponent as SettingIcon } from '../../assets/settings.svg';
-import { ReactComponent as DownloadIcon } from '../../assets/download.svg';
-import { ReactComponent as MailIconWhite } from '../../assets/mail.svg';
-import { ReactComponent as PhoneIconWhite } from '../../assets/phone.svg';
-import { ReactComponent as LocationIconWhite } from '../../assets/location.svg';
-import { ReactComponent as WebsiteIconWhite } from '../../assets/website.svg';
-import { ReactComponent as LinkedinIconWhite } from '../../assets/linkedin.svg';
-import { ReactComponent as TwitterIconWhite } from '../../assets/twitter.svg';
-import { ReactComponent as SkypeIconWhite } from '../../assets/skype.svg';
-import { ReactComponent as FacebookIconWhite } from '../../assets/facebook.svg';
-import { ReactComponent as GithubIconWhite } from '../../assets/github.svg';
-import { ReactComponent as StackOverFlowIconWhite } from '../../assets/stackoverflow.svg';
-import { ReactComponent as MediumIconWhite } from '../../assets/medium.svg';
-import { ReactComponent as InstagramIconWhite } from '../../assets/instagram.svg';
-import './icon.scss';
+import { ReactComponent as AddIcon } from '../../assets/add.svg'
+import { ReactComponent as FontIcon } from '../../assets/font.svg'
+import { ReactComponent as BoldIcon } from '../../assets/text-bold.svg'
+import { ReactComponent as ItalicIcon } from '../../assets/text-italic.svg'
+import { ReactComponent as UnderlineIcon } from '../../assets/text-underline.svg'
+import { ReactComponent as MoveUpIcon } from '../../assets/move-up.svg'
+import { ReactComponent as MoveDownIcon } from '../../assets/move-down.svg'
+import { ReactComponent as TrashIcon } from '../../assets/trash.svg'
+import { ReactComponent as ThemeIcon } from '../../assets/theme.svg'
+import { ReactComponent as TemplateIcon } from '../../assets/template-switch.svg'
+import { ReactComponent as LayoutIcon } from '../../assets/layout.svg'
+import { ReactComponent as SettingIcon } from '../../assets/settings.svg'
+import { ReactComponent as DownloadIcon } from '../../assets/download.svg'
+import { ReactComponent as MailIconWhite } from '../../assets/mail.svg'
+import { ReactComponent as PhoneIconWhite } from '../../assets/phone.svg'
+import { ReactComponent as LocationIconWhite } from '../../assets/location.svg'
+import { ReactComponent as WebsiteIconWhite } from '../../assets/website.svg'
+import { ReactComponent as LinkedinIconWhite } from '../../assets/linkedin.svg'
+import { ReactComponent as TwitterIconWhite } from '../../assets/twitter.svg'
+import { ReactComponent as SkypeIconWhite } from '../../assets/skype.svg'
+import { ReactComponent as FacebookIconWhite } from '../../assets/facebook.svg'
+import { ReactComponent as GithubIconWhite } from '../../assets/github.svg'
+import { ReactComponent as StackOverFlowIconWhite } from '../../assets/stackoverflow.svg'
+import { ReactComponent as MediumIconWhite } from '../../assets/medium.svg'
+import { ReactComponent as InstagramIconWhite } from '../../assets/instagram.svg'
+import './icon.scss'
 
 interface IconProps {
-  className?: string;
-  iconType: string;
-  iconColorHex?: string;
-  onClick?: () => void;
+  className?: string
+  iconType: string
+  iconColorHex?: string
+  onClick?: () => void
 }
 
 export const Icon = (props: IconProps) => {
-  const { className, iconType, iconColorHex, onClick } = props;
+  const { className, iconType, iconColorHex, onClick } = props
 
   const renderIcon = (type: string) => {
     switch (type) {
       case '1':
-        return <EducationIcon />;
+        return <EducationIcon />
       case '2':
-        return <WorkExperienceIcon />;
+        return <WorkExperienceIcon />
       case '3':
-        return <OrganizationIcon />;
+        return <OrganizationIcon />
       case '4':
-        return <CertificateIcon />;
+        return <CertificateIcon />
       case '5':
-        return <PersonalProjectIcon />;
+        return <PersonalProjectIcon />
       case '6':
-        return <AchievementIcon />;
+        return <AchievementIcon />
       case '7':
-        return <ConferenceIcon />;
+        return <ConferenceIcon />
       case '8':
-        return <HonorAwardIcon />;
+        return <HonorAwardIcon />
       case '9':
-        return <TeachingExperienceIcon />;
+        return <TeachingExperienceIcon />
       case '10':
-        return <VolunteerIcon />;
+        return <VolunteerIcon />
       case '11':
-        return <SupportCauseIcon />;
+        return <SupportCauseIcon />
       case '12':
-        return <LanguageIcon />;
+        return <LanguageIcon />
       case '13':
-        return <PublicationIcon />;
+        return <PublicationIcon />
       case '14':
-        return <SkillIcon />;
+        return <SkillIcon />
       case '15':
-        return <InterestIcon />;
+        return <InterestIcon />
       case '16':
-        return <SoftSkillIcon />;
+        return <SoftSkillIcon />
       case '17':
-        return <ReferenceIcon />;
+        return <ReferenceIcon />
       case 'add':
-        return <AddIcon />;
+        return <AddIcon />
       case 'download':
-        return <DownloadIcon />;
+        return <DownloadIcon />
       case 'bold':
-        return <BoldIcon />;
+        return <BoldIcon />
       case 'italic':
-        return <ItalicIcon />;
+        return <ItalicIcon />
       case 'underline':
-        return <UnderlineIcon />;
+        return <UnderlineIcon />
       case 'move-up':
-        return <MoveUpIcon />;
+        return <MoveUpIcon />
       case 'move-down':
-        return <MoveDownIcon />;
+        return <MoveDownIcon />
       case 'trash':
-        return <TrashIcon />;
+        return <TrashIcon />
       case 'font':
-        return <FontIcon />;
+        return <FontIcon />
       case 'theme':
-        return <ThemeIcon />;
+        return <ThemeIcon />
       case 'template':
-        return <TemplateIcon />;
+        return <TemplateIcon />
       case 'layout':
-        return <LayoutIcon />;
+        return <LayoutIcon />
       case 'setting':
-        return <SettingIcon />;
+        return <SettingIcon />
       case 'email':
-        return <MailIconWhite />;
+        return <MailIconWhite />
       case 'address':
-        return <LocationIconWhite />;
+        return <LocationIconWhite />
       case 'phoneNumber':
-        return <PhoneIconWhite />;
+        return <PhoneIconWhite />
       case 'website':
-        return <WebsiteIconWhite />;
+        return <WebsiteIconWhite />
       case 'linkedIn':
-        return <LinkedinIconWhite />;
+        return <LinkedinIconWhite />
       case 'twitter':
-        return <TwitterIconWhite />;
+        return <TwitterIconWhite />
       case 'skype':
-        return <SkypeIconWhite />;
+        return <SkypeIconWhite />
       case 'facebook':
-        return <FacebookIconWhite />;
+        return <FacebookIconWhite />
       case 'github':
-        return <GithubIconWhite />;
+        return <GithubIconWhite />
       case 'stackOverflow':
-        return <StackOverFlowIconWhite />;
+        return <StackOverFlowIconWhite />
       case 'medium':
-        return <MediumIconWhite />;
+        return <MediumIconWhite />
       case 'instagram':
-        return <InstagramIconWhite />;
+        return <InstagramIconWhite />
       default:
-        return <EducationIcon />;
+        return <EducationIcon />
     }
-  };
+  }
 
   return (
     <div
       className={`icon ${iconType} ${!Number(iconType) ? 'social' : ''} ${className || ''}`}
       style={{ backgroundColor: `${iconColorHex}` }}
       onClick={onClick}
+      onKeyDown={onClick}
+      role={'button'}
+      tabIndex={0}
     >
       {renderIcon(iconType)}
     </div>
-  );
-};
+  )
+}

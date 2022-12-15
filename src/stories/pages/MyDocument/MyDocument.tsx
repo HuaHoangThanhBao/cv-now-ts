@@ -1,18 +1,18 @@
-import React, { useRef } from 'react';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../../store';
-import { Resume } from '../../templates/Resume/Resume';
-import { useFetchDocumentFromParam } from '../../../hooks';
-import { Menu } from '../../templates/Menu';
-import './myDocument.scss';
-import { useDownloadResume } from '../../../hooks/useDownloadResume';
+import React, { useRef } from 'react'
+import { useSelector } from 'react-redux'
+import { RootState } from '../../../store'
+import { Resume } from '../../templates/Resume/Resume'
+import { useFetchDocumentFromParam } from '../../../hooks'
+import { Menu } from '../../templates/Menu'
+import './myDocument.scss'
+import { useDownloadResume } from '../../../hooks/useDownloadResume'
 
 export const MyDocument: React.FC = () => {
-  const rootBlockState = useSelector((state: RootState) => state.block);
-  const template = useSelector((state: RootState) => state.template.currentTemplate);
-  const { isUpdated } = useFetchDocumentFromParam();
-  const downloadRef = useRef<any>();
-  const [generatePDF] = useDownloadResume({ panelRefs: downloadRef.current?.getPanelRefs() });
+  const rootBlockState = useSelector((state: RootState) => state.block)
+  const template = useSelector((state: RootState) => state.template.currentTemplate)
+  const { isUpdated } = useFetchDocumentFromParam()
+  const downloadRef = useRef<HTMLDivElement[]>(null)
+  const { generatePDF } = useDownloadResume({ panelRefs: downloadRef })
 
   return (
     <>
@@ -29,5 +29,5 @@ export const MyDocument: React.FC = () => {
         />
       )}
     </>
-  );
-};
+  )
+}

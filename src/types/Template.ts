@@ -10,5 +10,5 @@ export enum TemplateType {
   professional = 'professional',
   college = 'college',
   modern = 'modern',
-  it = 'it',
+  it = 'it'
 }

@@ -1,18 +1,18 @@
-import { useDrag } from '../../organisms/Drag/DragProvider';
-import './dragItem.scss';
+import { useDrag } from '../../organisms/Drag/DragProvider'
+import './dragItem.scss'
 
 export interface DragItemProps {
-  page: string[][];
-  pageI: number;
-  column: string[];
-  columnI: number;
-  block: string;
-  blockI: number;
+  page: string[][]
+  pageI: number
+  column: string[]
+  columnI: number
+  block: string
+  blockI: number
 }
 
 export const DragItem = ({ page, pageI, column, columnI, block, blockI }: DragItemProps) => {
   const { dragging, draggingNoNeed, handleDragStart, handleDragEnter, getStyles, getNoNeedStyles } =
-    useDrag();
+    useDrag()
   return (
     <div
       draggable
@@ -20,9 +20,9 @@ export const DragItem = ({ page, pageI, column, columnI, block, blockI }: DragIt
       onDragEnter={
         dragging || draggingNoNeed
           ? (e) => {
-              handleDragEnter(e, { page, pageI, column, columnI, block, blockI });
+              handleDragEnter(e, { page, pageI, column, columnI, block, blockI })
             }
-          : () => {}
+          : () => undefined
       }
       className={
         dragging
@@ -32,5 +32,5 @@ export const DragItem = ({ page, pageI, column, columnI, block, blockI }: DragIt
     >
       {block}
     </div>
-  );
-};
+  )
+}

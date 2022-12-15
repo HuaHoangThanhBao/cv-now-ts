@@ -1,1 +1,1 @@
-export { InputInfo } from './InputInfo';
+export { InputInfo } from './InputInfo'

@@ -1,20 +1,20 @@
-import React, { PropsWithChildren } from 'react';
-import { render } from '@testing-library/react';
-import type { RenderOptions } from '@testing-library/react';
-import type { PreloadedState } from '@reduxjs/toolkit';
-import { Provider } from 'react-redux';
-import { setupStore, store } from '../store';
-import type { AppStore, RootState } from '../store';
+import React, { PropsWithChildren } from 'react'
+import { render } from '@testing-library/react'
+import type { RenderOptions } from '@testing-library/react'
+import type { PreloadedState, Store } from '@reduxjs/toolkit'
+import { Provider } from 'react-redux'
+import { setupStore, store } from '../store'
+import type { AppStore, RootState } from '../store'
 
 // This type interface extends the default options for render from RTL, as well
 // as allows the user to specify other things such as initialState, store.
 interface ExtendedRenderOptions extends Omit<RenderOptions, 'queries'> {
-  preloadedState?: PreloadedState<RootState>;
-  store?: AppStore;
+  preloadedState?: PreloadedState<RootState>
+  store?: AppStore
 }
 interface ReduxProviderProps {
-  children?: React.ReactNode;
-  reduxStore?: any;
+  children?: React.ReactNode
+  reduxStore?: Store
 }
 
 export function renderWithProviders(
@@ -26,16 +26,16 @@ export function renderWithProviders(
     ...renderOptions
   }: ExtendedRenderOptions = {}
 ) {
-  function Wrapper({ children }: PropsWithChildren<{}>): JSX.Element {
-    return <Provider store={store}>{children}</Provider>;
+  function Wrapper({ children }: PropsWithChildren): JSX.Element {
+    return <Provider store={store}>{children}</Provider>
   }
-  return { store, ...render(ui, { wrapper: Wrapper, ...renderOptions }) };
+  return { store, ...render(ui, { wrapper: Wrapper, ...renderOptions }) }
 }
 
 export const ReduxProvider = ({ children, reduxStore }: ReduxProviderProps) => (
-  <Provider store={reduxStore}>{children}</Provider>
-);
+  <Provider store={reduxStore || store}>{children}</Provider>
+)
 
 export const Wrapper = ({ children }: ReduxProviderProps) => (
   <ReduxProvider reduxStore={store}>{children}</ReduxProvider>
-);
+)

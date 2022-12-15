@@ -1,35 +1,42 @@
-import { useRef } from 'react';
-import { useSelector } from 'react-redux';
-import { templates } from '../../../contants';
-import { useOnClickOutside } from '../../../hooks';
-import { RootState, useAppDispatch } from '../../../store';
-import { Resume } from '../../templates/Resume';
-import { onMovingBlock } from '../Block/block.slice';
-import './template.scss';
-import { updateCurrentTemplate } from './template.slice';
+import { useRef } from 'react'
+import { useSelector } from 'react-redux'
+import { templates } from '../../../contants'
+import { useOnClickOutside } from '../../../hooks'
+import { RootState, useAppDispatch } from '../../../store'
+import { Resume } from '../../templates/Resume'
+import { onMovingBlock } from '../Block/block.slice'
+import './template.scss'
+import { updateCurrentTemplate } from './template.slice'
 
 interface TemplateProps {
-  setOption: (option: string) => void;
+  setOption: (option: string) => void
 }
 
 export const Template = ({ setOption }: TemplateProps) => {
-  const ref = useRef(null);
-  const blockState = useSelector((state: RootState) => state.block);
-  const dispatch = useAppDispatch();
+  const ref = useRef(null)
+  const blockState = useSelector((state: RootState) => state.block)
+  const dispatch = useAppDispatch()
 
   useOnClickOutside(ref, () => {
-    setOption('');
-  });
+    setOption('')
+  })
 
   const onChangeTemplate = (template: string) => {
-    dispatch(updateCurrentTemplate(template));
-    dispatch(onMovingBlock(true));
-  };
+    dispatch(updateCurrentTemplate(template))
+    dispatch(onMovingBlock(true))
+  }
 
   return (
     <div className="template" ref={ref}>
       {Object.keys(templates).map((template: string) => (
-        <div className="preview" key={template} onClick={() => onChangeTemplate(template)}>
+        <div
+          className="preview"
+          key={template}
+          onClick={() => onChangeTemplate(template)}
+          onKeyDown={() => onChangeTemplate(template)}
+          role={'button'}
+          tabIndex={0}
+        >
           <div className="preview-title">{template}</div>
           <div className="preview-box">
             <div className="preview-box-inner">
@@ -50,5 +57,5 @@ export const Template = ({ setOption }: TemplateProps) => {
         </div>
       ))}
     </div>
-  );
-};
+  )
+}

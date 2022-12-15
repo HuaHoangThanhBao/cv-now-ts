@@ -10,5 +10,5 @@ export const templates = {
   professional: 'professional',
   college: 'college',
   modern: 'modern',
-  it: 'it',
-};
+  it: 'it'
+}

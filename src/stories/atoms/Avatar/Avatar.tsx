@@ -1,6 +1,6 @@
-import React from 'react';
-import AvatarImg from '../../assets/avatar.png';
-import './avatar.scss';
+import React from 'react'
+import AvatarImg from '../../assets/avatar.png'
+import './avatar.scss'
 
 export const Avatar = React.forwardRef<HTMLDivElement>((props, ref) => {
   return (
@@ -9,5 +9,5 @@ export const Avatar = React.forwardRef<HTMLDivElement>((props, ref) => {
         <img className="avatar-img" src={AvatarImg} alt="" />
       </div>
     </div>
-  );
-});
+  )
+})

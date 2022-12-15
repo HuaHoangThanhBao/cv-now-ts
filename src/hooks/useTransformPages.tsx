@@ -1,18 +1,18 @@
-import { useDispatch } from 'react-redux';
-import { transformPages } from '../stories/organisms/Block/block.slice';
+import { useDispatch } from 'react-redux'
+import { transformPages } from '../stories/organisms/Block/block.slice'
 
 interface TransformPagesProps {
-  isOneColumn: boolean;
-  pagesOneColumn: string[][][];
-  pagesTwoColumn: string[][][];
+  isOneColumn: boolean
+  pagesOneColumn: string[][][]
+  pagesTwoColumn: string[][][]
 }
 
 export const useTransformPages = ({
   isOneColumn,
   pagesOneColumn,
-  pagesTwoColumn,
+  pagesTwoColumn
 }: TransformPagesProps) => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
 
   const callTransformPages = (
     _pagesOneColumn?: string[][][],
@@ -23,10 +23,10 @@ export const useTransformPages = ({
       transformPages({
         isOneColumn: _isOneColumn ?? isOneColumn,
         pagesOneColumn: _pagesOneColumn || pagesOneColumn,
-        pagesTwoColumn: _pagesTwoColumn || pagesTwoColumn,
+        pagesTwoColumn: _pagesTwoColumn || pagesTwoColumn
       })
-    );
-  };
+    )
+  }
 
-  return { callTransformPages };
-};
+  return { callTransformPages }
+}

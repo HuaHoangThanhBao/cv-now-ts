@@ -1,7 +1,7 @@
-import React from 'react';
-import { Avatar } from '../../atoms/Avatar';
-import { ProfileInfo } from '../../molecules/ProfileInfo';
-import { ProfileSocial } from '../../molecules/ProfileSocial';
+import React from 'react'
+import { Avatar } from '../../atoms/Avatar'
+import { ProfileInfo } from '../../molecules/ProfileInfo'
+import { ProfileSocial } from '../../molecules/ProfileSocial'
 
 export const Profile = React.forwardRef<HTMLDivElement>((props, ref) => {
   return (
@@ -12,5 +12,5 @@ export const Profile = React.forwardRef<HTMLDivElement>((props, ref) => {
       </div>
       <ProfileSocial />
     </div>
-  );
-});
+  )
+})

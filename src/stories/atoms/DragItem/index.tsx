@@ -1,1 +1,1 @@
-export { DragItem } from './DragItem';
+export { DragItem } from './DragItem'

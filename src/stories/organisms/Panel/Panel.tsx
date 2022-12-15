@@ -1,15 +1,16 @@
-import { forwardRef, ReactNode } from 'react';
-import './panel.scss';
+import { forwardRef, ReactNode } from 'react'
+import './panel.scss'
 
 interface PanelProps {
-  pageI: number;
-  className?: string;
-  backgroundColor?: string;
-  children?: JSX.Element | JSX.Element[] | ReactNode | ReactNode[];
+  pageI: number
+  className?: string
+  backgroundColor?: string
+  children?: JSX.Element | JSX.Element[] | ReactNode | ReactNode[]
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const Panel = forwardRef((props: PanelProps, ref: any) => {
-  const { pageI, backgroundColor, className, children } = props;
+  const { pageI, backgroundColor, className, children } = props
   return (
     <div
       className={`panel ${className}`}
@@ -18,5 +19,5 @@ export const Panel = forwardRef((props: PanelProps, ref: any) => {
     >
       {children}
     </div>
-  );
-});
+  )
+})

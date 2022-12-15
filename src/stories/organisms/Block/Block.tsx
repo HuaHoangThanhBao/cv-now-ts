@@ -1,26 +1,27 @@
-import React from 'react';
-import { Common, DetailDetail } from '../../../types/Block';
-import { InputType } from '../../../types/Input';
-import { Icon } from '../../atoms/Icon/Icon';
-import { BlockProvider } from './BlockProvider';
+import React from 'react'
+import { Common, DetailDetail } from '../../../types/Block'
+import { InputType } from '../../../types/Input'
+import { Icon } from '../../atoms/Icon'
+import { BlockProvider } from './BlockProvider'
 
 interface BlockProps {
-  data: Common;
-  className?: string;
-  blockChildIndex: number;
+  data: Common
+  className?: string
+  blockChildIndex: number
 }
 
 export const Block = React.memo(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   React.forwardRef((props: BlockProps, ref: any) => {
-    const { className, data, blockChildIndex } = props;
-    const block = data.id;
-    const blockId = block.split('/')[0];
+    const { className, data, blockChildIndex } = props
+    const block = data.id
+    const blockId = block.split('/')[0]
     const update = (el: HTMLDivElement) => {
       ref.current[blockId] = {
         ...ref.current[blockId],
-        [data.uid as string]: { id: block, el: el },
-      };
-    };
+        [data.uid as string]: { id: block, el: el }
+      }
+    }
     return (
       <BlockProvider blockRootData={data}>
         <div
@@ -124,6 +125,6 @@ export const Block = React.memo(
           ></BlockProvider.Bar>
         </div>
       </BlockProvider>
-    );
+    )
   })
-);
+)

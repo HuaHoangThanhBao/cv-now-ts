@@ -1,12 +1,12 @@
-import React, { ReactComponentElement } from 'react';
-import './button.scss';
+import React from 'react'
+import './button.scss'
 
 interface ButtonProps {
-  icon?: ReactComponentElement<any>;
-  className?: string;
-  backgroundColor?: string;
-  text?: string;
-  onClick?: () => void;
+  icon?: React.ReactNode
+  className?: string
+  backgroundColor?: string
+  text?: string
+  onClick?: () => void
 }
 
 export const Button = ({
@@ -14,7 +14,7 @@ export const Button = ({
   className = '',
   backgroundColor,
   text = '',
-  onClick,
+  onClick
 }: ButtonProps) => {
   return (
     <button
@@ -25,5 +25,5 @@ export const Button = ({
       {icon && icon}
       {text}
     </button>
-  );
-};
+  )
+}

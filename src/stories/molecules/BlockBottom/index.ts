@@ -1,1 +1,1 @@
-export { BlockBottom } from './BlockBottom';
+export { BlockBottom } from './BlockBottom'

@@ -1,25 +1,26 @@
-import { jsPDF } from 'jspdf';
-import { maxHeight, maxWidth } from '../contants';
+import { jsPDF } from 'jspdf'
+import { RefObject } from 'react'
+import { maxHeight, maxWidth } from '../contants'
 
 interface UseDownloadResumeProps {
-  panelRefs: any;
+  panelRefs: RefObject<HTMLDivElement[]>
 }
 
-export const useDownloadResume = ({ panelRefs }: UseDownloadResumeProps): [() => void] => {
+export const useDownloadResume = ({ panelRefs }: UseDownloadResumeProps) => {
   async function generatePDF() {
     const pdf = new jsPDF({
       orientation: 'portrait',
       unit: 'pt',
       format: [maxWidth, maxHeight],
-      compress: true,
-    });
-    console.log('getPanelRefs:', panelRefs);
+      compress: true
+    })
+    console.log('getPanelRefs:', panelRefs)
 
-    const data: any = await document.querySelectorAll('div.panel.skilled_based.two-column')[1];
-    console.log('data:', data);
-    pdf.html(data).then(() => {
-      pdf.save('shipping_label.pdf');
-    });
+    const data = await document.querySelectorAll('div.panel.skilled_based.two-column')[1]
+    console.log('data:', data)
+    pdf.html(data as HTMLElement).then(() => {
+      pdf.save('shipping_label.pdf')
+    })
 
     // await pdf.html(document.querySelector('div.panel.skilled_based.two-column'), {
     //   callback: function (pdf) {
@@ -32,5 +33,5 @@ export const useDownloadResume = ({ panelRefs }: UseDownloadResumeProps): [() =>
     // });
   }
 
-  return [generatePDF];
-};
+  return { generatePDF }
+}

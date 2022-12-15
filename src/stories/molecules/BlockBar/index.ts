@@ -1,1 +1,1 @@
-export { BlockBar } from './BlockBar';
+export { BlockBar } from './BlockBar'

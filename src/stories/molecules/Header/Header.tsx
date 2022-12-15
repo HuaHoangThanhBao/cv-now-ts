@@ -1,16 +1,16 @@
-import React from 'react';
-import './header.scss';
-import { ReactComponent as FontIcon } from '../../assets/font.svg';
-import { Button } from '../../atoms/Button';
-import { ReactComponent as ThemeIcon } from '../../assets/theme.svg';
-import { ReactComponent as TemplateIcon } from '../../assets/template-switch.svg';
-import { ReactComponent as LayoutIcon } from '../../assets/layout.svg';
-import { ReactComponent as SettingIcon } from '../../assets/settings.svg';
-import { ReactComponent as DownloadIcon } from '../../assets/download.svg';
+import React from 'react'
+import './header.scss'
+import { ReactComponent as FontIcon } from '../../assets/font.svg'
+import { Button } from '../../atoms/Button'
+import { ReactComponent as ThemeIcon } from '../../assets/theme.svg'
+import { ReactComponent as TemplateIcon } from '../../assets/template-switch.svg'
+import { ReactComponent as LayoutIcon } from '../../assets/layout.svg'
+import { ReactComponent as SettingIcon } from '../../assets/settings.svg'
+import { ReactComponent as DownloadIcon } from '../../assets/download.svg'
 
 interface HeaderProps {
-  setOption: (option: string) => void;
-  generatePDF: () => void;
+  setOption: (option: string) => void
+  generatePDF: () => void
 }
 
 export const Header = ({ setOption, generatePDF }: HeaderProps) => {
@@ -28,5 +28,5 @@ export const Header = ({ setOption, generatePDF }: HeaderProps) => {
         onClick={generatePDF}
       />
     </header>
-  );
-};
+  )
+}
