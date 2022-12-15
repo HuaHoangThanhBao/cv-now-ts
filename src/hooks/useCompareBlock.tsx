@@ -6,9 +6,7 @@ import { Common } from '../types/Block'
 import { InputType } from '../types/Input'
 import { convert } from '../utils'
 
-export const useCompareBlock = (
-  blockRoot: Common
-): [(blockId: string, blockUid: string) => void, () => boolean, () => void] => {
+export const useCompareBlock = (blockRoot: Common) => {
   const currentBlock = useRef<{ blockId: string; blockUid: string }>({
     blockId: '-1',
     blockUid: '-1'
@@ -27,34 +25,33 @@ export const useCompareBlock = (
     const blocks = convert(blockId, blockState)
     const block = blocks.find((b) => b.uid === blockUid)
     let isEqual = true
-    if (block) {
-      for (let i = 0; i < Object.keys(blockRoot).length; i++) {
-        const rootItem = blockRoot[Object.keys(blockRoot)[i]]
-        const item = block[Object.keys(blockRoot)[i]]
-        if (Object.keys(blockRoot)[i] !== InputType.CONTENT_BULLET) {
-          if (rootItem.text !== item.text) {
+    if (!block) return isEqual
+    for (let i = 0; i < Object.keys(blockRoot).length; i++) {
+      const rootItem = blockRoot[Object.keys(blockRoot)[i]]
+      const item = block[Object.keys(blockRoot)[i]]
+      if (Object.keys(blockRoot)[i] !== InputType.CONTENT_BULLET) {
+        if (rootItem.text !== item.text) {
+          isEqual = false
+          break
+        }
+      } else {
+        for (let j = 0; j < rootItem.child.length; j++) {
+          const rootChild = rootItem.child[j]
+          const child = item.child[j]
+          if (!child) {
             isEqual = false
             break
           }
-        } else {
-          for (let j = 0; j < rootItem.child.length; j++) {
-            const rootChild = rootItem.child[j]
-            const child = item.child[j]
-            if (!child) {
-              isEqual = false
-              break
-            }
-            if (rootChild.text !== child.text) {
-              isEqual = false
-              break
-            }
+          if (rootChild.text !== child.text) {
+            isEqual = false
+            break
           }
         }
       }
     }
-    // console.log('currentBlock:', currentBlock);
-    // console.log('blocks:', blocks);
-    // console.log('blockRoot:', blockRoot);
+    // console.log('currentBlock:', currentBlock)
+    // console.log('blocks:', blocks)
+    // console.log('blockRoot:', blockRoot)
     return isEqual
   }
 
@@ -79,7 +76,8 @@ export const useCompareBlock = (
       reference: blockState.reference
     }
     dispatch(sendUpdateBlock({ id: documentState.resume.block._id || '-1', body: updatedBlock }))
+    return updatedBlock
   }
 
-  return [set, compare, send]
+  return { set, compare, send }
 }

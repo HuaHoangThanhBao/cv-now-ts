@@ -68,7 +68,7 @@ const BlockProvider = (props: BlockComposition) => {
   const [showBlockContentBar, setShowBlockContentBar] = useState(false)
   const [showBlockHeaderBar, setShowBlockHeaderBar] = useState(false)
   const [blockRoot, setBlockRoot] = useState(props.blockRootData)
-  const [set, compare, send] = useCompareBlock(blockRoot)
+  const { set, compare, send } = useCompareBlock(blockRoot)
 
   const handleShowBlockContentBar = (
     type: string,
