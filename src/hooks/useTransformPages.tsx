@@ -11,9 +11,7 @@ export const useTransformPages = ({
   isOneColumn,
   pagesOneColumn,
   pagesTwoColumn,
-}: TransformPagesProps): [
-  (_pagesOneColumn?: string[][][], _pagesTwoColumn?: string[][][], _isOneColumn?: boolean) => void
-] => {
+}: TransformPagesProps) => {
   const dispatch = useDispatch();
 
   const callTransformPages = (
@@ -30,5 +28,5 @@ export const useTransformPages = ({
     );
   };
 
-  return [callTransformPages];
+  return { callTransformPages };
 };

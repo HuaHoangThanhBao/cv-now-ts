@@ -26,7 +26,7 @@ export const useMoveChild = ({
 
   const params = useParams();
   const { documentId } = params;
-  const [callTransformPages] = useTransformPages({
+  const { callTransformPages } = useTransformPages({
     isOneColumn: state.isOneColumn || false,
     pagesOneColumn: [],
     pagesTwoColumn: [],

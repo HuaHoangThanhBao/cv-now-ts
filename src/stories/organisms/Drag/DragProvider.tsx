@@ -60,7 +60,7 @@ const DragProvider = (props: DragComposition) => {
   const currentNoNeedItem = useRef<any>();
 
   const [moveChildBefore] = useMoveChild({ pages, state: blockState });
-  const [onChangeColumnTransform] = useColumnTransform();
+  const { onChangeColumnTransform } = useColumnTransform();
 
   const handleDragStart = (e: React.DragEvent<HTMLDivElement>, item: DragPosition) => {
     // console.log('item', item);

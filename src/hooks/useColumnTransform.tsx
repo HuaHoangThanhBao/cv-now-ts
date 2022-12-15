@@ -5,9 +5,9 @@ import { updateDragPages } from '../stories/organisms/Drag/drag.slice';
 import { moveChildBlockToParentBlock } from '../utils';
 import { useTransformPages } from './useTransformPages';
 
-export const useColumnTransform = (): [() => void] => {
+export const useColumnTransform = () => {
   const blockState = useSelector((state: RootState) => state.block);
-  const [callTransformPages] = useTransformPages({
+  const { callTransformPages } = useTransformPages({
     isOneColumn: blockState.isOneColumn || false,
     pagesOneColumn: blockState.pagesOneColumn,
     pagesTwoColumn: blockState.pagesTwoColumn,
@@ -31,7 +31,8 @@ export const useColumnTransform = (): [() => void] => {
     callTransformPages(newPagesTransform, newPagesTransform, status);
     dispatch(onMovingBlock(true));
     dispatch(updateDragPages({ pages: newPagesTransform }));
+    return newPagesTransform;
   };
 
-  return [onChangeColumnTransform];
+  return { onChangeColumnTransform };
 };

@@ -7,7 +7,7 @@ import { updateNoNeeds } from '../stories/organisms/Drag/drag.slice';
 import { getResume, resetResume } from '../stories/pages/DocumentList/documentList.slice';
 import { useEffectOnce } from './useEffectOnce';
 
-export const useFetchDocumentFromParam = (): [boolean] => {
+export const useFetchDocumentFromParam = () => {
   const params = useParams();
   const { documentId } = params;
   const [isUpdated, setIsUpdated] = useState(false);
@@ -37,5 +37,5 @@ export const useFetchDocumentFromParam = (): [boolean] => {
     }
   }, [resume, dispatch]);
 
-  return [isUpdated];
+  return { isUpdated };
 };

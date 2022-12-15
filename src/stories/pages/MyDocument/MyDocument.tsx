@@ -10,7 +10,7 @@ import { useDownloadResume } from '../../../hooks/useDownloadResume';
 export const MyDocument: React.FC = () => {
   const rootBlockState = useSelector((state: RootState) => state.block);
   const template = useSelector((state: RootState) => state.template.currentTemplate);
-  const [isUpdated] = useFetchDocumentFromParam();
+  const { isUpdated } = useFetchDocumentFromParam();
   const downloadRef = useRef<any>();
   const [generatePDF] = useDownloadResume({ panelRefs: downloadRef.current?.getPanelRefs() });
 

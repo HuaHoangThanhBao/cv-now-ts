@@ -23,7 +23,7 @@ import { pagesOneColumn, pagesTwoColumn } from '../../../contants/ColumnFormat';
 export const DocumentList = () => {
   const [isOnCreating, setIsOnCreating] = useState(false);
   const documentList = useSelector((state: RootState) => state.document.documentList);
-  const [callTransformPages] = useTransformPages({
+  const { callTransformPages } = useTransformPages({
     isOneColumn: false,
     pagesOneColumn: [],
     pagesTwoColumn: [],
