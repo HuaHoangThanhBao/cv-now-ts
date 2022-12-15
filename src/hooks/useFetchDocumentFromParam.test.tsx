@@ -1,4 +1,4 @@
-import { renderHook, cleanup, waitFor } from '@testing-library/react'
+import { renderHook, waitFor } from '@testing-library/react'
 import { store } from '../store'
 import { useFetchDocumentFromParam } from './useFetchDocumentFromParam'
 import mockAxios from 'jest-mock-axios'
@@ -11,8 +11,6 @@ jest.mock('react-router-dom', () => ({
     documentId: '6391eb9a1573fb0aa1c47749'
   })
 }))
-
-afterEach(cleanup)
 
 describe('useFetchDocumentFromParam', () => {
   test('should render hook', () => {

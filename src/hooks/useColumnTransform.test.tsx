@@ -1,9 +1,7 @@
-import { act, renderHook, cleanup } from '@testing-library/react'
+import { act, renderHook } from '@testing-library/react'
 import { useColumnTransform } from './useColumnTransform'
 import { store } from '../store'
 import { Wrapper } from '../utils/test-utils'
-
-afterEach(cleanup)
 
 describe('useColumnTransform', () => {
   test('should render hook', () => {

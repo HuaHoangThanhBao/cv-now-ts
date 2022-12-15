@@ -1,10 +1,8 @@
-import { renderHook, act, cleanup } from '@testing-library/react'
+import { renderHook, act } from '@testing-library/react'
 import { Wrapper } from 'src/utils/test-utils'
 import { useCompareBlock } from './useCompareBlock'
 import { store } from 'src/store'
 import { convert } from 'src/utils'
-
-afterEach(cleanup)
 
 describe('useCompareBlock', () => {
   test('should render rook', () => {

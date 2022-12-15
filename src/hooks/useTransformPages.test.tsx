@@ -1,10 +1,8 @@
-import { renderHook, act, cleanup } from '@testing-library/react'
+import { renderHook, act } from '@testing-library/react'
 import { useTransformPages } from './useTransformPages'
 import { store } from '../store'
 import { pagesOneColumn, pagesTwoColumn } from '../contants/ColumnFormat'
 import { Wrapper } from '../utils/test-utils'
-
-afterEach(cleanup)
 
 describe('useTransformPages', () => {
   const blockState = store.getState().block
