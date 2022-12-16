@@ -130,8 +130,19 @@ const BlockProvider = (props: BlockComposition) => {
   }
 
   const handleDisableBlockHeaderBar = useCallback(() => {
+    dispatch(
+      updateSelectedBlock({
+        selectedBlock: {
+          blockId: '-1',
+          blockType: '',
+          blockUid: '-1',
+          blockChildIndex: -1,
+          selectedElement: ''
+        }
+      })
+    )
     setShowBlockHeaderBar(false)
-  }, [])
+  }, [dispatch])
 
   const handleCreateBlock = (blockId: string) => {
     handleDisableBlockContentBar()
@@ -209,4 +220,4 @@ BlockProvider.Bottom = BlockBottom
 BlockProvider.Bar = BlockBar
 BlockProvider.Input = Input
 
-export { useBlock, BlockProvider }
+export { useBlock, BlockProvider, BlockContext }
