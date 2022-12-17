@@ -16,7 +16,7 @@ export const useDownloadResume = ({ panelRefs }: UseDownloadResumeProps) => {
     })
     console.log('getPanelRefs:', panelRefs)
 
-    const data = await document.querySelectorAll('div.panel.skilled_based.two-column')[1]
+    const data = await document.querySelectorAll('div.panel.two-column')[0]
     console.log('data:', data)
     pdf.html(data as HTMLElement).then(() => {
       pdf.save('shipping_label.pdf')

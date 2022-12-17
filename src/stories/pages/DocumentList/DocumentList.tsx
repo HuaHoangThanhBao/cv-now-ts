@@ -95,7 +95,7 @@ export const DocumentList = () => {
                     isOneColumn={document.isOneColumn}
                     pagesOneColumn={document.pagesOneColumn}
                     pagesTwoColumn={document.pagesTwoColumn}
-                    template=""
+                    template={document.template.currentTemplate}
                   />
                 )}
               </div>

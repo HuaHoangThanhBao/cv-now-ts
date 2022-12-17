@@ -2,6 +2,14 @@
   .btn {
     padding: 0.5rem 0;
     width: 100%;
+    .icon {
+      float: left;
+    }
+    &-text {
+      margin-top: -0.35rem;
+      float: left;
+      font-size: 1.2rem;
+    }
   }
   &-container {
     height: 100%;

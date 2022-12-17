@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
+import { updateCurrentTemplate } from 'src/stories/organisms/Template/template.slice'
 import { RootState, useAppDispatch } from '../store'
 import { resetBlockState, updateState } from '../stories/organisms/Block/block.slice'
 import { updateNoNeeds } from '../stories/organisms/Drag/drag.slice'
@@ -27,6 +28,7 @@ export const useFetchDocumentFromParam = () => {
     if (resume && resume._id !== '-1') {
       setIsUpdated(false)
       dispatch(updateState(resume))
+      dispatch(updateCurrentTemplate(resume.template.currentTemplate))
       dispatch(
         updateNoNeeds({
           noNeedsOneColumn: resume.noNeedsOneColumn,

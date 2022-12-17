@@ -23,7 +23,7 @@ export const Button = ({
       onClick={onClick}
     >
       {icon && icon}
-      {text}
+      <div className="btn-text">{text}</div>
     </button>
   )
 }

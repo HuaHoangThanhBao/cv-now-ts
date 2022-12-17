@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { FulfilledAction, PendingAction, RejectedAction } from 'src/types/AsyncThunk'
+import { TemplateType } from 'src/types/Template'
 import { http } from '../../../utils'
 import {
   blockInitialState,
@@ -8,6 +9,7 @@ import {
   PageState,
   PageTransformState
 } from '../../organisms/Block/block.slice'
+import { TemplateState } from '../../organisms/Template/template.slice'
 
 export interface DocumentRes extends PageState {
   _id: string
@@ -17,6 +19,8 @@ export interface DocumentRes extends PageState {
   noNeedsTwoColumn: string[]
   pagesOneColumn: string[][][]
   pagesTwoColumn: string[][][]
+  template: TemplateState
+  profile: ProfileState
 }
 
 export interface DocumentCreateReq {
@@ -39,6 +43,37 @@ interface DocumentSelect {
   resume: DocumentRes
 }
 
+export interface ProfileState {
+  _id?: string
+  email: string
+  address: string
+  phone: string
+  website: string
+  linkedIn: string
+  twitter: string
+  skype: string
+  facebook: string
+  gitHub: string
+  stackOverflow: string
+  medium: string
+  instagram: string
+}
+
+export const profileInitialState = {
+  email: '',
+  address: '',
+  phone: '',
+  website: '',
+  linkedIn: '',
+  twitter: '',
+  skype: '',
+  facebook: '',
+  gitHub: '',
+  stackOverflow: '',
+  medium: '',
+  instagram: ''
+}
+
 const resumeInitialData = {
   _id: '-1',
   block: blockInitialState,
@@ -47,7 +82,11 @@ const resumeInitialData = {
   pagesTwoColumn: [],
   pages: [],
   noNeedsOneColumn: [],
-  noNeedsTwoColumn: []
+  noNeedsTwoColumn: [],
+  template: {
+    currentTemplate: TemplateType.skilled_based
+  },
+  profile: { ...profileInitialState }
 }
 
 const initialState: DocumentListState & DocumentSelect = {
@@ -74,6 +113,7 @@ export const getResume = createAsyncThunk(
     return response.data
   }
 )
+
 export const sendUpdatePages = createAsyncThunk(
   'document/sendUpdatePages',
   async ({ id, body }: { id: string; body: PageTransformState }, thunkAPI) => {
@@ -83,6 +123,17 @@ export const sendUpdatePages = createAsyncThunk(
     return response.data
   }
 )
+
+export const sendUpdateProfile = createAsyncThunk(
+  'document/updateProfile',
+  async ({ id, body }: { id: string; body: ProfileState }, thunkAPI) => {
+    const response = await http.put<ProfileState>(`profiles/${id}`, body, {
+      signal: thunkAPI.signal
+    })
+    return response.data
+  }
+)
+
 export const createNewResume = createAsyncThunk(
   'document/createNewResume',
   async (
@@ -97,6 +148,7 @@ export const createNewResume = createAsyncThunk(
     return response.data
   }
 )
+
 export const deleteResume = createAsyncThunk(
   'document/deleteResume',
   async ({ id }: { id: string }, thunkAPI) => {
@@ -142,6 +194,10 @@ const documentSlice = createSlice({
           state.documentList.splice(deleteDocumentIndex, 1)
         }
         state.documentSelectedId = '-1'
+      })
+      .addCase(sendUpdateProfile.fulfilled, (state, action) => {
+        console.log('profile updated:', action.payload)
+        state.resume.profile = action.payload
       })
       .addMatcher<PendingAction>(
         (action) => action.type.endsWith('/pending'),

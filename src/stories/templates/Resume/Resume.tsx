@@ -47,14 +47,19 @@ export const Resume = forwardRef<ForwardRefProps, ResumeProps>((props: ResumePro
     profileContainerRef,
     isOnPreview
   })
-  const [renderProfileAvatar, renderProfileInfo, renderProfileSocial, renderProfile] =
-    useTransformProfile({
-      template,
-      profileAvatarRef,
-      profileInfoRef,
-      profileSocialRef,
-      profileContainerRef
-    })
+  const {
+    renderProfileAvatar,
+    renderProfileInfo,
+    renderProfileSocial,
+    renderProfile,
+    renderModal
+  } = useTransformProfile({
+    template,
+    profileAvatarRef,
+    profileInfoRef,
+    profileSocialRef,
+    profileContainerRef
+  })
 
   useImperativeHandle(ref, () => panelsRef)
 
@@ -95,7 +100,7 @@ export const Resume = forwardRef<ForwardRefProps, ResumeProps>((props: ResumePro
       return (
         <>
           <div className="even">
-            {renderProfileAvatar(pageI, 0)}
+            {renderProfileAvatar(pageI)}
             {renderProfileSocial(pageI, 0)}
             {evenColumn.map((block: string, blockIndex: number) => {
               const blocks: Common[] = convert(evenColumn[blockIndex].split('/')[0], state)
@@ -121,7 +126,7 @@ export const Resume = forwardRef<ForwardRefProps, ResumeProps>((props: ResumePro
                 marginTop: techMarginTopStyle(pageI)
               }}
             >
-              {renderProfileInfo(pageI, 1)}
+              {renderProfileInfo(pageI)}
               {renderProfileSocial(pageI, 1)}
               {oddColumn &&
                 oddColumn.map((block: string, blockIndex: number) => {
@@ -226,5 +231,10 @@ export const Resume = forwardRef<ForwardRefProps, ResumeProps>((props: ResumePro
     } else dispatch(updateSelectedBlock({ selectedBlock: { selectedElement: 'none' } }))
   })
 
-  return <>{renderDocuments(pagesD)}</>
+  return (
+    <>
+      {renderDocuments(pagesD)}
+      {renderModal()}
+    </>
+  )
 })

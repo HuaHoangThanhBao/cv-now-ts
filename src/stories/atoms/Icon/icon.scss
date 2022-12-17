@@ -8,9 +8,15 @@
   &.social {
     background-color: inherit;
     padding: 0;
+    height: auto;
+    margin-right: 0.5rem;
     svg,
     path {
       fill: currentColor !important;
+    }
+    img {
+      width: 1.9rem;
+      height: 1.8rem;
     }
   }
   svg {

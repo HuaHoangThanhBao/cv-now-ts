@@ -6,7 +6,7 @@ import { RootState, useAppDispatch } from '../../../store'
 import { Resume } from '../../templates/Resume'
 import { onMovingBlock } from '../Block/block.slice'
 import './template.scss'
-import { updateCurrentTemplate } from './template.slice'
+import { sendUpdateCurrentTemplate, TemplateState, updateCurrentTemplate } from './template.slice'
 
 interface TemplateProps {
   setOption: (option: string) => void
@@ -15,6 +15,7 @@ interface TemplateProps {
 export const Template = ({ setOption }: TemplateProps) => {
   const ref = useRef(null)
   const blockState = useSelector((state: RootState) => state.block)
+  const resume = useSelector((state: RootState) => state.document.resume)
   const dispatch = useAppDispatch()
 
   useOnClickOutside(ref, () => {
@@ -22,7 +23,12 @@ export const Template = ({ setOption }: TemplateProps) => {
   })
 
   const onChangeTemplate = (template: string) => {
+    const updateTemplate: TemplateState = {
+      ...resume.template,
+      currentTemplate: template
+    }
     dispatch(updateCurrentTemplate(template))
+    dispatch(sendUpdateCurrentTemplate({ id: resume.template._id || '-1', body: updateTemplate }))
     dispatch(onMovingBlock(true))
   }
 

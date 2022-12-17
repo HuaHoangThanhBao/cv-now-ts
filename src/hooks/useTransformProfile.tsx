@@ -1,11 +1,13 @@
-import { ReactNode } from 'react'
+import { useState } from 'react'
 import { useSelector } from 'react-redux'
+import { Modal } from 'src/stories/organisms/Modal'
 import { RootState } from '../store'
 import { Avatar } from '../stories/atoms/Avatar/Avatar'
 import { ProfileInfo } from '../stories/molecules/ProfileInfo'
 import { ProfileSocial } from '../stories/molecules/ProfileSocial'
 import { Profile } from '../stories/organisms/Profile'
 import { TemplateType } from '../types/Template'
+import { useProfileForm } from './useProfileForm'
 
 interface TransformProfileProps {
   template: string
@@ -21,13 +23,10 @@ export const useTransformProfile = ({
   profileInfoRef,
   profileSocialRef,
   profileContainerRef
-}: TransformProfileProps): [
-  (pageI: number, columnI: number) => JSX.Element | JSX.Element[] | ReactNode | ReactNode[],
-  (pageI: number, columnI: number) => JSX.Element | JSX.Element[] | ReactNode | ReactNode[],
-  (pageI: number, columnI: number) => JSX.Element | JSX.Element[] | ReactNode | ReactNode[],
-  (pageI: number) => JSX.Element | JSX.Element[] | ReactNode | ReactNode[]
-] => {
+}: TransformProfileProps) => {
   const isOneColumn = useSelector((state: RootState) => state.block.isOneColumn)
+  const [isModalOpen, setIsModalOpen] = useState(false)
+
   const renderProfileAvatar = (pageI: number) => {
     if (pageI > 0) return null
     if (
@@ -59,7 +58,7 @@ export const useTransformProfile = ({
       ((template === TemplateType.minimalist || template === TemplateType.skilled_based) &&
         columnI === 1)
     )
-      return <ProfileSocial ref={profileSocialRef} />
+      return <ProfileSocial ref={profileSocialRef} onClick={showModal} />
     return null
   }
 
@@ -71,9 +70,23 @@ export const useTransformProfile = ({
         template !== TemplateType.minimalist) ||
       isOneColumn
     )
-      return <Profile ref={profileContainerRef} />
+      return <Profile ref={profileContainerRef} onClick={showModal} />
     return null
   }
 
-  return [renderProfileAvatar, renderProfileInfo, renderProfileSocial, renderProfile]
+  const showModal = () => {
+    setIsModalOpen((prev) => !prev)
+  }
+
+  const { renderProfileForm } = useProfileForm({ closeForm: showModal })
+
+  const renderModal = () => {
+    return (
+      <Modal isOpen={isModalOpen} onClick={showModal}>
+        {renderProfileForm()}
+      </Modal>
+    )
+  }
+
+  return { renderProfileAvatar, renderProfileInfo, renderProfileSocial, renderProfile, renderModal }
 }

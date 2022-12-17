@@ -1,7 +1,7 @@
 import React from 'react'
 import { Common, DetailDetail } from '../../../types/Block'
 import { InputType } from '../../../types/Input'
-import { Icon } from '../../atoms/Icon'
+// import { Icon } from '../../atoms/Icon'
 import { BlockProvider } from './BlockProvider'
 
 interface BlockProps {
@@ -29,15 +29,13 @@ export const Block = React.memo(
           ref={(el: HTMLDivElement) => update(el)}
         >
           <BlockProvider.Header>
-            <>{data?.uid}</>
             <BlockProvider.Input
               type={InputType.HEADER}
               data={data}
               blockChildIndex={blockChildIndex}
-              title={<Icon iconType={blockId} />}
+              // title={<Icon iconType={blockId} />} //Future function
             />
           </BlockProvider.Header>
-          {/* <>{data?.uid}</> */}
           <BlockProvider.Input
             type={InputType.TITLE}
             data={data}

@@ -1,13 +1,25 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { http } from 'src/utils'
 import { TemplateType } from '../../../types/Template'
 
-interface TemplateState {
+export interface TemplateState {
+  _id?: string
   currentTemplate: string
 }
 
 const initialState: TemplateState = {
   currentTemplate: TemplateType.skilled_based
 }
+
+export const sendUpdateCurrentTemplate = createAsyncThunk(
+  'template/updateTemplate',
+  async ({ id, body }: { id: string; body: TemplateState }, thunkAPI) => {
+    const response = await http.put<TemplateState>(`templates/${id}`, body, {
+      signal: thunkAPI.signal
+    })
+    return response.data
+  }
+)
 
 const templateSlice = createSlice({
   name: 'template',
@@ -16,6 +28,12 @@ const templateSlice = createSlice({
     updateCurrentTemplate: (state, action: PayloadAction<string>) => {
       state.currentTemplate = action.payload
     }
+  },
+  extraReducers(builder) {
+    builder.addCase(sendUpdateCurrentTemplate.fulfilled, (state, action) => {
+      console.log('template updated:', action.payload.currentTemplate)
+      state.currentTemplate = action.payload.currentTemplate
+    })
   }
 })
 

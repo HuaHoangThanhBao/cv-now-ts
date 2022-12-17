@@ -57,6 +57,10 @@
   .btn {
     flex-direction: row-reverse;
     justify-content: flex-start;
+    .icon {
+      margin-left: 0.5rem;
+      margin-right: 0;
+    }
   }
 }
 
@@ -229,6 +233,7 @@
     background-color: #313c4e;
     color: white;
     border-radius: 0.5rem;
+    width: 30%;
   }
   .profile-content {
     padding-left: 2rem;
@@ -245,7 +250,15 @@
 
 //
 .functional {
-  .avatar,
+  .avatar {
+    height: calc(13rem + 2rem);
+    padding: 2rem;
+  }
+  .avatar-img {
+    height: 13rem;
+    width: 13rem;
+    max-width: none;
+  }
   .profile-social {
     padding: 0 2rem;
     padding-top: 2rem;
@@ -263,7 +276,15 @@
 
 //
 .minimalist {
-  .avatar,
+  .avatar {
+    height: calc(13rem + 2rem);
+    padding: 2rem;
+  }
+  .avatar-img {
+    height: 13rem;
+    width: 13rem;
+    max-width: none;
+  }
   .profile-info,
   .profile-social {
     padding: 2rem;
@@ -277,7 +298,16 @@
 
 //
 .skilled_based {
-  .avatar,
+  .avatar {
+    width: calc(17rem);
+    height: calc(15rem);
+    padding: 2rem 2rem 0 2rem;
+  }
+  .avatar-img {
+    height: 13rem;
+    width: 13rem;
+    max-width: none;
+  }
   .profile-info,
   .profile-social {
     padding: 2rem;
