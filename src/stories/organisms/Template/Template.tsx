@@ -56,6 +56,8 @@ export const Template = ({ setOption }: TemplateProps) => {
                 pagesTwoColumn={blockState.pagesTwoColumn}
                 isOnPreview={true}
                 template={template}
+                profile={resume.profile}
+                avatar={resume.avatar}
               />
             </div>
             <div className="preview-overlay"></div>

@@ -29,6 +29,7 @@ import { ReactComponent as TemplateIcon } from '../../assets/template-switch.svg
 import { ReactComponent as LayoutIcon } from '../../assets/layout.svg'
 import { ReactComponent as SettingIcon } from '../../assets/settings.svg'
 import { ReactComponent as DownloadIcon } from '../../assets/download.svg'
+import { ReactComponent as UploadIcon } from '../../assets/upload.svg'
 
 import MailIconWhite from '../../assets/mail-white.png'
 import PhoneIconWhite from '../../assets/phone-white.png'
@@ -183,6 +184,8 @@ export const Icon = (props: IconProps) => {
           return <AddIcon />
         case 'download':
           return <DownloadIcon />
+        case 'upload':
+          return <UploadIcon />
         case 'bold':
           return <BoldIcon />
         case 'italic':

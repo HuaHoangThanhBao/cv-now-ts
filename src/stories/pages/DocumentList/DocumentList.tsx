@@ -96,6 +96,8 @@ export const DocumentList = () => {
                     pagesOneColumn={document.pagesOneColumn}
                     pagesTwoColumn={document.pagesTwoColumn}
                     template={document.template.currentTemplate}
+                    profile={document.profile}
+                    avatar={document.avatar}
                   />
                 )}
               </div>

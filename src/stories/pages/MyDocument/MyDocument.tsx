@@ -9,6 +9,8 @@ import { useDownloadResume } from '../../../hooks/useDownloadResume'
 
 export const MyDocument: React.FC = () => {
   const rootBlockState = useSelector((state: RootState) => state.block)
+  const profile = useSelector((state: RootState) => state.document.resume.profile)
+  const avatar = useSelector((state: RootState) => state.document.resume.avatar)
   const template = useSelector((state: RootState) => state.template.currentTemplate)
   const { isUpdated } = useFetchDocumentFromParam()
   const downloadRef = useRef<HTMLDivElement[]>(null)
@@ -26,6 +28,8 @@ export const MyDocument: React.FC = () => {
           pagesTwoColumn={rootBlockState.pagesTwoColumn}
           template={template}
           ref={downloadRef}
+          profile={profile}
+          avatar={avatar}
         />
       )}
     </>

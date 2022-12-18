@@ -6,6 +6,7 @@ interface ButtonProps {
   className?: string
   backgroundColor?: string
   text?: string
+  children?: React.ReactNode
   onClick?: () => void
 }
 
@@ -14,6 +15,7 @@ export const Button = ({
   className = '',
   backgroundColor,
   text = '',
+  children,
   onClick
 }: ButtonProps) => {
   return (
@@ -24,6 +26,7 @@ export const Button = ({
     >
       {icon && icon}
       <div className="btn-text">{text}</div>
+      {children}
     </button>
   )
 }

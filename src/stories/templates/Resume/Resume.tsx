@@ -13,6 +13,7 @@ import { useTransformBlock, useEventListener, useTransformProfile } from '../../
 import './resume.scss'
 import { TemplateType } from '../../../types/Template'
 import { maxHeight } from '../../../contants'
+import { AvatarState, ProfileState } from 'src/stories/pages/DocumentList/documentList.slice'
 
 interface ResumeProps {
   pages: string[][][]
@@ -22,11 +23,23 @@ interface ResumeProps {
   pagesTwoColumn: string[][][]
   isOnPreview?: boolean
   template: string
+  profile: ProfileState
+  avatar: AvatarState
 }
 type ForwardRefProps = GlobalIterator
 
 export const Resume = forwardRef<ForwardRefProps, ResumeProps>((props: ResumeProps, ref) => {
-  const { pages, state, isOneColumn, pagesOneColumn, pagesTwoColumn, isOnPreview, template } = props
+  const {
+    pages,
+    state,
+    isOneColumn,
+    pagesOneColumn,
+    pagesTwoColumn,
+    isOnPreview,
+    template,
+    profile,
+    avatar
+  } = props
   const panelsRef = useRef<HTMLDivElement[]>([])
   const blocksRef = useRef([])
   const profileAvatarRef = useRef<HTMLDivElement>(null)
@@ -52,8 +65,11 @@ export const Resume = forwardRef<ForwardRefProps, ResumeProps>((props: ResumePro
     renderProfileInfo,
     renderProfileSocial,
     renderProfile,
-    renderModal
+    renderModal,
+    renderImageCropModal
   } = useTransformProfile({
+    profile,
+    avatar,
     template,
     profileAvatarRef,
     profileInfoRef,
@@ -235,6 +251,7 @@ export const Resume = forwardRef<ForwardRefProps, ResumeProps>((props: ResumePro
     <>
       {renderDocuments(pagesD)}
       {renderModal()}
+      {renderImageCropModal()}
     </>
   )
 })

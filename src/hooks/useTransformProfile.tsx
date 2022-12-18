@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Modal } from 'src/stories/organisms/Modal'
+import { AvatarState, ProfileState } from 'src/stories/pages/DocumentList/documentList.slice'
 import { RootState } from '../store'
 import { Avatar } from '../stories/atoms/Avatar/Avatar'
 import { ProfileInfo } from '../stories/molecules/ProfileInfo'
@@ -8,8 +9,11 @@ import { ProfileSocial } from '../stories/molecules/ProfileSocial'
 import { Profile } from '../stories/organisms/Profile'
 import { TemplateType } from '../types/Template'
 import { useProfileForm } from './useProfileForm'
+import { useUploadAvatar } from './useUploadAvatar'
 
 interface TransformProfileProps {
+  profile: ProfileState
+  avatar: AvatarState
   template: string
   profileAvatarRef: React.RefObject<HTMLDivElement>
   profileInfoRef: React.RefObject<HTMLDivElement>
@@ -18,6 +22,8 @@ interface TransformProfileProps {
 }
 
 export const useTransformProfile = ({
+  profile,
+  avatar,
   template,
   profileAvatarRef,
   profileInfoRef,
@@ -26,6 +32,17 @@ export const useTransformProfile = ({
 }: TransformProfileProps) => {
   const isOneColumn = useSelector((state: RootState) => state.block.isOneColumn)
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const {
+    isShowImageCrop,
+    disableShowImageCrop,
+    renderProfileCropForm,
+    bindingImage,
+    onSelectFile
+  } = useUploadAvatar({ avatar })
+
+  const showModal = () => {
+    setIsModalOpen((prev) => !prev)
+  }
 
   const renderProfileAvatar = (pageI: number) => {
     if (pageI > 0) return null
@@ -36,7 +53,7 @@ export const useTransformProfile = ({
       isOneColumn
     )
       return null
-    return <Avatar ref={profileAvatarRef} />
+    return <Avatar ref={profileAvatarRef} onSelectFile={onSelectFile} bindingImage={bindingImage} />
   }
 
   const renderProfileInfo = (pageI: number) => {
@@ -58,7 +75,7 @@ export const useTransformProfile = ({
       ((template === TemplateType.minimalist || template === TemplateType.skilled_based) &&
         columnI === 1)
     )
-      return <ProfileSocial ref={profileSocialRef} onClick={showModal} />
+      return <ProfileSocial ref={profileSocialRef} onClick={showModal} profile={profile} />
     return null
   }
 
@@ -70,15 +87,17 @@ export const useTransformProfile = ({
         template !== TemplateType.minimalist) ||
       isOneColumn
     )
-      return <Profile ref={profileContainerRef} onClick={showModal} />
+      return (
+        <Profile
+          ref={profileContainerRef}
+          profile={profile}
+          onClick={showModal}
+          onSelectFile={onSelectFile}
+          bindingImage={bindingImage}
+        />
+      )
     return null
   }
-
-  const showModal = () => {
-    setIsModalOpen((prev) => !prev)
-  }
-
-  const { renderProfileForm } = useProfileForm({ closeForm: showModal })
 
   const renderModal = () => {
     return (
@@ -88,5 +107,21 @@ export const useTransformProfile = ({
     )
   }
 
-  return { renderProfileAvatar, renderProfileInfo, renderProfileSocial, renderProfile, renderModal }
+  const renderImageCropModal = () => {
+    return (
+      <Modal isOpen={isShowImageCrop} onClick={disableShowImageCrop}>
+        {renderProfileCropForm()}
+      </Modal>
+    )
+  }
+
+  const { renderProfileForm } = useProfileForm({ closeForm: showModal })
+  return {
+    renderProfileAvatar,
+    renderProfileInfo,
+    renderProfileSocial,
+    renderProfile,
+    renderModal,
+    renderImageCropModal
+  }
 }

@@ -21,6 +21,7 @@ export interface DocumentRes extends PageState {
   pagesTwoColumn: string[][][]
   template: TemplateState
   profile: ProfileState
+  avatar: AvatarState
 }
 
 export interface DocumentCreateReq {
@@ -59,6 +60,11 @@ export interface ProfileState {
   instagram: string
 }
 
+export interface AvatarState {
+  _id?: string
+  url: string
+}
+
 export const profileInitialState = {
   email: '',
   address: '',
@@ -86,7 +92,10 @@ const resumeInitialData = {
   template: {
     currentTemplate: TemplateType.skilled_based
   },
-  profile: { ...profileInitialState }
+  profile: { ...profileInitialState },
+  avatar: {
+    url: ''
+  }
 }
 
 const initialState: DocumentListState & DocumentSelect = {
@@ -128,6 +137,16 @@ export const sendUpdateProfile = createAsyncThunk(
   'document/updateProfile',
   async ({ id, body }: { id: string; body: ProfileState }, thunkAPI) => {
     const response = await http.put<ProfileState>(`profiles/${id}`, body, {
+      signal: thunkAPI.signal
+    })
+    return response.data
+  }
+)
+
+export const sendUpdateAvatar = createAsyncThunk(
+  'document/updateAvatar',
+  async ({ id, body }: { id: string; body: AvatarState }, thunkAPI) => {
+    const response = await http.put<AvatarState>(`avatars/${id}`, body, {
       signal: thunkAPI.signal
     })
     return response.data
@@ -198,6 +217,10 @@ const documentSlice = createSlice({
       .addCase(sendUpdateProfile.fulfilled, (state, action) => {
         console.log('profile updated:', action.payload)
         state.resume.profile = action.payload
+      })
+      .addCase(sendUpdateAvatar.fulfilled, (state, action) => {
+        console.log('avatar updated:', action.payload)
+        state.resume.avatar = action.payload
       })
       .addMatcher<PendingAction>(
         (action) => action.type.endsWith('/pending'),
