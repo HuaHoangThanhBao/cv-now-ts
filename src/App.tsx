@@ -1,7 +1,7 @@
-import { Routes, Route, BrowserRouter } from 'react-router-dom';
-import { DocumentList } from './stories/pages/DocumentList';
-import { MyDocument } from './stories/pages/MyDocument';
-import './App.css';
+import { Routes, Route, BrowserRouter } from 'react-router-dom'
+import { DocumentList } from './stories/pages/DocumentList'
+import { MyDocument } from './stories/pages/MyDocument'
+import './App.scss'
 
 function App() {
   return (
@@ -13,7 +13,7 @@ function App() {
         </Routes>
       </BrowserRouter>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App

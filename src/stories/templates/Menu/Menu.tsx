@@ -1,16 +1,22 @@
-import { useState } from 'react';
-import { Header } from '../../molecules/Header';
-import { Drag } from '../../organisms/Drag/Drag';
-import './menu.scss';
+import { useState } from 'react'
+import { Header } from '../../molecules/Header'
+import { Drag } from '../../organisms/Drag'
+import { Template } from '../../organisms/Template'
+import './menu.scss'
 
-export const Menu = () => {
-  const [option, setOption] = useState('');
+interface MenuProps {
+  generatePDF: () => void
+}
+
+export const Menu = ({ generatePDF }: MenuProps) => {
+  const [option, setOption] = useState('')
   return (
     <div className="menu">
-      <Header setOption={setOption} />
+      <Header setOption={setOption} generatePDF={generatePDF} />
       <div className="menu-panel">
-        <Drag option={option} setOption={setOption} />
+        {option === 'layout' && <Drag setOption={setOption} />}
+        {option === 'template' && <Template setOption={setOption} />}
       </div>
     </div>
-  );
-};
+  )
+}

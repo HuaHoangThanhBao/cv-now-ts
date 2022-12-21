@@ -14,5 +14,5 @@ export enum InputType {
   CONTACT = 'contact',
   CONTACT_PERSON = 'contact_person',
   CONTACT_INFO = 'contact_info',
-  CONTENT_BULLET = 'content_bullet',
+  CONTENT_BULLET = 'content_bullet'
 }

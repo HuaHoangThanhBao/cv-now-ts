@@ -1,27 +1,26 @@
-import React from 'react';
-import { Icon } from '../../atoms/Icon/Icon';
-import { useBlock } from '../../organisms/Block/BlockProvider';
-import './blockBottom.scss';
+import { Icon } from '../../atoms/Icon'
+import { useBlock } from '../../organisms/Block/BlockProvider'
+import './blockBottom.scss'
 
 export interface BlockBottomProps {
-  blockId: string;
-  blockChildIndex: number;
-  children?: JSX.Element | JSX.Element[];
+  blockId: string
+  blockChildIndex: number
+  children?: JSX.Element | JSX.Element[]
 }
 
 export const BlockBottom = ({ children, ...props }: BlockBottomProps) => {
-  const { blockId, blockChildIndex } = props;
-  const { showBlockContentBar, selectedBlock, handleCreateBlock } = useBlock();
+  const { blockId, blockChildIndex } = props
+  const { showBlockContentBar, selectedBlock, handleCreateBlock } = useBlock()
 
   const onCreateBlock = () => {
-    handleCreateBlock(blockId);
-  };
+    handleCreateBlock(blockId)
+  }
 
   if (
     blockId !== selectedBlock.selectedBlock.blockId ||
     blockChildIndex !== selectedBlock.selectedBlock.blockChildIndex
   )
-    return null;
+    return null
   else if (showBlockContentBar) {
     return (
       <div className="block-bottom">
@@ -34,6 +33,6 @@ export const BlockBottom = ({ children, ...props }: BlockBottomProps) => {
         </div>
         {children}
       </div>
-    );
-  } else return null;
-};
+    )
+  } else return null
+}

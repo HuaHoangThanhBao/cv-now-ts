@@ -1,25 +1,24 @@
-import React, { useRef } from 'react';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../../store';
-import { DragPosition } from '../../../types/Drag';
-import { DragProvider } from './DragProvider';
-import { v4 as uuidv4 } from 'uuid';
-import { useOnClickOutside } from '../../../hooks';
+import React, { useRef } from 'react'
+import { useSelector } from 'react-redux'
+import { RootState } from '../../../store'
+import { DragPosition } from '../../../types/Drag'
+import { DragProvider } from './DragProvider'
+import { v4 as uuidv4 } from 'uuid'
+import { useOnClickOutside } from '../../../hooks'
 
 interface DragProps {
-  option: string;
-  setOption: (option: string) => void;
+  setOption: (option: string) => void
 }
 
-export const Drag = ({ option, setOption }: DragProps) => {
-  const pages = useSelector((state: RootState) => state.drag.pages);
-  const ref = useRef(null);
+export const Drag = ({ setOption }: DragProps) => {
+  const pages = useSelector((state: RootState) => state.drag.pages)
+  const ref = useRef(null)
   useOnClickOutside(ref, () => {
-    setOption('');
-  });
+    setOption('')
+  })
 
   const getFirstColumn = () => {
-    const res: DragPosition[] = [];
+    const res: DragPosition[] = []
     for (let i = 0; i < pages.length; i++) {
       for (let j = 0; j < pages[i].length; j++) {
         for (let z = 0; z < pages[i][j].length; z++) {
@@ -30,16 +29,16 @@ export const Drag = ({ option, setOption }: DragProps) => {
               column: pages[i][j],
               columnI: j,
               block: pages[i][j][z],
-              blockI: z,
-            });
+              blockI: z
+            })
           }
         }
       }
     }
-    return res;
-  };
+    return res
+  }
   const getSecondColumn = () => {
-    const res: DragPosition[] = [];
+    const res: DragPosition[] = []
     for (let i = 0; i < pages.length; i++) {
       for (let j = 0; j < pages[i].length; j++) {
         for (let z = 0; z < pages[i][j].length; z++) {
@@ -50,14 +49,14 @@ export const Drag = ({ option, setOption }: DragProps) => {
               column: pages[i][j],
               columnI: j,
               block: pages[i][j][z],
-              blockI: z,
-            });
+              blockI: z
+            })
           }
         }
       }
     }
-    return res;
-  };
+    return res
+  }
 
   const renderDragGroup = () => {
     if (pages[0].length <= 1) {
@@ -83,17 +82,17 @@ export const Drag = ({ option, setOption }: DragProps) => {
                         block={block}
                         blockI={blockI}
                       />
-                    );
-                  else return <React.Fragment key={uuidv4()} />;
+                    )
+                  else return <React.Fragment key={uuidv4()} />
                 })}
               </DragProvider.Group>
-            );
-          } else return <React.Fragment key={uuidv4()} />;
+            )
+          } else return <React.Fragment key={uuidv4()} />
         })
-      );
+      )
     } else {
-      const firstColumn: DragPosition[] = getFirstColumn();
-      const secondColumn: DragPosition[] = getSecondColumn();
+      const firstColumn: DragPosition[] = getFirstColumn()
+      const secondColumn: DragPosition[] = getSecondColumn()
       return (
         <>
           <DragProvider.Group page={firstColumn[0].page} pageI={0}>
@@ -123,15 +122,15 @@ export const Drag = ({ option, setOption }: DragProps) => {
             ))}
           </DragProvider.Group>
         </>
-      );
+      )
     }
-  };
+  }
 
   if (pages) {
     return (
-      <div className={`${option === 'layout' ? 'active' : 'unactive'}`} ref={ref}>
+      <div ref={ref}>
         <DragProvider>{renderDragGroup()}</DragProvider>
       </div>
-    );
-  } else return null;
-};
+    )
+  } else return null
+}

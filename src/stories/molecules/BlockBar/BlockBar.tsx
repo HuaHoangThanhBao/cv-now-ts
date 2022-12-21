@@ -1,22 +1,22 @@
-import './blockBar.scss';
-import { Icon } from '../../atoms/Icon/Icon';
-import { useBlock } from '../../organisms/Block/BlockProvider';
-import { useDispatch, useSelector } from 'react-redux';
+import './blockBar.scss'
+import { Icon } from '../../atoms/Icon'
+import { useBlock } from '../../organisms/Block/BlockProvider'
+import { useDispatch, useSelector } from 'react-redux'
 import {
   BlockMoveType,
   movingBlock,
   movingBlockContentDown,
   movingBlockContentUp,
-  onMovingBlock,
-} from '../../organisms/Block/block.slice';
-import { convert } from '../../../utils';
-import { RootState } from '../../../store';
-import { Common } from '../../../types/Block';
+  onMovingBlock
+} from '../../organisms/Block/block.slice'
+import { convert } from '../../../utils'
+import { RootState } from '../../../store'
+import { Common } from '../../../types/Block'
 
 export interface BlockBarProps {
-  block: string;
-  blockId: string;
-  blockChildIndex: number;
+  block: string
+  blockId: string
+  blockChildIndex: number
 }
 
 export const BlockBar = ({ block, blockId, blockChildIndex }: BlockBarProps) => {
@@ -26,45 +26,45 @@ export const BlockBar = ({ block, blockId, blockChildIndex }: BlockBarProps) => 
     handleDisableBlockHeaderBar,
     handleDisableBlockContentBar,
     selectedBlock,
-    handleCreateBlock,
-  } = useBlock();
-  const blockState = useSelector((state: RootState) => state.block);
-  const dispatch = useDispatch();
-  const blocks: Common[] = convert(blockId, blockState);
+    handleCreateBlock
+  } = useBlock()
+  const blockState = useSelector((state: RootState) => state.block)
+  const dispatch = useDispatch()
+  const blocks: Common[] = convert(blockId, blockState)
   const moveBlockUp = () => {
-    handleDisableBlockHeaderBar();
-    handleDisableBlockContentBar();
-    dispatch(onMovingBlock(true));
-    dispatch(movingBlock({ blockMovingId: blockId, blockMoveType: BlockMoveType.UP }));
-  };
+    handleDisableBlockHeaderBar()
+    handleDisableBlockContentBar()
+    dispatch(onMovingBlock(true))
+    dispatch(movingBlock({ blockMovingId: blockId, blockMoveType: BlockMoveType.UP }))
+  }
   const moveBlockDown = () => {
-    handleDisableBlockHeaderBar();
-    handleDisableBlockContentBar();
-    dispatch(onMovingBlock(true));
-    dispatch(movingBlock({ blockMovingId: blockId, blockMoveType: BlockMoveType.DOWN }));
-  };
+    handleDisableBlockHeaderBar()
+    handleDisableBlockContentBar()
+    dispatch(onMovingBlock(true))
+    dispatch(movingBlock({ blockMovingId: blockId, blockMoveType: BlockMoveType.DOWN }))
+  }
   const moveContentUp = () => {
-    console.log('block content to move up:', block);
-    handleDisableBlockContentBar();
-    dispatch(onMovingBlock(true));
-    dispatch(movingBlockContentUp(block));
-  };
+    console.log('block content to move up:', block)
+    handleDisableBlockContentBar()
+    dispatch(onMovingBlock(true))
+    dispatch(movingBlockContentUp(block))
+  }
   const moveContentDown = () => {
-    console.log('block content to move down:', block);
-    handleDisableBlockContentBar();
-    dispatch(onMovingBlock(true));
-    dispatch(movingBlockContentDown(block));
-  };
+    console.log('block content to move down:', block)
+    handleDisableBlockContentBar()
+    dispatch(onMovingBlock(true))
+    dispatch(movingBlockContentDown(block))
+  }
 
   const onCreateBlock = () => {
-    handleCreateBlock(blockId);
-  };
+    handleCreateBlock(blockId)
+  }
 
   if (
     blockId !== selectedBlock.selectedBlock.blockId ||
     blockChildIndex !== selectedBlock.selectedBlock.blockChildIndex
   )
-    return null;
+    return null
   if (showBlockContentBar) {
     return (
       <div className="block-bar">
@@ -80,7 +80,7 @@ export const BlockBar = ({ block, blockId, blockChildIndex }: BlockBarProps) => 
         )}
         <Icon iconType={'trash'} className={'block-bar-icon'} />
       </div>
-    );
+    )
   } else if (showBlockHeaderBar) {
     return (
       <div className="block-bar">
@@ -91,7 +91,7 @@ export const BlockBar = ({ block, blockId, blockChildIndex }: BlockBarProps) => 
         <Icon iconType={'move-down'} className={'block-bar-icon'} onClick={moveBlockDown} />
         <Icon iconType={'trash'} className={'block-bar-icon'} />
       </div>
-    );
+    )
   }
-  return null;
-};
+  return null
+}

@@ -1,2 +1,2 @@
-export { BlockProvider } from './BlockProvider';
-export { Block } from './Block';
+export { BlockProvider } from './BlockProvider'
+export { Block } from './Block'

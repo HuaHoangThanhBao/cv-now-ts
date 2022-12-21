@@ -1,82 +1,82 @@
-import { useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
-import { RootState, useAppDispatch } from '../store';
+import { useSelector } from 'react-redux'
+import { useParams } from 'react-router-dom'
+import { RootState, useAppDispatch } from '../store'
 import {
   BlockInitialState,
   onMovingBlock,
-  updatePages,
-} from '../stories/organisms/Block/block.slice';
-import { NoNeedRequestState, sendUpdateNoNeeds } from '../stories/organisms/Drag/drag.slice';
-import { moveChildBlockToParentBlock } from '../utils';
-import { useTransformPages } from './useTransformPages';
+  updatePages
+} from '../stories/organisms/Block/block.slice'
+import { NoNeedRequestState, sendUpdateNoNeeds } from '../stories/organisms/Drag/drag.slice'
+import { moveChildBlockToParentBlock } from '../utils'
+import { useTransformPages } from './useTransformPages'
 
 interface MoveChild {
-  pages: string[][][];
-  state: BlockInitialState;
+  pages: string[][][]
+  state: BlockInitialState
 }
 
 export const useMoveChild = ({
   pages,
-  state,
+  state
 }: MoveChild): [() => string[][][], () => string[][][]] => {
-  const blockState = useSelector((state: RootState) => state.block);
-  const noNeedsOneColumn = useSelector((state: RootState) => state.drag.noNeedsOneColumn);
-  const noNeedsTwoColumn = useSelector((state: RootState) => state.drag.noNeedsTwoColumn);
-  const noNeeds = !blockState.isOneColumn ? noNeedsTwoColumn : noNeedsOneColumn;
+  const blockState = useSelector((state: RootState) => state.block)
+  const noNeedsOneColumn = useSelector((state: RootState) => state.drag.noNeedsOneColumn)
+  const noNeedsTwoColumn = useSelector((state: RootState) => state.drag.noNeedsTwoColumn)
+  const noNeeds = !blockState.isOneColumn ? noNeedsTwoColumn : noNeedsOneColumn
 
-  const params = useParams();
-  const { documentId } = params;
-  const [callTransformPages] = useTransformPages({
+  const params = useParams()
+  const { documentId } = params
+  const { callTransformPages } = useTransformPages({
     isOneColumn: state.isOneColumn || false,
     pagesOneColumn: [],
-    pagesTwoColumn: [],
-  });
-  const dispatch = useAppDispatch();
+    pagesTwoColumn: []
+  })
+  const dispatch = useAppDispatch()
 
   const moveChildBefore = () => {
-    let _pages = JSON.parse(JSON.stringify(pages));
+    let _pages = JSON.parse(JSON.stringify(pages))
     noNeeds.forEach((n) => {
-      console.log(n);
+      console.log(n)
       _pages = _pages.map((page: string[][]) =>
         page.map((column: string[]) => column.filter((block: string) => block !== n))
-      );
-    });
+      )
+    })
 
     _pages = _pages.map((page: string[][]) =>
       page.map((column: string[]) => column.filter((block: string) => !block.includes('/')))
-    );
+    )
     /*Move child to parent*/
-    _pages = moveChildBlockToParentBlock(_pages, state);
+    _pages = moveChildBlockToParentBlock(_pages, state)
     /**/
 
-    callTransformPages(_pages, _pages);
+    callTransformPages(_pages, _pages)
     if (documentId && documentId !== '-1') {
       const request: NoNeedRequestState = {
         isOneColumn: state.isOneColumn,
         noNeedsOneColumn: state.isOneColumn ? noNeeds : noNeedsOneColumn,
         noNeedsTwoColumn: !state.isOneColumn ? noNeeds : noNeedsTwoColumn,
         pagesOneColumn: state.isOneColumn ? _pages : state.pagesOneColumn,
-        pagesTwoColumn: !state.isOneColumn ? _pages : state.pagesTwoColumn,
-      };
+        pagesTwoColumn: !state.isOneColumn ? _pages : state.pagesTwoColumn
+      }
       // console.log('request:', request);
-      dispatch(sendUpdateNoNeeds({ id: documentId, body: request }));
+      dispatch(sendUpdateNoNeeds({ id: documentId, body: request }))
     }
 
-    dispatch(updatePages({ pages: [..._pages] }));
-    dispatch(onMovingBlock(true));
-    return _pages;
-  };
+    dispatch(updatePages({ pages: [..._pages] }))
+    dispatch(onMovingBlock(true))
+    return _pages
+  }
 
   const moveChildAfter = () => {
-    let _pages = JSON.parse(JSON.stringify(pages));
+    let _pages = JSON.parse(JSON.stringify(pages))
     _pages = _pages.map((page: string[][]) =>
       page.map((column: string[]) => column.filter((block: string) => !block.includes('/')))
-    );
+    )
     /*Move child to parent*/
-    _pages = moveChildBlockToParentBlock(_pages, state);
+    _pages = moveChildBlockToParentBlock(_pages, state)
     /**/
-    return _pages;
-  };
+    return _pages
+  }
 
-  return [moveChildBefore, moveChildAfter];
-};
+  return [moveChildBefore, moveChildAfter]
+}

@@ -1,1 +1,1 @@
-export { MyDocument } from './MyDocument';
+export { MyDocument } from './MyDocument'

@@ -6,25 +6,25 @@ export const testData = [
         uid: '5ddf98ec-41b5-4fb8-8394-bef559a6f6ad',
         header: {
           text: 'EDUCATION',
-          placeHolder: 'EDUCATION',
+          placeHolder: 'EDUCATION'
         },
         title: {
           text: 'Study Program',
           placeHolder: 'Study Program',
           status: true,
-          height: 0,
+          height: 0
         },
         desc: {
           text: '',
           placeHolder: 'Institution/ Place of education',
           status: false,
-          height: 0,
+          height: 0
         },
         optional_dashed: {
           text: '',
           placeHolder: 'City, Country or GPA (optional)',
           status: false,
-          height: 0,
+          height: 0
         },
         content_bullet: {
           child: [
@@ -34,38 +34,38 @@ export const testData = [
               text: '',
               placeHolder: 'Course/Thesis/Project',
               status: false,
-              height: 0,
-            },
+              height: 0
+            }
           ],
           status: false,
           height: 0,
-          placeHolder: '',
+          placeHolder: ''
         },
         month_start: {
           text: '',
           placeHolder: 'mm',
           status: false,
-          height: 0,
+          height: 0
         },
         month_end: {
           text: '',
           placeHolder: 'mm',
           status: false,
-          height: 0,
+          height: 0
         },
         year_start: {
           text: '',
           placeHolder: 'yyyy',
           status: false,
-          height: 0,
+          height: 0
         },
         year_end: {
           text: '',
           placeHolder: 'yyyy',
           status: false,
-          height: 0,
-        },
-      },
+          height: 0
+        }
+      }
     ],
     workExperience: [
       {
@@ -73,31 +73,31 @@ export const testData = [
         uid: 'b4882045-4cc8-4e9a-94f4-79e89fdc6c41',
         header: {
           text: 'WORK EXPERIENCE',
-          placeHolder: 'WORK EXPERIENCE',
+          placeHolder: 'WORK EXPERIENCE'
         },
         title: {
           text: 'Title/Position',
           placeHolder: 'Title/Position',
           status: true,
-          height: 0,
+          height: 0
         },
         desc: {
           text: '',
           placeHolder: 'Workplace/Company',
           status: false,
-          height: 0,
+          height: 0
         },
         optional_dashed: {
           text: '',
           placeHolder: 'City, Country (optional)',
           status: false,
-          height: 0,
+          height: 0
         },
         optional_dashed2: {
           text: '',
           placeHolder: 'Company Description (optional, fill when the company is not well known)',
           status: false,
-          height: 0,
+          height: 0
         },
         content_bullet: {
           child: [
@@ -107,56 +107,56 @@ export const testData = [
               text: '',
               placeHolder: 'Accomplishment/Responsibility/Task',
               status: false,
-              height: 0,
-            },
+              height: 0
+            }
           ],
           status: false,
           height: 0,
-          placeHolder: '',
+          placeHolder: ''
         },
         month_start: {
           text: '',
           placeHolder: 'mm',
           status: false,
-          height: 0,
+          height: 0
         },
         month_end: {
           text: '',
           placeHolder: 'mm',
           status: false,
-          height: 0,
+          height: 0
         },
         year_start: {
           text: '',
           placeHolder: 'yyyy',
           status: false,
-          height: 0,
+          height: 0
         },
         year_end: {
           text: '',
           placeHolder: 'yyyy',
           status: false,
-          height: 0,
+          height: 0
         },
         contact: {
           text: '',
           placeHolder: 'Contact:',
           status: false,
-          height: 0,
+          height: 0
         },
         contact_person: {
           text: '',
           placeHolder: 'Contact Person',
           status: false,
-          height: 0,
+          height: 0
         },
         contact_info: {
           text: '',
           placeHolder: 'Contact Info',
           status: false,
-          height: 0,
-        },
-      },
+          height: 0
+        }
+      }
     ],
     organization: [
       {
@@ -164,45 +164,45 @@ export const testData = [
         uid: '0085c763-555a-4e1f-9ef8-9af8f13fe2db',
         header: {
           text: 'ORGANIZATIONS',
-          placeHolder: 'ORGANIZATIONS',
+          placeHolder: 'ORGANIZATIONS'
         },
         title: {
           text: 'Organization Name',
           placeHolder: 'Organization Name',
           status: true,
-          height: 0,
+          height: 0
         },
         desc: {
           text: '',
           placeHolder: 'Role (optional)',
           status: false,
-          height: 0,
+          height: 0
         },
         month_start: {
           text: '',
           placeHolder: 'mm',
           status: false,
-          height: 0,
+          height: 0
         },
         month_end: {
           text: '',
           placeHolder: 'mm',
           status: false,
-          height: 0,
+          height: 0
         },
         year_start: {
           text: '',
           placeHolder: 'yyyy',
           status: false,
-          height: 0,
+          height: 0
         },
         year_end: {
           text: '',
           placeHolder: 'yyyy',
           status: false,
-          height: 0,
-        },
-      },
+          height: 0
+        }
+      }
     ],
     certificate: [
       {
@@ -210,45 +210,45 @@ export const testData = [
         uid: 'acc94b02-7667-4b32-8530-4ddccb0ec7b4',
         header: {
           text: 'CERTIFICATES',
-          placeHolder: 'CERTIFICATES',
+          placeHolder: 'CERTIFICATES'
         },
         title: {
           text: 'Certificate Name',
           placeHolder: 'Certificate Name',
           status: true,
-          height: 0,
+          height: 0
         },
         desc: {
           text: '',
           placeHolder: 'Description (optional)',
           status: false,
-          height: 0,
+          height: 0
         },
         month_start: {
           text: '',
           placeHolder: 'mm',
           status: false,
-          height: 0,
+          height: 0
         },
         month_end: {
           text: '',
           placeHolder: 'mm',
           status: false,
-          height: 0,
+          height: 0
         },
         year_start: {
           text: '',
           placeHolder: 'yyyy',
           status: false,
-          height: 0,
+          height: 0
         },
         year_end: {
           text: '',
           placeHolder: 'yyyy',
           status: false,
-          height: 0,
-        },
-      },
+          height: 0
+        }
+      }
     ],
     personalProject: [
       {
@@ -256,13 +256,13 @@ export const testData = [
         uid: '0a5a49d4-35d6-4e32-8284-16ea2aebcb33',
         header: {
           text: 'PERSONAL PROJECTS',
-          placeHolder: 'PERSONAL PROJECTS',
+          placeHolder: 'PERSONAL PROJECTS'
         },
         title: {
           text: 'Project Name',
           placeHolder: 'Project Name',
           status: true,
-          height: 0,
+          height: 0
         },
         content_bullet: {
           child: [
@@ -272,38 +272,38 @@ export const testData = [
               text: '',
               placeHolder: 'Description of Achievements',
               status: false,
-              height: 0,
-            },
+              height: 0
+            }
           ],
           status: false,
           height: 0,
-          placeHolder: '',
+          placeHolder: ''
         },
         month_start: {
           text: '',
           placeHolder: 'mm',
           status: false,
-          height: 0,
+          height: 0
         },
         month_end: {
           text: '',
           placeHolder: 'mm',
           status: false,
-          height: 0,
+          height: 0
         },
         year_start: {
           text: '',
           placeHolder: 'yyyy',
           status: false,
-          height: 0,
+          height: 0
         },
         year_end: {
           text: '',
           placeHolder: 'yyyy',
           status: false,
-          height: 0,
-        },
-      },
+          height: 0
+        }
+      }
     ],
     achievement: [
       {
@@ -311,45 +311,45 @@ export const testData = [
         uid: '08cde023-c85c-436a-af57-dba40cc9cfbf',
         header: {
           text: 'ACHIEVEMENTS',
-          placeHolder: 'ACHIEVEMENTS',
+          placeHolder: 'ACHIEVEMENTS'
         },
         title: {
           text: 'Achievement Name',
           placeHolder: 'Achievement Name',
           status: true,
-          height: 0,
+          height: 0
         },
         desc: {
           text: '',
           placeHolder: 'Description (optional)',
           status: false,
-          height: 0,
+          height: 0
         },
         month_start: {
           text: '',
           placeHolder: 'mm',
           status: false,
-          height: 0,
+          height: 0
         },
         month_end: {
           text: '',
           placeHolder: 'mm',
           status: false,
-          height: 0,
+          height: 0
         },
         year_start: {
           text: '',
           placeHolder: 'yyyy',
           status: false,
-          height: 0,
+          height: 0
         },
         year_end: {
           text: '',
           placeHolder: 'yyyy',
           status: false,
-          height: 0,
-        },
-      },
+          height: 0
+        }
+      }
     ],
     conference: [
       {
@@ -357,19 +357,19 @@ export const testData = [
         uid: 'ca0165a0-3fdd-4686-8279-7fd317db4b6f',
         header: {
           text: 'CONFERENCES & COURSES',
-          placeHolder: 'CONFERENCES & COURSES',
+          placeHolder: 'CONFERENCES & COURSES'
         },
         title: {
           text: 'Conference/Course Name',
           placeHolder: 'Conference/Course Name',
           status: true,
-          height: 0,
+          height: 0
         },
         desc: {
           text: '',
           placeHolder: 'Conference/Issuer of the certificate',
           status: false,
-          height: 0,
+          height: 0
         },
         content_bullet: {
           child: [
@@ -379,38 +379,38 @@ export const testData = [
               text: '',
               placeHolder: 'Description (optional)',
               status: false,
-              height: 0,
-            },
+              height: 0
+            }
           ],
           status: false,
           height: 0,
-          placeHolder: '',
+          placeHolder: ''
         },
         month_start: {
           text: '',
           placeHolder: 'mm',
           status: false,
-          height: 0,
+          height: 0
         },
         month_end: {
           text: '',
           placeHolder: 'mm',
           status: false,
-          height: 0,
+          height: 0
         },
         year_start: {
           text: '',
           placeHolder: 'yyyy',
           status: false,
-          height: 0,
+          height: 0
         },
         year_end: {
           text: '',
           placeHolder: 'yyyy',
           status: false,
-          height: 0,
-        },
-      },
+          height: 0
+        }
+      }
     ],
     award: [
       {
@@ -418,19 +418,19 @@ export const testData = [
         uid: '86361070-e822-4e33-9a39-e4cb8042a2a6',
         header: {
           text: 'HONOR AWARDS',
-          placeHolder: 'HONOR AWARDS',
+          placeHolder: 'HONOR AWARDS'
         },
         title: {
           text: 'Title/Award Name',
           placeHolder: 'Title/Award Name',
           status: true,
-          height: 0,
+          height: 0
         },
         desc: {
           text: '',
           placeHolder: 'Name of the institution that issued/awarded it',
           status: false,
-          height: 0,
+          height: 0
         },
         content_bullet: {
           child: [
@@ -440,38 +440,38 @@ export const testData = [
               text: '',
               placeHolder: 'Description (optional)',
               status: false,
-              height: 0,
-            },
+              height: 0
+            }
           ],
           status: false,
           height: 0,
-          placeHolder: '',
+          placeHolder: ''
         },
         month_start: {
           text: '',
           placeHolder: 'mm',
           status: false,
-          height: 0,
+          height: 0
         },
         month_end: {
           text: '',
           placeHolder: 'mm',
           status: false,
-          height: 0,
+          height: 0
         },
         year_start: {
           text: '',
           placeHolder: 'yyyy',
           status: false,
-          height: 0,
+          height: 0
         },
         year_end: {
           text: '',
           placeHolder: 'yyyy',
           status: false,
-          height: 0,
-        },
-      },
+          height: 0
+        }
+      }
     ],
     teachingExperience: [
       {
@@ -479,25 +479,25 @@ export const testData = [
         uid: '2d65abd2-0c07-458b-8976-0a7a3e705740',
         header: {
           text: 'TEACHING EXPERIENCE',
-          placeHolder: 'TEACHING EXPERIENCE',
+          placeHolder: 'TEACHING EXPERIENCE'
         },
         title: {
           text: 'Name of the class',
           placeHolder: 'Name of the class',
           status: true,
-          height: 0,
+          height: 0
         },
         desc: {
           text: '',
           placeHolder: 'Institution/Place of Education',
           status: false,
-          height: 0,
+          height: 0
         },
         optional_dashed: {
           text: '',
           placeHolder: 'City, Country',
           status: false,
-          height: 0,
+          height: 0
         },
         content_bullet: {
           child: [
@@ -507,38 +507,38 @@ export const testData = [
               text: '',
               placeHolder: 'Task/Responsibility/Accomplishment',
               status: false,
-              height: 0,
-            },
+              height: 0
+            }
           ],
           status: false,
           height: 0,
-          placeHolder: '',
+          placeHolder: ''
         },
         month_start: {
           text: '',
           placeHolder: 'mm',
           status: false,
-          height: 0,
+          height: 0
         },
         month_end: {
           text: '',
           placeHolder: 'mm',
           status: false,
-          height: 0,
+          height: 0
         },
         year_start: {
           text: '',
           placeHolder: 'yyyy',
           status: false,
-          height: 0,
+          height: 0
         },
         year_end: {
           text: '',
           placeHolder: 'yyyy',
           status: false,
-          height: 0,
-        },
-      },
+          height: 0
+        }
+      }
     ],
     volunteer: [
       {
@@ -546,37 +546,37 @@ export const testData = [
         uid: 'bab7f310-993d-4441-8e8c-243dcc76d9c4',
         header: {
           text: 'VOLUNTEER EXPERIENCE',
-          placeHolder: 'VOLUNTEER EXPERIENCE',
+          placeHolder: 'VOLUNTEER EXPERIENCE'
         },
         title: {
           text: 'Title/Position',
           placeHolder: 'Title/Position',
           status: true,
-          height: 0,
+          height: 0
         },
         desc: {
           text: '',
           placeHolder: 'Organization',
           status: false,
-          height: 0,
+          height: 0
         },
         optional_dashed: {
           text: '',
           placeHolder: 'City, Country',
           status: false,
-          height: 0,
+          height: 0
         },
         optional_dashed2: {
           text: '',
           placeHolder: 'Organization Description (optional)',
           status: false,
-          height: 0,
+          height: 0
         },
         optional_dashed3: {
           text: '',
           placeHolder: 'Task/Responsibility/Accomplishment',
           status: false,
-          height: 0,
+          height: 0
         },
         content_bullet: {
           child: [
@@ -586,56 +586,56 @@ export const testData = [
               text: '',
               placeHolder: 'Tasks/Achievements',
               status: false,
-              height: 0,
-            },
+              height: 0
+            }
           ],
           status: false,
           height: 0,
-          placeHolder: '',
+          placeHolder: ''
         },
         month_start: {
           text: '',
           placeHolder: 'mm',
           status: false,
-          height: 0,
+          height: 0
         },
         month_end: {
           text: '',
           placeHolder: 'mm',
           status: false,
-          height: 0,
+          height: 0
         },
         year_start: {
           text: '',
           placeHolder: 'yyyy',
           status: false,
-          height: 0,
+          height: 0
         },
         year_end: {
           text: '',
           placeHolder: 'yyyy',
           status: false,
-          height: 0,
+          height: 0
         },
         contact: {
           text: '',
           placeHolder: 'Contact:',
           status: false,
-          height: 0,
+          height: 0
         },
         contact_person: {
           text: '',
           placeHolder: 'Contact Person',
           status: false,
-          height: 0,
+          height: 0
         },
         contact_info: {
           text: '',
           placeHolder: 'Contact Info',
           status: false,
-          height: 0,
-        },
-      },
+          height: 0
+        }
+      }
     ],
     support: [
       {
@@ -643,15 +643,15 @@ export const testData = [
         uid: '13d3f958-3b5c-4631-b1ce-0c704776d2f4',
         header: {
           text: 'SUPPORTED CAUSE',
-          placeHolder: 'SUPPORTED CAUSE',
+          placeHolder: 'SUPPORTED CAUSE'
         },
         title: {
           text: 'Cause',
           placeHolder: 'Cause',
           status: true,
-          height: 0,
-        },
-      },
+          height: 0
+        }
+      }
     ],
     language: [
       {
@@ -659,21 +659,21 @@ export const testData = [
         uid: 'a357fd32-558e-4d44-9cd7-c6569893f6c7',
         header: {
           text: 'LANGUAGES',
-          placeHolder: 'LANGUAGES',
+          placeHolder: 'LANGUAGES'
         },
         title: {
           text: 'Language Name',
           placeHolder: 'Language Name',
           status: true,
-          height: 0,
+          height: 0
         },
         desc: {
           text: 'Description',
           placeHolder: 'Description',
           status: true,
-          height: 0,
-        },
-      },
+          height: 0
+        }
+      }
     ],
     publication: [
       {
@@ -681,75 +681,75 @@ export const testData = [
         uid: 'c0d6d79e-c338-4ea2-8b2d-7005dfccc2a0',
         header: {
           text: 'PUBLICATIONS',
-          placeHolder: 'PUBLICATIONS',
+          placeHolder: 'PUBLICATIONS'
         },
         title: {
           text: 'Publication Title',
           placeHolder: 'Publication Title',
           status: true,
-          height: 0,
+          height: 0
         },
         desc: {
           text: '',
           placeHolder: 'Publication Type',
           status: false,
-          height: 0,
+          height: 0
         },
         optional_dashed: {
           text: '',
           placeHolder: 'Author(s)',
           status: false,
-          height: 0,
+          height: 0
         },
         optional_dashed2: {
           text: '',
           placeHolder: 'List of Authors',
           status: false,
-          height: 0,
+          height: 0
         },
         optional_dashed3: {
           text: '',
           placeHolder: 'Date of Publication',
           status: false,
-          height: 0,
+          height: 0
         },
         optional_dashed4: {
           text: '',
           placeHolder: 'Publisher/Issue/Pages, etc.',
           status: false,
-          height: 0,
+          height: 0
         },
         optional_dashed5: {
           text: '',
           placeHolder: 'Description',
           status: false,
-          height: 0,
+          height: 0
         },
         month_start: {
           text: '',
           placeHolder: 'mm',
           status: false,
-          height: 0,
+          height: 0
         },
         month_end: {
           text: '',
           placeHolder: 'mm',
           status: false,
-          height: 0,
+          height: 0
         },
         year_start: {
           text: '',
           placeHolder: 'yyyy',
           status: false,
-          height: 0,
+          height: 0
         },
         year_end: {
           text: '',
           placeHolder: 'yyyy',
           status: false,
-          height: 0,
-        },
-      },
+          height: 0
+        }
+      }
     ],
     skill: [
       {
@@ -757,15 +757,15 @@ export const testData = [
         uid: '6747eb49-3f4f-410e-bcb1-b20f847c4c3b',
         header: {
           text: 'SKILLS',
-          placeHolder: 'SKILLS',
+          placeHolder: 'SKILLS'
         },
         title: {
           text: 'Skill name',
           placeHolder: 'Skill name',
           status: true,
-          height: 0,
-        },
-      },
+          height: 0
+        }
+      }
     ],
     interest: [
       {
@@ -773,15 +773,15 @@ export const testData = [
         uid: 'aa71d382-d464-4173-bad6-1a876509f710',
         header: {
           text: 'INTERESTS',
-          placeHolder: 'INTERESTS',
+          placeHolder: 'INTERESTS'
         },
         title: {
           text: 'Interest',
           placeHolder: 'Interest',
           status: true,
-          height: 0,
-        },
-      },
+          height: 0
+        }
+      }
     ],
     softSkill: [
       {
@@ -789,15 +789,15 @@ export const testData = [
         uid: '34e7aab2-dfe8-4d54-bc4d-aeb1bd24daea',
         header: {
           text: 'SOFT SKILLS',
-          placeHolder: 'SOFT SKILLS',
+          placeHolder: 'SOFT SKILLS'
         },
         title: {
           text: 'Soft skill',
           placeHolder: 'Soft skill',
           status: true,
-          height: 0,
-        },
-      },
+          height: 0
+        }
+      }
     ],
     reference: [
       {
@@ -805,40 +805,40 @@ export const testData = [
         uid: 'ecc19d6f-e1d6-43b1-9366-f26367024977',
         header: {
           text: 'REFERENCES',
-          placeHolder: 'REFERENCES',
+          placeHolder: 'REFERENCES'
         },
         title: {
           text: 'Name and Position',
           placeHolder: 'Name and Position',
           status: true,
-          height: 0,
+          height: 0
         },
         optional_dashed: {
           text: '',
           placeHolder: '“Reference”',
           status: true,
-          height: 0,
+          height: 0
         },
         contact: {
           text: '',
           placeHolder: 'Contact:',
           status: false,
-          height: 0,
+          height: 0
         },
         contact_person: {
           text: '',
           placeHolder: 'Contact Person',
           status: false,
-          height: 0,
+          height: 0
         },
         contact_info: {
           text: '',
           placeHolder: 'Contact Info',
           status: false,
-          height: 0,
-        },
-      },
-    ],
+          height: 0
+        }
+      }
+    ]
   },
   {
     education: [
@@ -847,25 +847,25 @@ export const testData = [
         uid: '5ddf98ec-41b5-4fb8-8394-bef559a6f6ad',
         header: {
           text: 'EDUCATION',
-          placeHolder: 'EDUCATION',
+          placeHolder: 'EDUCATION'
         },
         title: {
           text: 'Study Program',
           placeHolder: 'Study Program',
           status: true,
-          height: 0,
+          height: 0
         },
         desc: {
           text: 'Institution/ Place of education',
           placeHolder: 'Institution/ Place of education',
           status: false,
-          height: 0,
+          height: 0
         },
         optional_dashed: {
           text: 'City, Country or GPA (optional)',
           placeHolder: 'City, Country or GPA (optional)',
           status: false,
-          height: 0,
+          height: 0
         },
         content_bullet: {
           child: [
@@ -875,38 +875,38 @@ export const testData = [
               text: 'Course/Thesis/Project',
               placeHolder: 'Course/Thesis/Project',
               status: false,
-              height: 0,
-            },
+              height: 0
+            }
           ],
           status: false,
           height: 0,
-          placeHolder: '',
+          placeHolder: ''
         },
         month_start: {
           text: '',
           placeHolder: 'mm',
           status: false,
-          height: 0,
+          height: 0
         },
         month_end: {
           text: '',
           placeHolder: 'mm',
           status: false,
-          height: 0,
+          height: 0
         },
         year_start: {
           text: '',
           placeHolder: 'yyyy',
           status: false,
-          height: 0,
+          height: 0
         },
         year_end: {
           text: '',
           placeHolder: 'yyyy',
           status: false,
-          height: 0,
-        },
-      },
+          height: 0
+        }
+      }
     ],
     workExperience: [
       {
@@ -914,31 +914,31 @@ export const testData = [
         uid: 'b4882045-4cc8-4e9a-94f4-79e89fdc6c41',
         header: {
           text: 'WORK EXPERIENCE',
-          placeHolder: 'WORK EXPERIENCE',
+          placeHolder: 'WORK EXPERIENCE'
         },
         title: {
           text: 'Title/Position',
           placeHolder: 'Title/Position',
           status: true,
-          height: 0,
+          height: 0
         },
         desc: {
           text: '',
           placeHolder: 'Workplace/Company',
           status: false,
-          height: 0,
+          height: 0
         },
         optional_dashed: {
           text: '',
           placeHolder: 'City, Country (optional)',
           status: false,
-          height: 0,
+          height: 0
         },
         optional_dashed2: {
           text: '',
           placeHolder: 'Company Description (optional, fill when the company is not well known)',
           status: false,
-          height: 0,
+          height: 0
         },
         content_bullet: {
           child: [
@@ -948,56 +948,56 @@ export const testData = [
               text: '',
               placeHolder: 'Accomplishment/Responsibility/Task',
               status: false,
-              height: 0,
-            },
+              height: 0
+            }
           ],
           status: false,
           height: 0,
-          placeHolder: '',
+          placeHolder: ''
         },
         month_start: {
           text: '',
           placeHolder: 'mm',
           status: false,
-          height: 0,
+          height: 0
         },
         month_end: {
           text: '',
           placeHolder: 'mm',
           status: false,
-          height: 0,
+          height: 0
         },
         year_start: {
           text: '',
           placeHolder: 'yyyy',
           status: false,
-          height: 0,
+          height: 0
         },
         year_end: {
           text: '',
           placeHolder: 'yyyy',
           status: false,
-          height: 0,
+          height: 0
         },
         contact: {
           text: '',
           placeHolder: 'Contact:',
           status: false,
-          height: 0,
+          height: 0
         },
         contact_person: {
           text: '',
           placeHolder: 'Contact Person',
           status: false,
-          height: 0,
+          height: 0
         },
         contact_info: {
           text: '',
           placeHolder: 'Contact Info',
           status: false,
-          height: 0,
-        },
-      },
+          height: 0
+        }
+      }
     ],
     organization: [
       {
@@ -1005,45 +1005,45 @@ export const testData = [
         uid: '0085c763-555a-4e1f-9ef8-9af8f13fe2db',
         header: {
           text: 'ORGANIZATIONS',
-          placeHolder: 'ORGANIZATIONS',
+          placeHolder: 'ORGANIZATIONS'
         },
         title: {
           text: 'Organization Name',
           placeHolder: 'Organization Name',
           status: true,
-          height: 0,
+          height: 0
         },
         desc: {
           text: '',
           placeHolder: 'Role (optional)',
           status: false,
-          height: 0,
+          height: 0
         },
         month_start: {
           text: '',
           placeHolder: 'mm',
           status: false,
-          height: 0,
+          height: 0
         },
         month_end: {
           text: '',
           placeHolder: 'mm',
           status: false,
-          height: 0,
+          height: 0
         },
         year_start: {
           text: '',
           placeHolder: 'yyyy',
           status: false,
-          height: 0,
+          height: 0
         },
         year_end: {
           text: '',
           placeHolder: 'yyyy',
           status: false,
-          height: 0,
-        },
-      },
+          height: 0
+        }
+      }
     ],
     certificate: [
       {
@@ -1051,45 +1051,45 @@ export const testData = [
         uid: 'acc94b02-7667-4b32-8530-4ddccb0ec7b4',
         header: {
           text: 'CERTIFICATES',
-          placeHolder: 'CERTIFICATES',
+          placeHolder: 'CERTIFICATES'
         },
         title: {
           text: 'Certificate Name',
           placeHolder: 'Certificate Name',
           status: true,
-          height: 0,
+          height: 0
         },
         desc: {
           text: '',
           placeHolder: 'Description (optional)',
           status: false,
-          height: 0,
+          height: 0
         },
         month_start: {
           text: '',
           placeHolder: 'mm',
           status: false,
-          height: 0,
+          height: 0
         },
         month_end: {
           text: '',
           placeHolder: 'mm',
           status: false,
-          height: 0,
+          height: 0
         },
         year_start: {
           text: '',
           placeHolder: 'yyyy',
           status: false,
-          height: 0,
+          height: 0
         },
         year_end: {
           text: '',
           placeHolder: 'yyyy',
           status: false,
-          height: 0,
-        },
-      },
+          height: 0
+        }
+      }
     ],
     personalProject: [
       {
@@ -1097,13 +1097,13 @@ export const testData = [
         uid: '0a5a49d4-35d6-4e32-8284-16ea2aebcb33',
         header: {
           text: 'PERSONAL PROJECTS',
-          placeHolder: 'PERSONAL PROJECTS',
+          placeHolder: 'PERSONAL PROJECTS'
         },
         title: {
           text: 'Project Name',
           placeHolder: 'Project Name',
           status: true,
-          height: 0,
+          height: 0
         },
         content_bullet: {
           child: [
@@ -1113,38 +1113,38 @@ export const testData = [
               text: '',
               placeHolder: 'Description of Achievements',
               status: false,
-              height: 0,
-            },
+              height: 0
+            }
           ],
           status: false,
           height: 0,
-          placeHolder: '',
+          placeHolder: ''
         },
         month_start: {
           text: '',
           placeHolder: 'mm',
           status: false,
-          height: 0,
+          height: 0
         },
         month_end: {
           text: '',
           placeHolder: 'mm',
           status: false,
-          height: 0,
+          height: 0
         },
         year_start: {
           text: '',
           placeHolder: 'yyyy',
           status: false,
-          height: 0,
+          height: 0
         },
         year_end: {
           text: '',
           placeHolder: 'yyyy',
           status: false,
-          height: 0,
-        },
-      },
+          height: 0
+        }
+      }
     ],
     achievement: [
       {
@@ -1152,45 +1152,45 @@ export const testData = [
         uid: '08cde023-c85c-436a-af57-dba40cc9cfbf',
         header: {
           text: 'ACHIEVEMENTS',
-          placeHolder: 'ACHIEVEMENTS',
+          placeHolder: 'ACHIEVEMENTS'
         },
         title: {
           text: 'Achievement Name',
           placeHolder: 'Achievement Name',
           status: true,
-          height: 0,
+          height: 0
         },
         desc: {
           text: '',
           placeHolder: 'Description (optional)',
           status: false,
-          height: 0,
+          height: 0
         },
         month_start: {
           text: '',
           placeHolder: 'mm',
           status: false,
-          height: 0,
+          height: 0
         },
         month_end: {
           text: '',
           placeHolder: 'mm',
           status: false,
-          height: 0,
+          height: 0
         },
         year_start: {
           text: '',
           placeHolder: 'yyyy',
           status: false,
-          height: 0,
+          height: 0
         },
         year_end: {
           text: '',
           placeHolder: 'yyyy',
           status: false,
-          height: 0,
-        },
-      },
+          height: 0
+        }
+      }
     ],
     conference: [
       {
@@ -1198,19 +1198,19 @@ export const testData = [
         uid: 'ca0165a0-3fdd-4686-8279-7fd317db4b6f',
         header: {
           text: 'CONFERENCES & COURSES',
-          placeHolder: 'CONFERENCES & COURSES',
+          placeHolder: 'CONFERENCES & COURSES'
         },
         title: {
           text: 'Conference/Course Name',
           placeHolder: 'Conference/Course Name',
           status: true,
-          height: 0,
+          height: 0
         },
         desc: {
           text: '',
           placeHolder: 'Conference/Issuer of the certificate',
           status: false,
-          height: 0,
+          height: 0
         },
         content_bullet: {
           child: [
@@ -1220,38 +1220,38 @@ export const testData = [
               text: '',
               placeHolder: 'Description (optional)',
               status: false,
-              height: 0,
-            },
+              height: 0
+            }
           ],
           status: false,
           height: 0,
-          placeHolder: '',
+          placeHolder: ''
         },
         month_start: {
           text: '',
           placeHolder: 'mm',
           status: false,
-          height: 0,
+          height: 0
         },
         month_end: {
           text: '',
           placeHolder: 'mm',
           status: false,
-          height: 0,
+          height: 0
         },
         year_start: {
           text: '',
           placeHolder: 'yyyy',
           status: false,
-          height: 0,
+          height: 0
         },
         year_end: {
           text: '',
           placeHolder: 'yyyy',
           status: false,
-          height: 0,
-        },
-      },
+          height: 0
+        }
+      }
     ],
     award: [
       {
@@ -1259,19 +1259,19 @@ export const testData = [
         uid: '86361070-e822-4e33-9a39-e4cb8042a2a6',
         header: {
           text: 'HONOR AWARDS',
-          placeHolder: 'HONOR AWARDS',
+          placeHolder: 'HONOR AWARDS'
         },
         title: {
           text: 'Title/Award Name',
           placeHolder: 'Title/Award Name',
           status: true,
-          height: 0,
+          height: 0
         },
         desc: {
           text: '',
           placeHolder: 'Name of the institution that issued/awarded it',
           status: false,
-          height: 0,
+          height: 0
         },
         content_bullet: {
           child: [
@@ -1281,38 +1281,38 @@ export const testData = [
               text: '',
               placeHolder: 'Description (optional)',
               status: false,
-              height: 0,
-            },
+              height: 0
+            }
           ],
           status: false,
           height: 0,
-          placeHolder: '',
+          placeHolder: ''
         },
         month_start: {
           text: '',
           placeHolder: 'mm',
           status: false,
-          height: 0,
+          height: 0
         },
         month_end: {
           text: '',
           placeHolder: 'mm',
           status: false,
-          height: 0,
+          height: 0
         },
         year_start: {
           text: '',
           placeHolder: 'yyyy',
           status: false,
-          height: 0,
+          height: 0
         },
         year_end: {
           text: '',
           placeHolder: 'yyyy',
           status: false,
-          height: 0,
-        },
-      },
+          height: 0
+        }
+      }
     ],
     teachingExperience: [
       {
@@ -1320,25 +1320,25 @@ export const testData = [
         uid: '2d65abd2-0c07-458b-8976-0a7a3e705740',
         header: {
           text: 'TEACHING EXPERIENCE',
-          placeHolder: 'TEACHING EXPERIENCE',
+          placeHolder: 'TEACHING EXPERIENCE'
         },
         title: {
           text: 'Name of the class',
           placeHolder: 'Name of the class',
           status: true,
-          height: 0,
+          height: 0
         },
         desc: {
           text: '',
           placeHolder: 'Institution/Place of Education',
           status: false,
-          height: 0,
+          height: 0
         },
         optional_dashed: {
           text: '',
           placeHolder: 'City, Country',
           status: false,
-          height: 0,
+          height: 0
         },
         content_bullet: {
           child: [
@@ -1348,38 +1348,38 @@ export const testData = [
               text: '',
               placeHolder: 'Task/Responsibility/Accomplishment',
               status: false,
-              height: 0,
-            },
+              height: 0
+            }
           ],
           status: false,
           height: 0,
-          placeHolder: '',
+          placeHolder: ''
         },
         month_start: {
           text: '',
           placeHolder: 'mm',
           status: false,
-          height: 0,
+          height: 0
         },
         month_end: {
           text: '',
           placeHolder: 'mm',
           status: false,
-          height: 0,
+          height: 0
         },
         year_start: {
           text: '',
           placeHolder: 'yyyy',
           status: false,
-          height: 0,
+          height: 0
         },
         year_end: {
           text: '',
           placeHolder: 'yyyy',
           status: false,
-          height: 0,
-        },
-      },
+          height: 0
+        }
+      }
     ],
     volunteer: [
       {
@@ -1387,37 +1387,37 @@ export const testData = [
         uid: 'bab7f310-993d-4441-8e8c-243dcc76d9c4',
         header: {
           text: 'VOLUNTEER EXPERIENCE',
-          placeHolder: 'VOLUNTEER EXPERIENCE',
+          placeHolder: 'VOLUNTEER EXPERIENCE'
         },
         title: {
           text: 'Title/Position',
           placeHolder: 'Title/Position',
           status: true,
-          height: 0,
+          height: 0
         },
         desc: {
           text: '',
           placeHolder: 'Organization',
           status: false,
-          height: 0,
+          height: 0
         },
         optional_dashed: {
           text: '',
           placeHolder: 'City, Country',
           status: false,
-          height: 0,
+          height: 0
         },
         optional_dashed2: {
           text: '',
           placeHolder: 'Organization Description (optional)',
           status: false,
-          height: 0,
+          height: 0
         },
         optional_dashed3: {
           text: '',
           placeHolder: 'Task/Responsibility/Accomplishment',
           status: false,
-          height: 0,
+          height: 0
         },
         content_bullet: {
           child: [
@@ -1427,56 +1427,56 @@ export const testData = [
               text: '',
               placeHolder: 'Tasks/Achievements',
               status: false,
-              height: 0,
-            },
+              height: 0
+            }
           ],
           status: false,
           height: 0,
-          placeHolder: '',
+          placeHolder: ''
         },
         month_start: {
           text: '',
           placeHolder: 'mm',
           status: false,
-          height: 0,
+          height: 0
         },
         month_end: {
           text: '',
           placeHolder: 'mm',
           status: false,
-          height: 0,
+          height: 0
         },
         year_start: {
           text: '',
           placeHolder: 'yyyy',
           status: false,
-          height: 0,
+          height: 0
         },
         year_end: {
           text: '',
           placeHolder: 'yyyy',
           status: false,
-          height: 0,
+          height: 0
         },
         contact: {
           text: '',
           placeHolder: 'Contact:',
           status: false,
-          height: 0,
+          height: 0
         },
         contact_person: {
           text: '',
           placeHolder: 'Contact Person',
           status: false,
-          height: 0,
+          height: 0
         },
         contact_info: {
           text: '',
           placeHolder: 'Contact Info',
           status: false,
-          height: 0,
-        },
-      },
+          height: 0
+        }
+      }
     ],
     support: [
       {
@@ -1484,15 +1484,15 @@ export const testData = [
         uid: '13d3f958-3b5c-4631-b1ce-0c704776d2f4',
         header: {
           text: 'SUPPORTED CAUSE',
-          placeHolder: 'SUPPORTED CAUSE',
+          placeHolder: 'SUPPORTED CAUSE'
         },
         title: {
           text: 'Cause',
           placeHolder: 'Cause',
           status: true,
-          height: 0,
-        },
-      },
+          height: 0
+        }
+      }
     ],
     language: [
       {
@@ -1500,21 +1500,21 @@ export const testData = [
         uid: 'a357fd32-558e-4d44-9cd7-c6569893f6c7',
         header: {
           text: 'LANGUAGES',
-          placeHolder: 'LANGUAGES',
+          placeHolder: 'LANGUAGES'
         },
         title: {
           text: 'Language Name',
           placeHolder: 'Language Name',
           status: true,
-          height: 0,
+          height: 0
         },
         desc: {
           text: 'Description',
           placeHolder: 'Description',
           status: true,
-          height: 0,
-        },
-      },
+          height: 0
+        }
+      }
     ],
     publication: [
       {
@@ -1522,75 +1522,75 @@ export const testData = [
         uid: 'c0d6d79e-c338-4ea2-8b2d-7005dfccc2a0',
         header: {
           text: 'PUBLICATIONS',
-          placeHolder: 'PUBLICATIONS',
+          placeHolder: 'PUBLICATIONS'
         },
         title: {
           text: 'Publication Title',
           placeHolder: 'Publication Title',
           status: true,
-          height: 0,
+          height: 0
         },
         desc: {
           text: '',
           placeHolder: 'Publication Type',
           status: false,
-          height: 0,
+          height: 0
         },
         optional_dashed: {
           text: '',
           placeHolder: 'Author(s)',
           status: false,
-          height: 0,
+          height: 0
         },
         optional_dashed2: {
           text: '',
           placeHolder: 'List of Authors',
           status: false,
-          height: 0,
+          height: 0
         },
         optional_dashed3: {
           text: '',
           placeHolder: 'Date of Publication',
           status: false,
-          height: 0,
+          height: 0
         },
         optional_dashed4: {
           text: '',
           placeHolder: 'Publisher/Issue/Pages, etc.',
           status: false,
-          height: 0,
+          height: 0
         },
         optional_dashed5: {
           text: '',
           placeHolder: 'Description',
           status: false,
-          height: 0,
+          height: 0
         },
         month_start: {
           text: '',
           placeHolder: 'mm',
           status: false,
-          height: 0,
+          height: 0
         },
         month_end: {
           text: '',
           placeHolder: 'mm',
           status: false,
-          height: 0,
+          height: 0
         },
         year_start: {
           text: '',
           placeHolder: 'yyyy',
           status: false,
-          height: 0,
+          height: 0
         },
         year_end: {
           text: '',
           placeHolder: 'yyyy',
           status: false,
-          height: 0,
-        },
-      },
+          height: 0
+        }
+      }
     ],
     skill: [
       {
@@ -1598,15 +1598,15 @@ export const testData = [
         uid: '6747eb49-3f4f-410e-bcb1-b20f847c4c3b',
         header: {
           text: 'SKILLS',
-          placeHolder: 'SKILLS',
+          placeHolder: 'SKILLS'
         },
         title: {
           text: 'Skill name',
           placeHolder: 'Skill name',
           status: true,
-          height: 0,
-        },
-      },
+          height: 0
+        }
+      }
     ],
     interest: [
       {
@@ -1614,15 +1614,15 @@ export const testData = [
         uid: 'aa71d382-d464-4173-bad6-1a876509f710',
         header: {
           text: 'INTERESTS',
-          placeHolder: 'INTERESTS',
+          placeHolder: 'INTERESTS'
         },
         title: {
           text: 'Interest',
           placeHolder: 'Interest',
           status: true,
-          height: 0,
-        },
-      },
+          height: 0
+        }
+      }
     ],
     softSkill: [
       {
@@ -1630,15 +1630,15 @@ export const testData = [
         uid: '34e7aab2-dfe8-4d54-bc4d-aeb1bd24daea',
         header: {
           text: 'SOFT SKILLS',
-          placeHolder: 'SOFT SKILLS',
+          placeHolder: 'SOFT SKILLS'
         },
         title: {
           text: 'Soft skill',
           placeHolder: 'Soft skill',
           status: true,
-          height: 0,
-        },
-      },
+          height: 0
+        }
+      }
     ],
     reference: [
       {
@@ -1646,55 +1646,55 @@ export const testData = [
         uid: 'ecc19d6f-e1d6-43b1-9366-f26367024977',
         header: {
           text: 'REFERENCES',
-          placeHolder: 'REFERENCES',
+          placeHolder: 'REFERENCES'
         },
         title: {
           text: 'Name and Position',
           placeHolder: 'Name and Position',
           status: true,
-          height: 0,
+          height: 0
         },
         optional_dashed: {
           text: '',
           placeHolder: '“Reference”',
           status: true,
-          height: 0,
+          height: 0
         },
         contact: {
           text: '',
           placeHolder: 'Contact:',
           status: false,
-          height: 0,
+          height: 0
         },
         contact_person: {
           text: '',
           placeHolder: 'Contact Person',
           status: false,
-          height: 0,
+          height: 0
         },
         contact_info: {
           text: '',
           placeHolder: 'Contact Info',
           status: false,
-          height: 0,
-        },
-      },
-    ],
-  },
-];
+          height: 0
+        }
+      }
+    ]
+  }
+]
 
 export const testPages = [
   [
     [
       ['9', '2', '10'],
-      ['5', '6', '7', '8'],
+      ['5', '6', '7', '8']
     ],
     [['3', '4', '1'], ['13']],
     [['16'], ['14']],
-    [['12'], []],
+    [['12'], []]
   ],
-  [[['2', '3', '4', '1']], [['5', '6', '7', '8', '9', '10', '11']], [['13', '16', '14']], [['12']]],
-];
+  [[['2', '3', '4', '1']], [['5', '6', '7', '8', '9', '10', '11']], [['13', '16', '14']], [['12']]]
+]
 
 export const testColumns = [
   {
@@ -1703,17 +1703,17 @@ export const testColumns = [
       [['2', '3', '4', '1']],
       [['5', '6', '7', '8', '9', '10', '11']],
       [['13', '16', '14']],
-      [['12']],
+      [['12']]
     ],
     pagesTwoColumn: [
       [
         ['2', '3', '4', '1'],
-        ['5', '6', '7', '8'],
+        ['5', '6', '7', '8']
       ],
       [['9', '10', '11'], ['13']],
       [['16'], ['14']],
-      [['12'], []],
-    ],
+      [['12'], []]
+    ]
   },
   {
     isOneColumn: true,
@@ -1721,16 +1721,16 @@ export const testColumns = [
       [['2', '3', '4', '1']],
       [['5', '6', '7', '8', '9', '10', '11']],
       [['13', '16', '14']],
-      [['12']],
+      [['12']]
     ],
     pagesTwoColumn: [
       [
         ['2', '3', '4', '1'],
-        ['5', '6', '7', '8'],
+        ['5', '6', '7', '8']
       ],
       [['9', '10', '11'], ['13']],
       [['16'], ['14']],
-      [['12'], []],
-    ],
-  },
-];
+      [['12'], []]
+    ]
+  }
+]
