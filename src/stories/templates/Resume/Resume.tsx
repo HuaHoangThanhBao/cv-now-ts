@@ -1,14 +1,10 @@
-import { useRef, useImperativeHandle, forwardRef, KeyboardEvent } from 'react'
+import { useRef, useImperativeHandle, forwardRef } from 'react'
 import { useDispatch } from 'react-redux'
 import { Common, GlobalIterator } from '../../../types/Block'
 import { Panel } from '../../organisms/Panel'
 import { convert } from '../../../utils'
 import { Block } from '../../organisms/Block'
-import {
-  BlockInitialState,
-  createBlock,
-  updateSelectedBlock
-} from '../../organisms/Block/block.slice'
+import { BlockInitialState, updateSelectedBlock } from '../../organisms/Block/block.slice'
 import { useTransformBlock, useEventListener, useTransformProfile } from '../../../hooks'
 import './resume.scss'
 import { TemplateType } from '../../../types/Template'
@@ -47,7 +43,7 @@ export const Resume = forwardRef<ForwardRefProps, ResumeProps>((props: ResumePro
   const profileSocialRef = useRef<HTMLDivElement>(null)
   const profileContainerRef = useRef<HTMLDivElement>(null)
   const dispatch = useDispatch()
-  const [pagesD, callMovingBlock] = useTransformBlock({
+  const [pagesD] = useTransformBlock({
     pages,
     state,
     isOneColumn,
@@ -182,30 +178,6 @@ export const Resume = forwardRef<ForwardRefProps, ResumeProps>((props: ResumePro
       })
     }
   }
-
-  // useEventListener('keydown', (e: KeyboardEvent) => {
-  //   if (isOnPreview) return
-  //   if (e.key === 'q') {
-  //     console.log('one')
-  //     dispatch(createBlock({ blockCreateId: '2' }))
-  //     callMovingBlock(true)
-  //   }
-  //   if (e.key === 'w') {
-  //     dispatch(createBlock({ blockCreateId: '3' }))
-  //     callMovingBlock(true)
-  //   }
-  //   if (e.key === 'e') {
-  //     dispatch(createBlock({ blockCreateId: '1' }))
-  //     callMovingBlock(true)
-  //   }
-  //   if (e.key === 'r') {
-  //     dispatch(createBlock({ blockCreateId: '4' }))
-  //     callMovingBlock(true)
-  //   }
-  //   if (e.key === 'Escape') {
-  //     callMovingBlock(true)
-  //   }
-  // })
 
   useEventListener('mousedown', (e: MouseEvent) => {
     if (isOnPreview) return
