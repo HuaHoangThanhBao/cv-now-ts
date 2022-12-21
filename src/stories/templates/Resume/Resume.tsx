@@ -183,29 +183,29 @@ export const Resume = forwardRef<ForwardRefProps, ResumeProps>((props: ResumePro
     }
   }
 
-  useEventListener('keydown', (e: KeyboardEvent) => {
-    if (isOnPreview) return
-    if (e.key === 'q') {
-      console.log('one')
-      dispatch(createBlock({ blockCreateId: '2' }))
-      callMovingBlock(true)
-    }
-    if (e.key === 'w') {
-      dispatch(createBlock({ blockCreateId: '3' }))
-      callMovingBlock(true)
-    }
-    if (e.key === 'e') {
-      dispatch(createBlock({ blockCreateId: '1' }))
-      callMovingBlock(true)
-    }
-    if (e.key === 'r') {
-      dispatch(createBlock({ blockCreateId: '4' }))
-      callMovingBlock(true)
-    }
-    if (e.key === 'Escape') {
-      callMovingBlock(true)
-    }
-  })
+  // useEventListener('keydown', (e: KeyboardEvent) => {
+  //   if (isOnPreview) return
+  //   if (e.key === 'q') {
+  //     console.log('one')
+  //     dispatch(createBlock({ blockCreateId: '2' }))
+  //     callMovingBlock(true)
+  //   }
+  //   if (e.key === 'w') {
+  //     dispatch(createBlock({ blockCreateId: '3' }))
+  //     callMovingBlock(true)
+  //   }
+  //   if (e.key === 'e') {
+  //     dispatch(createBlock({ blockCreateId: '1' }))
+  //     callMovingBlock(true)
+  //   }
+  //   if (e.key === 'r') {
+  //     dispatch(createBlock({ blockCreateId: '4' }))
+  //     callMovingBlock(true)
+  //   }
+  //   if (e.key === 'Escape') {
+  //     callMovingBlock(true)
+  //   }
+  // })
 
   useEventListener('mousedown', (e: MouseEvent) => {
     if (isOnPreview) return
