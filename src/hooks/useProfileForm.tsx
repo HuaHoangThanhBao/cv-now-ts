@@ -54,7 +54,6 @@ export const useProfileForm = ({ closeForm }: UseProfileFormProps) => {
               )}
             </div>
             <div className="modal-item">
-              {/* <LocationIcon /> */}
               <span>Address:</span>
               <input
                 type="text"

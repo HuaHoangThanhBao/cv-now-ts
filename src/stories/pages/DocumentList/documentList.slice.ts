@@ -162,7 +162,6 @@ export const createNewResume = createAsyncThunk(
     const response = await http.post<DocumentRes>(`documents`, body, {
       signal: thunkAPI.signal
     })
-    console.log('callback')
     callback(response.data._id)
     return response.data
   }

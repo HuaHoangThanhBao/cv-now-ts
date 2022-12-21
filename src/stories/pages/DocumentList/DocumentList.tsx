@@ -76,7 +76,7 @@ export const DocumentList = () => {
   return (
     <div className="document-list">
       <Button text="Create new resume" className="primary" onClick={createNewDocument} />
-      <div>
+      <div className="document-list-container">
         {documentList.map((document: DocumentRes, i: number) => (
           <div className="preview" key={i}>
             <Button text="Delete" className="remove" onClick={() => deleteDocument(document)} />

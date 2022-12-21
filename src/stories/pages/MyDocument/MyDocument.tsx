@@ -14,7 +14,7 @@ export const MyDocument: React.FC = () => {
   const template = useSelector((state: RootState) => state.template.currentTemplate)
   const { isUpdated } = useFetchDocumentFromParam()
   const downloadRef = useRef<HTMLDivElement[]>(null)
-  const { generatePDF } = useDownloadResume({ panelRefs: downloadRef })
+  const { generatePDF } = useDownloadResume()
 
   return (
     <>

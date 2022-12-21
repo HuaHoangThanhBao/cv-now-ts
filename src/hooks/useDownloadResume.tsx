@@ -1,12 +1,7 @@
 import { jsPDF } from 'jspdf'
-import { RefObject } from 'react'
 import { maxHeight, maxWidth } from '../contants'
 
-interface UseDownloadResumeProps {
-  panelRefs: RefObject<HTMLDivElement[]>
-}
-
-export const useDownloadResume = ({ panelRefs }: UseDownloadResumeProps) => {
+export const useDownloadResume = () => {
   async function generatePDF() {
     const pdf = new jsPDF({
       orientation: 'portrait',
@@ -14,23 +9,25 @@ export const useDownloadResume = ({ panelRefs }: UseDownloadResumeProps) => {
       format: [maxWidth, maxHeight],
       compress: true
     })
-    console.log('getPanelRefs:', panelRefs)
-
-    const data = await document.querySelectorAll('div.panel.two-column')[0]
-    console.log('data:', data)
-    pdf.html(data as HTMLElement).then(() => {
-      pdf.save('shipping_label.pdf')
-    })
-
-    // await pdf.html(document.querySelector('div.panel.skilled_based.two-column'), {
-    //   callback: function (pdf) {
-    //     console.log(pdf);
-    //   },
-    // });
-    // const data: any = await document.querySelector('#pdf');
-    // pdf.html(data).then(() => {
-    //   pdf.save('shipping_label.pdf');
-    // });
+    const data = document.querySelectorAll('div.panel.two-column')
+    const pagesLength = data.length
+    let i = 0
+    for await (const panel of data) {
+      await pdf.html(panel as HTMLElement, {
+        callback: function (pdf) {
+          if (i === pagesLength - 1) {
+            const pageCount = pdf.getNumberOfPages()
+            //we delete the last blank page
+            if (pageCount > pagesLength) {
+              pdf.deletePage(pageCount)
+            }
+            pdf.save('download.pdf')
+          }
+          i++
+        },
+        y: i === 0 ? 0 : maxHeight * i
+      })
+    }
   }
 
   return { generatePDF }
