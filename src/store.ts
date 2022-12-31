@@ -4,13 +4,15 @@ import blockReducer from './stories/organisms/Block/block.slice'
 import dragReducer from './stories/organisms/Drag/drag.slice'
 import templateReducer from './stories/organisms/Template/template.slice'
 import documentReducer from './stories/pages/DocumentList/documentList.slice'
+import userReducer from './user.slice'
 
 export const store = configureStore({
   reducer: {
     block: blockReducer,
     drag: dragReducer,
     document: documentReducer,
-    template: templateReducer
+    template: templateReducer,
+    user: userReducer
   }
 })
 
@@ -19,7 +21,8 @@ const rootReducer = combineReducers({
   block: blockReducer,
   drag: dragReducer,
   document: documentReducer,
-  template: templateReducer
+  template: templateReducer,
+  user: userReducer
 })
 
 export function setupStore(preloadedState?: PreloadedState<RootState>) {
