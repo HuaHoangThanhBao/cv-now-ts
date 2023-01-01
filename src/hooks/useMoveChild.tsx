@@ -1,5 +1,6 @@
 import { useSelector } from 'react-redux'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
+import { HttpStatus } from 'src/types/HttpStatus'
 import { RootState, useAppDispatch } from '../store'
 import {
   BlockInitialState,
@@ -24,6 +25,7 @@ export const useMoveChild = ({
   const noNeedsTwoColumn = useSelector((state: RootState) => state.drag.noNeedsTwoColumn)
   const noNeeds = !blockState.isOneColumn ? noNeedsTwoColumn : noNeedsOneColumn
 
+  const navigate = useNavigate()
   const params = useParams()
   const { documentId } = params
   const { callTransformPages } = useTransformPages({
@@ -60,6 +62,12 @@ export const useMoveChild = ({
       }
       // console.log('request:', request);
       dispatch(sendUpdateNoNeeds({ id: documentId, body: request }))
+        .unwrap()
+        .catch((error) => {
+          if (error.message.includes(HttpStatus.UNAUTHORIZED)) {
+            navigate('/')
+          }
+        })
     }
 
     dispatch(updatePages({ pages: [..._pages] }))

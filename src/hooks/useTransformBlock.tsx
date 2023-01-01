@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
+import { HttpStatus } from 'src/types/HttpStatus'
 import { RootState, useAppDispatch } from '../store'
 import {
   BlockInitialState,
@@ -58,6 +59,7 @@ export const useTransformBlock = (
   const [, moveChildAfter] = useMoveChild({ pages: pagesD, state })
   const { send } = useCompareBlock(blockRootData.education[0])
   const dispatch = useAppDispatch()
+  const navigate = useNavigate()
   const params = useParams()
   const { documentId } = params
 
@@ -280,9 +282,22 @@ export const useTransformBlock = (
       }
       console.log('update document request:', request)
       setIsDoneTransform(false)
-      return dispatch(sendUpdatePages({ id: documentId, body: request }))
+      const promise = dispatch(sendUpdatePages({ id: documentId, body: request }))
+      promise.unwrap().catch((error) => {
+        if (error.message.includes(HttpStatus.UNAUTHORIZED)) {
+          navigate('/')
+        }
+      })
+      return promise
     }
-  }, [dispatch, documentId, state.isOneColumn, state.pagesOneColumn, state.pagesTwoColumn])
+  }, [
+    dispatch,
+    documentId,
+    state.isOneColumn,
+    state.pagesOneColumn,
+    state.pagesTwoColumn,
+    navigate
+  ])
 
   useEffectOnce(() => {
     if (!isOnPreview) {

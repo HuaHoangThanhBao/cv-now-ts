@@ -12,13 +12,13 @@ import {
 } from './documentList.slice'
 import { useGoogleLogin, useTransformPages } from '../../../hooks'
 import { Resume } from '../../templates/Resume/Resume'
-import './documentList.scss'
 import { updateNoNeeds } from '../../organisms/Drag/drag.slice'
 import { Button } from '../../atoms/Button'
 import { blockInitialState } from '../../organisms/Block/block.slice'
 import { pagesOneColumn, pagesTwoColumn } from '../../../contants/ColumnFormat'
 import { getUser } from 'src/user.slice'
 import { HttpStatus } from 'src/types/HttpStatus'
+import './documentList.scss'
 
 export const DocumentList = () => {
   const [isOnCreating, setIsOnCreating] = useState(false)

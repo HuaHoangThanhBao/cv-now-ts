@@ -96,13 +96,6 @@ const initialState: DocumentState = {
   documentSelectedId: '-1'
 }
 
-// export const getResumeList = createAsyncThunk('document/getResumeList', async (_, thunkAPI) => {
-//   const response = await http.get<DocumentRes[]>('documents', {
-//     signal: thunkAPI.signal
-//   })
-//   return response.data
-// })
-
 export const getResume = createAsyncThunk(
   'document/getResume',
   async ({ documentId }: { documentId: string }, thunkAPI) => {
