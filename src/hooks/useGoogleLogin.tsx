@@ -3,12 +3,14 @@ import { gapi } from 'gapi-script'
 import { useEffectOnce } from './useEffectOnce'
 import { useNavigate } from 'react-router-dom'
 import { googleClientId } from 'src/contants/url'
-import { useAppDispatch } from 'src/store'
-import { sendLogin, sendToUpdateRefreshToken } from 'src/user.slice'
+import { RootState, useAppDispatch } from 'src/store'
+import { getUser, sendLogin, sendToUpdateRefreshToken } from 'src/user.slice'
 import { TokenType } from 'src/types/Token'
 import { HttpStatus } from 'src/types/HttpStatus'
+import { useSelector } from 'react-redux'
 
 export const useGoogleLogin = () => {
+  const user = useSelector((state: RootState) => state.user)
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
 
@@ -58,7 +60,7 @@ export const useGoogleLogin = () => {
       return (
         <button
           className={`${externalClassName} btn-lp highlight-btn`}
-          onClick={() => navigate('/my-documents')}
+          onClick={() => navigate(`/my-documents/${user.userId}`)}
         >
           {text.toLowerCase() === 'login' ? 'My documents' : text}
         </button>
@@ -91,8 +93,10 @@ export const useGoogleLogin = () => {
         navigate('/')
       }
     })
+    const promiseUser = dispatch(getUser())
     return () => {
       promise.abort()
+      promiseUser.abort()
     }
   })
 

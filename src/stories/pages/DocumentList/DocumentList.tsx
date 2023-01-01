@@ -90,13 +90,6 @@ export const DocumentList = () => {
       })
   }
 
-  useEffectOnce(() => {
-    const promise = refetchUser()
-    return () => {
-      promise.abort()
-    }
-  })
-
   return (
     <div className="document-list">
       <Button text="Create new resume" className="primary" onClick={createNewDocument} />

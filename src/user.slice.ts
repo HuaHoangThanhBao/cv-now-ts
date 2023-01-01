@@ -3,6 +3,7 @@ import { http } from 'src/utils'
 import { DocumentRes } from './stories/pages/DocumentList/documentList.slice'
 
 export interface UserState {
+  _id?: string
   userId: string
   email: string
   familyName: string
@@ -75,20 +76,26 @@ const userSlice = createSlice({
   },
   extraReducers(builder) {
     builder.addCase(sendLogin.fulfilled, (state, action) => {
-      console.log('user:', action.payload)
+      console.log('login:', action.payload)
+      state.userId = action.payload.userId
       state.email = action.payload.email
-      state.familyName = action.payload.email
-      state.givenName = action.payload.email
-      state.name = action.payload.email
-      state.accessToken = action.payload.email
-      state.refreshToken = action.payload.email
-      state.tokenId = action.payload.email
+      state.familyName = action.payload.familyName
+      state.givenName = action.payload.givenName
+      state.name = action.payload.name
+      state.accessToken = action.payload.accessToken
+      state.refreshToken = action.payload.refreshToken
+      state.tokenId = action.payload.tokenId
     })
     builder.addCase(sendToUpdateRefreshToken.fulfilled, (state, action) => {
       state.refreshToken = action.payload.refreshToken
     })
     builder.addCase(getUser.fulfilled, (state, action) => {
-      console.log('documents:', action.payload.documents)
+      console.log('user:', action.payload)
+      state.userId = action.payload._id || ''
+      state.email = action.payload.email
+      state.familyName = action.payload.familyName
+      state.givenName = action.payload.givenName
+      state.name = action.payload.name
       state.documents = action.payload.documents
     })
   }
