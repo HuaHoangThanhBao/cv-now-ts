@@ -86,9 +86,8 @@ export const useGoogleLogin = () => {
         body: { refreshToken: localStorage.getItem(TokenType.REFRESH_TOKEN) || '' }
       })
     )
-    promise.unwrap().catch((err) => {
-      console.log('error:', err)
-      if (err.message.includes(HttpStatus.UNAUTHORIZED)) {
+    promise.unwrap().catch((error) => {
+      if (error.message.includes(HttpStatus.UNAUTHORIZED)) {
         navigate('/')
       }
     })

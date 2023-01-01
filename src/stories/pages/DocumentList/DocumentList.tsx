@@ -71,11 +71,23 @@ export const DocumentList = () => {
   }
 
   const refetchUser = () => {
-    return dispatch(getUser())
+    const p = dispatch(getUser())
+    p.unwrap().catch((error) => {
+      if (error.message.includes(HttpStatus.UNAUTHORIZED)) {
+        navigate('/')
+      }
+    })
+    return p
   }
 
   const deleteDocument = (document: DocumentRes) => {
     dispatch(deleteResume({ id: document._id, callback: refetchUser }))
+      .unwrap()
+      .catch((error) => {
+        if (error.message.includes(HttpStatus.UNAUTHORIZED)) {
+          navigate('/')
+        }
+      })
   }
 
   useEffectOnce(() => {
