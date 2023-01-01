@@ -10,7 +10,7 @@ import {
   deleteResume,
   resetResume
 } from './documentList.slice'
-import { useEffectOnce, useGoogleLogin, useTransformPages } from '../../../hooks'
+import { useGoogleLogin, useTransformPages } from '../../../hooks'
 import { Resume } from '../../templates/Resume/Resume'
 import './documentList.scss'
 import { updateNoNeeds } from '../../organisms/Drag/drag.slice'
