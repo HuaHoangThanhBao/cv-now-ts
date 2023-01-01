@@ -35,7 +35,6 @@ export interface DocumentCreateReq {
 export interface DocumentState {
   documentSelectedId: string
   resume: DocumentRes
-  documents: DocumentRes[]
 }
 
 export interface ProfileState {
@@ -93,7 +92,6 @@ const resumeInitialData = {
 }
 
 const initialState: DocumentState = {
-  documents: [],
   resume: resumeInitialData,
   documentSelectedId: '-1'
 }
@@ -161,10 +159,11 @@ export const createNewResume = createAsyncThunk(
 
 export const deleteResume = createAsyncThunk(
   'document/deleteResume',
-  async ({ id }: { id: string }, thunkAPI) => {
+  async ({ id, callback }: { id: string; callback: () => void }, thunkAPI) => {
     const response = await http.delete<DocumentRes>(`documents/${id}`, {
       signal: thunkAPI.signal
     })
+    callback()
     return response.data
   }
 )
@@ -175,9 +174,6 @@ const documentSlice = createSlice({
   reducers: {
     getSelectedDocument: (state, action: PayloadAction<string>) => {
       state.documentSelectedId = action.payload
-    },
-    resetDocumentList: (state) => {
-      state.documents = []
     },
     resetResume: (state) => {
       state.documentSelectedId = '-1'
@@ -190,17 +186,6 @@ const documentSlice = createSlice({
         console.log('document by id:', action.payload)
         state.resume = action.payload
       })
-      .addCase(createNewResume.fulfilled, (state, action) => {
-        state.documents.push(action.payload)
-      })
-      .addCase(deleteResume.fulfilled, (state, action) => {
-        const documentId = action.payload._id
-        const deleteDocumentIndex = state.documents.findIndex((doc) => doc._id === documentId)
-        if (deleteDocumentIndex !== -1) {
-          state.documents.splice(deleteDocumentIndex, 1)
-        }
-        state.documentSelectedId = '-1'
-      })
       .addCase(sendUpdateProfile.fulfilled, (state, action) => {
         console.log('profile updated:', action.payload)
         state.resume.profile = action.payload
@@ -212,7 +197,7 @@ const documentSlice = createSlice({
   }
 })
 
-export const { getSelectedDocument, resetResume, resetDocumentList } = documentSlice.actions
+export const { getSelectedDocument, resetResume } = documentSlice.actions
 const documentReducer = documentSlice.reducer
 
 export default documentReducer

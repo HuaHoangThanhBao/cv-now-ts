@@ -5,7 +5,6 @@ import { useNavigate } from 'react-router-dom'
 import {
   DocumentRes,
   getSelectedDocument,
-  resetDocumentList,
   createNewResume,
   DocumentCreateReq,
   deleteResume,
@@ -71,14 +70,17 @@ export const DocumentList = () => {
       })
   }
 
+  const refetchUser = () => {
+    return dispatch(getUser())
+  }
+
   const deleteDocument = (document: DocumentRes) => {
-    dispatch(deleteResume({ id: document._id }))
+    dispatch(deleteResume({ id: document._id, callback: refetchUser }))
   }
 
   useEffectOnce(() => {
-    const promise = dispatch(getUser())
+    const promise = refetchUser()
     return () => {
-      dispatch(resetDocumentList())
       promise.abort()
     }
   })

@@ -1,9 +1,8 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { http } from 'src/utils'
-import { DocumentState } from './stories/pages/DocumentList/documentList.slice'
+import { DocumentRes } from './stories/pages/DocumentList/documentList.slice'
 
-export interface UserState
-  extends Omit<DocumentState, 'documentSelectedId' | 'resume' | 'loading' | 'currentRequestId'> {
+export interface UserState {
   userId: string
   email: string
   familyName: string
@@ -12,6 +11,7 @@ export interface UserState
   accessToken: string
   refreshToken: string
   tokenId: string
+  documents: DocumentRes[]
 }
 
 const initialState: UserState = {
