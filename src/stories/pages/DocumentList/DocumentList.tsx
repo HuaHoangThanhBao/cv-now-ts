@@ -3,7 +3,6 @@ import { RootState, useAppDispatch } from '../../../store'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import {
-  getResumeList,
   DocumentRes,
   getSelectedDocument,
   resetDocumentList,
@@ -12,22 +11,26 @@ import {
   deleteResume,
   resetResume
 } from './documentList.slice'
-import { useEffectOnce, useTransformPages } from '../../../hooks'
+import { useEffectOnce, useGoogleLogin, useTransformPages } from '../../../hooks'
 import { Resume } from '../../templates/Resume/Resume'
 import './documentList.scss'
 import { updateNoNeeds } from '../../organisms/Drag/drag.slice'
 import { Button } from '../../atoms/Button'
 import { blockInitialState } from '../../organisms/Block/block.slice'
 import { pagesOneColumn, pagesTwoColumn } from '../../../contants/ColumnFormat'
+import { getUser } from 'src/user.slice'
+import { HttpStatus } from 'src/types/HttpStatus'
 
 export const DocumentList = () => {
   const [isOnCreating, setIsOnCreating] = useState(false)
-  const documentList = useSelector((state: RootState) => state.document.documentList)
+  const documents = useSelector((state: RootState) => state.user.documents)
   const { callTransformPages } = useTransformPages({
     isOneColumn: false,
     pagesOneColumn: [],
     pagesTwoColumn: []
   })
+  useGoogleLogin()
+
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
 
@@ -59,6 +62,13 @@ export const DocumentList = () => {
     }
     setIsOnCreating(true)
     dispatch(createNewResume({ body: newResume, callback: doNavigate }))
+      .unwrap()
+      .catch((error) => {
+        console.log(error)
+        if (error.message.includes(HttpStatus.UNAUTHORIZED)) {
+          navigate('/')
+        }
+      })
   }
 
   const deleteDocument = (document: DocumentRes) => {
@@ -66,7 +76,7 @@ export const DocumentList = () => {
   }
 
   useEffectOnce(() => {
-    const promise = dispatch(getResumeList())
+    const promise = dispatch(getUser())
     return () => {
       dispatch(resetDocumentList())
       promise.abort()
@@ -77,7 +87,7 @@ export const DocumentList = () => {
     <div className="document-list">
       <Button text="Create new resume" className="primary" onClick={createNewDocument} />
       <div className="document-list-container">
-        {documentList.map((document: DocumentRes, i: number) => (
+        {documents.map((document: DocumentRes, i: number) => (
           <div className="preview" key={i}>
             <Button text="Delete" className="remove" onClick={() => deleteDocument(document)} />
             <div

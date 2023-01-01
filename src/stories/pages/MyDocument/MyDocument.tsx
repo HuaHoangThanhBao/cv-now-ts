@@ -2,7 +2,7 @@ import React, { useRef } from 'react'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../../store'
 import { Resume } from '../../templates/Resume/Resume'
-import { useFetchDocumentFromParam } from '../../../hooks'
+import { useFetchDocumentFromParam, useGoogleLogin } from '../../../hooks'
 import { Menu } from '../../templates/Menu'
 import './myDocument.scss'
 import { useDownloadResume } from '../../../hooks/useDownloadResume'
@@ -15,6 +15,7 @@ export const MyDocument: React.FC = () => {
   const { isUpdated } = useFetchDocumentFromParam()
   const downloadRef = useRef<HTMLDivElement[]>(null)
   const { generatePDF } = useDownloadResume()
+  useGoogleLogin()
 
   return (
     <>
