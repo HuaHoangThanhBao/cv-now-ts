@@ -23,11 +23,13 @@ export const LandingPage = () => {
   const { googleLoginButton } = useGoogleLogin()
   return (
     <div className="body-lp">
-      <header className="header">
+      <header className="header-l">
         <div className="container">
-          <div className="header-main">
+          <div className="header-l-main">
             <img className="logo" src={LogoColor} alt="" />
-            <div className="header-nav">{googleLoginButton('header-link header-btn', 'Login')}</div>
+            <div className="header-l-nav">
+              {googleLoginButton('header-l-link header-btn', 'Login')}
+            </div>
           </div>
         </div>
       </header>
