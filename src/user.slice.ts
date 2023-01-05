@@ -76,7 +76,6 @@ const userSlice = createSlice({
   },
   extraReducers(builder) {
     builder.addCase(sendLogin.fulfilled, (state, action) => {
-      console.log('login:', action.payload)
       state.userId = action.payload.userId
       state.email = action.payload.email
       state.familyName = action.payload.familyName
@@ -90,7 +89,6 @@ const userSlice = createSlice({
       state.refreshToken = action.payload.refreshToken
     })
     builder.addCase(getUser.fulfilled, (state, action) => {
-      console.log('user:', action.payload)
       state.userId = action.payload._id || ''
       state.email = action.payload.email
       state.familyName = action.payload.familyName

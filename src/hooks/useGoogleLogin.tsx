@@ -19,9 +19,15 @@ export const useGoogleLogin = () => {
     localStorage.setItem(TokenType.REFRESH_TOKEN, refreshToken)
   }
 
+  const goToMyDocumentPage = (userId: string) => {
+    if (!userId) return
+    console.log('userId:', userId)
+    navigate(`/my-documents/${userId}`)
+  }
+
   const callbackAfterLogin = (userId: string, accessToken: string, refreshToken: string) => {
     storeToLocalStorage(accessToken, refreshToken)
-    navigate(`/my-documents/${userId}`)
+    goToMyDocumentPage(userId)
   }
 
   const handleFailure = (result: unknown) => {
@@ -60,7 +66,7 @@ export const useGoogleLogin = () => {
       return (
         <button
           className={`${externalClassName} btn-lp highlight-btn`}
-          onClick={() => navigate(`/my-documents/${user.userId}`)}
+          onClick={() => goToMyDocumentPage(user.userId)}
         >
           {text.toLowerCase() === 'login' ? 'My documents' : text}
         </button>

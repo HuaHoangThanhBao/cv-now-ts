@@ -34,6 +34,7 @@ export const DocumentList = () => {
   const navigate = useNavigate()
 
   const doNavigate = (documentId: string) => {
+    if (!documentId) return
     dispatch(resetResume())
     navigate(`/resume/${documentId}`)
   }
