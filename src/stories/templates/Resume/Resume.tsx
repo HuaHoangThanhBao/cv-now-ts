@@ -105,8 +105,9 @@ export const Resume = forwardRef<ForwardRefProps, ResumeProps>((props: ResumePro
       ))
     } else return <></>
   }
+
   const renderBlocks = (_pages: string[][], pageI: number) => {
-    if (pagesD.length > 1) {
+    if (!isOneColumn) {
       const evenColumn = _pages[0]
       const oddColumn = _pages[1]
       return (

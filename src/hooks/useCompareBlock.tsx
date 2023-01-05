@@ -1,5 +1,7 @@
 import { useRef } from 'react'
 import { useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import { HttpStatus } from 'src/types/HttpStatus'
 import { RootState, useAppDispatch } from '../store'
 import { BlockState, sendUpdateBlock } from '../stories/organisms/Block/block.slice'
 import { Common } from '../types/Block'
@@ -14,6 +16,7 @@ export const useCompareBlock = (blockRoot: Common) => {
   const blockState = useSelector((state: RootState) => state.block)
   const documentState = useSelector((state: RootState) => state.document)
   const dispatch = useAppDispatch()
+  const navigate = useNavigate()
 
   const set = (blockId: string, blockUid: string) => {
     currentBlock.current = { blockId, blockUid }
@@ -76,6 +79,12 @@ export const useCompareBlock = (blockRoot: Common) => {
       reference: blockState.reference
     }
     dispatch(sendUpdateBlock({ id: documentState.resume.block._id || '-1', body: updatedBlock }))
+      .unwrap()
+      .catch((error) => {
+        if (error.message.includes(HttpStatus.UNAUTHORIZED)) {
+          navigate('/')
+        }
+      })
     return updatedBlock
   }
 

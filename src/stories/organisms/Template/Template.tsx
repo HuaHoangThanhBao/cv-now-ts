@@ -1,12 +1,14 @@
 import { useRef } from 'react'
 import { useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import { HttpStatus } from 'src/types/HttpStatus'
 import { templates } from '../../../contants'
 import { useOnClickOutside } from '../../../hooks'
 import { RootState, useAppDispatch } from '../../../store'
 import { Resume } from '../../templates/Resume'
 import { onMovingBlock } from '../Block/block.slice'
-import './template.scss'
 import { sendUpdateCurrentTemplate, TemplateState, updateCurrentTemplate } from './template.slice'
+import './template.scss'
 
 interface TemplateProps {
   setOption: (option: string) => void
@@ -17,6 +19,7 @@ export const Template = ({ setOption }: TemplateProps) => {
   const blockState = useSelector((state: RootState) => state.block)
   const resume = useSelector((state: RootState) => state.document.resume)
   const dispatch = useAppDispatch()
+  const navigate = useNavigate()
 
   useOnClickOutside(ref, () => {
     setOption('')
@@ -29,6 +32,12 @@ export const Template = ({ setOption }: TemplateProps) => {
     }
     dispatch(updateCurrentTemplate(template))
     dispatch(sendUpdateCurrentTemplate({ id: resume.template._id || '-1', body: updateTemplate }))
+      .unwrap()
+      .catch((error) => {
+        if (error.message.includes(HttpStatus.UNAUTHORIZED)) {
+          navigate('/')
+        }
+      })
     dispatch(onMovingBlock(true))
   }
 

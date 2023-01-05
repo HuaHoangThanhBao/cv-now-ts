@@ -1,7 +1,9 @@
 import { useForm } from 'react-hook-form'
 import { useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 import { RootState, useAppDispatch } from 'src/store'
 import { sendUpdateProfile } from 'src/stories/pages/DocumentList/documentList.slice'
+import { HttpStatus } from 'src/types/HttpStatus'
 
 interface UseProfileFormProps {
   closeForm: () => void
@@ -17,9 +19,16 @@ export const useProfileForm = ({ closeForm }: UseProfileFormProps) => {
     defaultValues: { ...profile }
   })
   const dispatch = useAppDispatch()
+  const navigate = useNavigate()
 
   const onSave = handleSubmit((data) => {
     dispatch(sendUpdateProfile({ id: profile._id || '-1', body: data }))
+      .unwrap()
+      .catch((error) => {
+        if (error.message.includes(HttpStatus.UNAUTHORIZED)) {
+          navigate('/')
+        }
+      })
     closeForm()
   })
 

@@ -3,35 +3,38 @@ import { RootState, useAppDispatch } from '../../../store'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import {
-  getResumeList,
   DocumentRes,
   getSelectedDocument,
-  resetDocumentList,
   createNewResume,
   DocumentCreateReq,
   deleteResume,
   resetResume
 } from './documentList.slice'
-import { useEffectOnce, useTransformPages } from '../../../hooks'
+import { useGoogleLogin, useTransformPages } from '../../../hooks'
 import { Resume } from '../../templates/Resume/Resume'
-import './documentList.scss'
 import { updateNoNeeds } from '../../organisms/Drag/drag.slice'
 import { Button } from '../../atoms/Button'
 import { blockInitialState } from '../../organisms/Block/block.slice'
 import { pagesOneColumn, pagesTwoColumn } from '../../../contants/ColumnFormat'
+import { getUser } from 'src/user.slice'
+import { HttpStatus } from 'src/types/HttpStatus'
+import './documentList.scss'
 
 export const DocumentList = () => {
   const [isOnCreating, setIsOnCreating] = useState(false)
-  const documentList = useSelector((state: RootState) => state.document.documentList)
+  const documents = useSelector((state: RootState) => state.user.documents)
   const { callTransformPages } = useTransformPages({
     isOneColumn: false,
     pagesOneColumn: [],
     pagesTwoColumn: []
   })
+  useGoogleLogin()
+
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
 
   const doNavigate = (documentId: string) => {
+    if (!documentId) return
     dispatch(resetResume())
     navigate(`/resume/${documentId}`)
   }
@@ -59,25 +62,40 @@ export const DocumentList = () => {
     }
     setIsOnCreating(true)
     dispatch(createNewResume({ body: newResume, callback: doNavigate }))
+      .unwrap()
+      .catch((error) => {
+        console.log(error)
+        if (error.message.includes(HttpStatus.UNAUTHORIZED)) {
+          navigate('/')
+        }
+      })
+  }
+
+  const refetchUser = () => {
+    const p = dispatch(getUser())
+    p.unwrap().catch((error) => {
+      if (error.message.includes(HttpStatus.UNAUTHORIZED)) {
+        navigate('/')
+      }
+    })
+    return p
   }
 
   const deleteDocument = (document: DocumentRes) => {
-    dispatch(deleteResume({ id: document._id }))
+    dispatch(deleteResume({ id: document._id, callback: refetchUser }))
+      .unwrap()
+      .catch((error) => {
+        if (error.message.includes(HttpStatus.UNAUTHORIZED)) {
+          navigate('/')
+        }
+      })
   }
-
-  useEffectOnce(() => {
-    const promise = dispatch(getResumeList())
-    return () => {
-      dispatch(resetDocumentList())
-      promise.abort()
-    }
-  })
 
   return (
     <div className="document-list">
       <Button text="Create new resume" className="primary" onClick={createNewDocument} />
       <div className="document-list-container">
-        {documentList.map((document: DocumentRes, i: number) => (
+        {documents.map((document: DocumentRes, i: number) => (
           <div className="preview" key={i}>
             <Button text="Delete" className="remove" onClick={() => deleteDocument(document)} />
             <div

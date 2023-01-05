@@ -1,0 +1,24 @@
+.header-l {
+  position: relative;
+  background-color: transparent;
+  padding: 50px 0 50px 0;
+  display: block;
+  left: 0;
+  transform: none;
+  width: 100%;
+  &-main {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+  }
+  &-nav {
+    display: flex;
+    align-items: center;
+    gap: 35px;
+    color: $very-dark-blue;
+  }
+  &-btn {
+    margin-left: 20px;
+  }
+}

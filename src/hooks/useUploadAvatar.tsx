@@ -1,7 +1,9 @@
 import React, { useState } from 'react'
 import Cropper, { Point, Area } from 'react-easy-crop'
+import { useNavigate } from 'react-router-dom'
 import { useAppDispatch } from 'src/store'
 import { AvatarState, sendUpdateAvatar } from 'src/stories/pages/DocumentList/documentList.slice'
+import { HttpStatus } from 'src/types/HttpStatus'
 import getCroppedImg from 'src/utils/cropImage'
 import AvatarImg from '../stories/assets/avatar.png'
 
@@ -24,6 +26,7 @@ export const useUploadAvatar = ({ avatar }: UseUploadAvatarProps) => {
   })
   const [isShowImageCrop, setIsShowImageCrop] = useState(false)
   const dispatch = useAppDispatch()
+  const navigate = useNavigate()
 
   const onCropComplete = (croppedArea: Area, croppedAreaPixels: Area) => {
     setCroppedAreaPixels(croppedAreaPixels)
@@ -54,6 +57,12 @@ export const useUploadAvatar = ({ avatar }: UseUploadAvatarProps) => {
         }
       })
     )
+      .unwrap()
+      .catch((error) => {
+        if (error.message.includes(HttpStatus.UNAUTHORIZED)) {
+          navigate('/')
+        }
+      })
   }
 
   const showCroppedImage = async () => {

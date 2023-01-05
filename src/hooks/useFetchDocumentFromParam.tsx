@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { updateCurrentTemplate } from 'src/stories/organisms/Template/template.slice'
+import { HttpStatus } from 'src/types/HttpStatus'
 import { RootState, useAppDispatch } from '../store'
 import { resetBlockState, updateState } from '../stories/organisms/Block/block.slice'
 import { updateNoNeeds } from '../stories/organisms/Drag/drag.slice'
@@ -14,9 +15,15 @@ export const useFetchDocumentFromParam = () => {
   const [isUpdated, setIsUpdated] = useState(false)
   const resume = useSelector((state: RootState) => state.document.resume)
   const dispatch = useAppDispatch()
+  const navigate = useNavigate()
 
   useEffectOnce(() => {
     const promise = dispatch(getResume({ documentId: documentId || '-1' }))
+    promise.unwrap().catch((error) => {
+      if (error.message.includes(HttpStatus.UNAUTHORIZED)) {
+        navigate('/')
+      }
+    })
     return () => {
       dispatch(resetResume())
       dispatch(resetBlockState())
