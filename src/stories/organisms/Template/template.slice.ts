@@ -1,13 +1,14 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { IdObjectMongoose } from 'src/types/Block'
 import { http } from 'src/utils'
 import { TemplateType } from '../../../types/Template'
 
-export interface TemplateState {
-  _id?: string
+export interface TemplateState extends IdObjectMongoose {
   currentTemplate: string
 }
 
 const initialState: TemplateState = {
+  _id: '',
   currentTemplate: TemplateType.skilled_based
 }
 

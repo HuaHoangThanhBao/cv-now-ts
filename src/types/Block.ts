@@ -1,3 +1,7 @@
+export type IdObjectMongoose = {
+  _id: string
+}
+
 export interface Common extends Year, GlobalIterator {
   id: string
   uid: string

@@ -1,9 +1,9 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { http } from 'src/utils'
 import { DocumentRes } from './stories/pages/DocumentList/documentList.slice'
+import { IdObjectMongoose } from './types/Block'
 
-export interface UserState {
-  _id?: string
+export interface UserState extends IdObjectMongoose {
   userId: string
   email: string
   familyName: string
@@ -16,6 +16,7 @@ export interface UserState {
 }
 
 const initialState: UserState = {
+  _id: '',
   userId: '',
   email: '',
   familyName: '',
