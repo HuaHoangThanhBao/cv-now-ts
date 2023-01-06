@@ -1,5 +1,4 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { FulfilledAction, PendingAction, RejectedAction } from 'src/types/AsyncThunk'
 import { pagesTwoColumn } from '../../../contants/ColumnFormat'
 import { http } from '../../../utils'
 import { PageTransformState } from '../Block/block.slice'
@@ -20,14 +19,7 @@ export interface NoNeedUpdateState {
 
 export type NoNeedRequestState = NoNeedState & PageTransformState
 
-interface DragRequestState {
-  loading: boolean
-  currentRequestId: undefined | string
-}
-
-const initialState: DragState & NoNeedState & NoNeedUpdateState & DragRequestState = {
-  loading: false,
-  currentRequestId: '-1',
+const initialState: DragState & NoNeedState & NoNeedUpdateState = {
   isOneColumn: false,
   noNeedItem: '',
   pages: pagesTwoColumn,
@@ -82,25 +74,6 @@ const dragSlice = createSlice({
         noNeeds.splice(foundIndex, 1)
       }
     }
-  },
-  extraReducers(builder) {
-    builder
-      .addMatcher<PendingAction>(
-        (action) => action.type.endsWith('/pending'),
-        (state, action) => {
-          state.loading = true
-          state.currentRequestId = action.meta.requestId
-        }
-      )
-      .addMatcher<RejectedAction | FulfilledAction>(
-        (action) => action.type.endsWith('/rejected') || action.type.endsWith('/fulfilled'),
-        (state, action) => {
-          if (state.loading && state.currentRequestId === action.meta.requestId) {
-            state.loading = false
-            state.currentRequestId = undefined
-          }
-        }
-      )
   }
 })
 

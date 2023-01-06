@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { IdObjectMongoose } from 'src/types/Block'
 import { TemplateType } from 'src/types/Template'
 import { http } from '../../../utils'
 import {
@@ -23,22 +24,17 @@ export interface DocumentRes extends PageState {
   avatar: AvatarState
 }
 
-export interface DocumentCreateReq {
-  blocks: BlockState
-  pagesOneColumn: string[][][]
-  pagesTwoColumn: string[][][]
-  isOneColumn: boolean
-  noNeedsOneColumn: []
-  noNeedsTwoColumn: []
-}
+export type DocumentCreateReq = Pick<
+  DocumentRes,
+  'pagesOneColumn' | 'pagesTwoColumn' | 'isOneColumn' | 'noNeedsOneColumn' | 'noNeedsTwoColumn'
+> & { blocks: BlockState }
 
 export interface DocumentState {
   documentSelectedId: string
   resume: DocumentRes
 }
 
-export interface ProfileState {
-  _id?: string
+export interface ProfileState extends IdObjectMongoose {
   email: string
   address: string
   phone: string
@@ -53,12 +49,12 @@ export interface ProfileState {
   instagram: string
 }
 
-export interface AvatarState {
-  _id?: string
+export interface AvatarState extends IdObjectMongoose {
   url: string
 }
 
-export const profileInitialState = {
+export const profileInitialState: ProfileState = {
+  _id: '',
   email: '',
   address: '',
   phone: '',
@@ -73,7 +69,7 @@ export const profileInitialState = {
   instagram: ''
 }
 
-const resumeInitialData = {
+const resumeInitialData: DocumentRes = {
   _id: '-1',
   block: blockInitialState,
   isOneColumn: false,
@@ -83,10 +79,12 @@ const resumeInitialData = {
   noNeedsOneColumn: [],
   noNeedsTwoColumn: [],
   template: {
+    _id: '',
     currentTemplate: TemplateType.skilled_based
   },
   profile: { ...profileInitialState },
   avatar: {
+    _id: '',
     url: ''
   }
 }
