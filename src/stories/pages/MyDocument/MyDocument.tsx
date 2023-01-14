@@ -19,7 +19,7 @@ export const MyDocument: React.FC = () => {
 
   return (
     <>
-      <Menu generatePDF={generatePDF} />
+      <Menu action={generatePDF} />
       {isUpdated && (
         <Resume
           pages={rootBlockState.pages}

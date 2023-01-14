@@ -1,0 +1,45 @@
+@use '../../../styles/variables';
+.font {
+  background-color: variables.$lightColor;
+  padding: 1rem;
+  color: variables.$whiteColor;
+  max-width: 800px;
+  min-width: 400px;
+  &-title {
+    font-size: 2rem;
+    text-decoration: underline;
+    margin-bottom: 1rem;
+  }
+  &-families > div {
+    text-transform: capitalize;
+    font-size: 1.2rem;
+    margin-bottom: 1.5rem;
+    cursor: pointer;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+  hr {
+    margin-bottom: 1.5rem;
+  }
+  &-sizes {
+    display: flex;
+    gap: 1rem;
+    padding-bottom: 1rem;
+  }
+  &-sizes-item {
+    display: flex;
+    align-items: center;
+    & > input[type='radio'] {
+      display: inline-block;
+      margin-right: 0.5rem;
+      height: 0.85rem;
+      width: 0.85rem;
+    }
+    & > span {
+      font-size: 1.2rem;
+      text-transform: capitalize;
+      line-height: 0;
+    }
+  }
+}

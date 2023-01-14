@@ -67,6 +67,7 @@ export const Resume = forwardRef<ForwardRefProps, ResumeProps>((props: ResumePro
     profile,
     avatar,
     template,
+    isOneColumn,
     profileAvatarRef,
     profileInfoRef,
     profileSocialRef,

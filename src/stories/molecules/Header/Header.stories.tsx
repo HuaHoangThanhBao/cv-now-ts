@@ -11,7 +11,7 @@ export default {
 } as ComponentMeta<typeof Header>
 
 const Template: ComponentStory<typeof Header> = () => (
-  <Header setOption={() => undefined} generatePDF={() => undefined} />
+  <Header setOption={() => undefined} action={() => undefined} />
 )
 
 export const Menu = Template.bind({})
