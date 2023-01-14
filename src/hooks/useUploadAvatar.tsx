@@ -2,16 +2,12 @@ import React, { useState } from 'react'
 import Cropper, { Point, Area } from 'react-easy-crop'
 import { useNavigate } from 'react-router-dom'
 import { useAppDispatch } from 'src/store'
-import { AvatarState, sendUpdateAvatar } from 'src/stories/pages/DocumentList/documentList.slice'
+import { DocumentRes, sendUpdateAvatar } from 'src/stories/pages/DocumentList/documentList.slice'
 import { HttpStatus } from 'src/types/HttpStatus'
 import getCroppedImg from 'src/utils/cropImage'
 import AvatarImg from '../stories/assets/avatar.png'
 
-interface UseUploadAvatarProps {
-  avatar: AvatarState
-}
-
-export const useUploadAvatar = ({ avatar }: UseUploadAvatarProps) => {
+export const useUploadAvatar = ({ avatar }: Pick<DocumentRes, 'avatar'>) => {
   const [avatarSrc, setAvatarSrc] = useState('')
   const [croppedImage, setCroppedImage] = useState('')
 

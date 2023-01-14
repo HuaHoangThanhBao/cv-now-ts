@@ -1,4 +1,3 @@
-import './blockBar.scss'
 import { Icon } from '../../atoms/Icon'
 import { useBlock } from '../../organisms/Block/BlockProvider'
 import { useDispatch, useSelector } from 'react-redux'
@@ -12,6 +11,7 @@ import {
 import { convert } from '../../../utils'
 import { RootState } from '../../../store'
 import { Common } from '../../../types/Block'
+import './blockBar.scss'
 
 export interface BlockBarProps {
   block: string

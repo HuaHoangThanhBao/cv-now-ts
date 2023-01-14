@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import ContentEditable, { ContentEditableEvent } from 'react-contenteditable'
 import { InputType } from '../../../types/Input'
 import { useBlock } from '../../organisms/Block/BlockProvider'
-import './input.scss'
 import {
   BlockContentControlType,
   BlockUpdateState,
@@ -13,6 +12,7 @@ import {
 import { Common, DetailDetail } from '../../../types/Block'
 import { KeyEvent } from '../../../types/KeyEvent'
 import { RootState } from '../../../store'
+import './input.scss'
 
 export interface InputProps {
   className?: string

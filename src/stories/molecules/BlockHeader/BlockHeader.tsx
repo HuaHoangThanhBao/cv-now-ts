@@ -1,5 +1,3 @@
-import React from 'react'
-
 export interface BlockHeaderProps {
   children?: JSX.Element | JSX.Element[]
 }

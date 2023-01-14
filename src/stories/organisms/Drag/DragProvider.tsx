@@ -4,7 +4,6 @@ import { useColumnTransform, useMoveChild } from '../../../hooks'
 import { RootState } from '../../../store'
 import { DragColumnPosition, DragPosition } from '../../../types/Drag'
 import { DragItem } from '../../atoms/DragItem'
-import { DragItemProps } from '../../atoms/DragItem/DragItem'
 import { DragGroup, DragGroupProps } from '../../molecules/DragGroup/DragGroup'
 import { addNewItem, removeItem, updateDragPages } from './drag.slice'
 import './drag.scss'
@@ -36,7 +35,7 @@ interface IDragContext {
 }
 
 interface DragComposition {
-  Item?: React.FC<DragItemProps>
+  Item?: React.FC<DragPosition>
   Group?: React.FC<DragGroupProps>
   children?: JSX.Element | JSX.Element[] | JSX.Element[][]
 }

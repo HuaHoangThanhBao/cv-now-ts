@@ -1,17 +1,11 @@
 import { useDispatch } from 'react-redux'
-import { transformPages } from '../stories/organisms/Block/block.slice'
-
-interface TransformPagesProps {
-  isOneColumn: boolean
-  pagesOneColumn: string[][][]
-  pagesTwoColumn: string[][][]
-}
+import { PageTransformState, transformPages } from '../stories/organisms/Block/block.slice'
 
 export const useTransformPages = ({
   isOneColumn,
   pagesOneColumn,
   pagesTwoColumn
-}: TransformPagesProps) => {
+}: Required<PageTransformState>) => {
   const dispatch = useDispatch()
 
   const callTransformPages = (

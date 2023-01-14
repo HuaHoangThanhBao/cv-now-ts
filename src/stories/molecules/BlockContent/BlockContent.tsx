@@ -1,4 +1,3 @@
-import React from 'react'
 import { Common } from '../../../types/Block'
 import { useBlock } from '../../organisms/Block/BlockProvider'
 

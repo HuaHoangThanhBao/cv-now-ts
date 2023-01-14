@@ -1,16 +1,8 @@
+import { DragPosition } from 'src/types/Drag'
 import { useDrag } from '../../organisms/Drag/DragProvider'
 import './dragItem.scss'
 
-export interface DragItemProps {
-  page: string[][]
-  pageI: number
-  column: string[]
-  columnI: number
-  block: string
-  blockI: number
-}
-
-export const DragItem = ({ page, pageI, column, columnI, block, blockI }: DragItemProps) => {
+export const DragItem = ({ page, pageI, column, columnI, block, blockI }: DragPosition) => {
   const { dragging, draggingNoNeed, handleDragStart, handleDragEnter, getStyles, getNoNeedStyles } =
     useDrag()
   return (
