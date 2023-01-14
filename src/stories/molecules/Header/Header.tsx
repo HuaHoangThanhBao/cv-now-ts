@@ -1,4 +1,3 @@
-import './header.scss'
 import { ReactComponent as FontIcon } from '../../assets/font.svg'
 import { Button } from '../../atoms/Button'
 import { ReactComponent as ThemeIcon } from '../../assets/theme.svg'
@@ -7,8 +6,9 @@ import { ReactComponent as LayoutIcon } from '../../assets/layout.svg'
 import { ReactComponent as SettingIcon } from '../../assets/settings.svg'
 import { ReactComponent as DownloadIcon } from '../../assets/download.svg'
 import { Selection } from 'src/types/Selection'
+import './header.scss'
 
-export const Header = <T,>({ setOption, action }: Omit<Selection<T>, 'data'>) => {
+export const Header = ({ setOption, action }: Omit<Selection<unknown>, 'data'>) => {
   return (
     <header>
       <Button text="Font" icon={<FontIcon />} onClick={() => setOption('font')} />
