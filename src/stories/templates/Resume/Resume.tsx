@@ -4,15 +4,18 @@ import { Common, GlobalIterator } from '../../../types/Block'
 import { Panel } from '../../organisms/Panel'
 import { convert } from '../../../utils'
 import { Block } from '../../organisms/Block'
-import { BlockInitialState, updateSelectedBlock } from '../../organisms/Block/block.slice'
+import {
+  BlockInitialState,
+  PageState,
+  updateSelectedBlock
+} from '../../organisms/Block/block.slice'
 import { useTransformBlock, useEventListener, useTransformProfile } from '../../../hooks'
-import './resume.scss'
 import { TemplateType } from '../../../types/Template'
 import { maxHeight } from '../../../contants'
 import { AvatarState, ProfileState } from 'src/stories/pages/DocumentList/documentList.slice'
+import './resume.scss'
 
-interface ResumeProps {
-  pages: string[][][]
+interface ResumeProps extends PageState {
   state: BlockInitialState
   isOneColumn: boolean
   pagesOneColumn: string[][][]

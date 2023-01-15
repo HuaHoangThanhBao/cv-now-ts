@@ -10,7 +10,7 @@ import { fonts } from 'src/contants/font'
 import { Selection } from 'src/types/Selection'
 import './menu.scss'
 
-export const Menu = ({ action }: Omit<Selection<string>, 'setOption' | 'data'>) => {
+export const Menu = ({ action }: Omit<Selection<unknown>, 'setOption' | 'data'>) => {
   const [option, setOption] = useState('')
   return (
     <div className="menu">

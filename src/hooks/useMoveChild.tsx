@@ -5,14 +5,14 @@ import { RootState, useAppDispatch } from '../store'
 import {
   BlockInitialState,
   onMovingBlock,
+  PageState,
   updatePages
 } from '../stories/organisms/Block/block.slice'
 import { NoNeedRequestState, sendUpdateNoNeeds } from '../stories/organisms/Drag/drag.slice'
 import { moveChildBlockToParentBlock } from '../utils'
 import { useTransformPages } from './useTransformPages'
 
-interface MoveChild {
-  pages: string[][][]
+interface MoveChild extends PageState {
   state: BlockInitialState
 }
 

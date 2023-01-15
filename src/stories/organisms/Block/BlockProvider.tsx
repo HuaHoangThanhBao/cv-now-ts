@@ -2,16 +2,15 @@ import { createContext, useCallback, useContext, useEffect, useState } from 'rea
 import { useDispatch, useSelector } from 'react-redux'
 import { useCompareBlock } from '../../../hooks'
 import { RootState } from '../../../store'
-import { Common } from '../../../types/Block'
+import { BlockChildren, Common } from '../../../types/Block'
 import { Input, InputProps } from '../../atoms/Input/Input'
 import { BlockBar } from '../../molecules/BlockBar'
 import { BlockBarProps } from '../../molecules/BlockBar/BlockBar'
 import { BlockBottom, BlockBottomProps } from '../../molecules/BlockBottom/BlockBottom'
 import { BlockContent, BlockContentProps } from '../../molecules/BlockContent/BlockContent'
 import { BlockHeader } from '../../molecules/BlockHeader'
-import { BlockHeaderProps } from '../../molecules/BlockHeader/BlockHeader'
-import './block.scss'
 import { BlockSelectState, createBlock, onMovingBlock, updateSelectedBlock } from './block.slice'
+import './block.scss'
 
 interface IBlockContext {
   showBlockContentBar: boolean
@@ -34,13 +33,12 @@ interface IBlockContext {
   handleCreateBlock: (blockId: string) => void
 }
 
-interface BlockComposition {
-  Header?: React.FC<BlockHeaderProps>
+interface BlockComposition extends BlockChildren {
+  Header?: React.FC<BlockChildren>
   Content?: React.FC<BlockContentProps>
   Bottom?: React.FC<BlockBottomProps>
   Bar?: React.FC<BlockBarProps>
   Input?: React.FC<InputProps>
-  children?: JSX.Element | JSX.Element[]
   blockRootData: Common
 }
 

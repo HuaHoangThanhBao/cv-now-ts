@@ -100,7 +100,7 @@ export const useTransformProfile = ({
 
   const renderModal = () => {
     return (
-      <Modal isOpen={isModalOpen} onClick={showModal}>
+      <Modal isOpen={isModalOpen} action={showModal}>
         {renderProfileForm()}
       </Modal>
     )
@@ -108,13 +108,13 @@ export const useTransformProfile = ({
 
   const renderImageCropModal = () => {
     return (
-      <Modal isOpen={isShowImageCrop} onClick={disableShowImageCrop}>
+      <Modal isOpen={isShowImageCrop} action={disableShowImageCrop}>
         {renderProfileCropForm()}
       </Modal>
     )
   }
 
-  const { renderProfileForm } = useProfileForm({ closeForm: showModal })
+  const { renderProfileForm } = useProfileForm({ action: showModal })
   return {
     renderProfileAvatar,
     renderProfileInfo,

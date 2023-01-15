@@ -8,6 +8,7 @@ import {
   blockRootData,
   doneCreateBlock,
   onMovingBlock,
+  PageState,
   PageTransformState
 } from '../stories/organisms/Block/block.slice'
 import { updateDragPages } from '../stories/organisms/Drag/drag.slice'
@@ -19,8 +20,7 @@ import { useEffectOnce } from './useEffectOnce'
 import { useMoveChild } from './useMoveChild'
 import { useTransformPages } from './useTransformPages'
 
-interface TransformBlockProps {
-  pages: string[][][]
+interface TransformBlockProps extends PageState {
   state: BlockInitialState
   isOneColumn: boolean
   pagesOneColumn: string[][][]

@@ -4,8 +4,8 @@ import { RootState } from '../../../store'
 import { Resume } from '../../templates/Resume/Resume'
 import { useFetchDocumentFromParam, useGoogleLogin } from '../../../hooks'
 import { Menu } from '../../templates/Menu'
-import './myDocument.scss'
 import { useDownloadResume } from '../../../hooks/useDownloadResume'
+import './myDocument.scss'
 
 export const MyDocument: React.FC = () => {
   const rootBlockState = useSelector((state: RootState) => state.block)

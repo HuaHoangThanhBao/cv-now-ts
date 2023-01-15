@@ -6,8 +6,9 @@ import { DragColumnPosition, DragPosition } from '../../../types/Drag'
 import { DragItem } from '../../atoms/DragItem'
 import { DragGroup, DragGroupProps } from '../../molecules/DragGroup/DragGroup'
 import { addNewItem, removeItem, updateDragPages } from './drag.slice'
-import './drag.scss'
 import { countTotalChildOfColumn } from '../../../utils/moving'
+import { BlockChildren } from 'src/types/Block'
+import './drag.scss'
 
 const dragItemDefaultVal = {
   page: [[]],
@@ -34,10 +35,9 @@ interface IDragContext {
   getNoNeedStyles: (item: DragColumnPosition) => string
 }
 
-interface DragComposition {
+interface DragComposition extends BlockChildren {
   Item?: React.FC<DragPosition>
   Group?: React.FC<DragGroupProps>
-  children?: JSX.Element | JSX.Element[] | JSX.Element[][]
 }
 
 const DragContext = createContext<IDragContext>({

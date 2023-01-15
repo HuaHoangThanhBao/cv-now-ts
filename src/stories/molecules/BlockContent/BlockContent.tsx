@@ -1,10 +1,9 @@
-import { Common } from '../../../types/Block'
+import { BlockChildren, Common } from '../../../types/Block'
 import { useBlock } from '../../organisms/Block/BlockProvider'
 
-export interface BlockContentProps {
+export interface BlockContentProps extends BlockChildren {
   data?: Common
   blockChildIndex: number
-  children?: JSX.Element | JSX.Element[]
 }
 
 export const BlockContent = ({ children, ...props }: BlockContentProps) => {
