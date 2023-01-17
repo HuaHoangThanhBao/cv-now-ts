@@ -1,11 +1,11 @@
+import { BlockChildren } from 'src/types/Block'
 import { Icon } from '../../atoms/Icon'
 import { useBlock } from '../../organisms/Block/BlockProvider'
 import './blockBottom.scss'
 
-export interface BlockBottomProps {
+export interface BlockBottomProps extends BlockChildren {
   blockId: string
   blockChildIndex: number
-  children?: JSX.Element | JSX.Element[]
 }
 
 export const BlockBottom = ({ children, ...props }: BlockBottomProps) => {

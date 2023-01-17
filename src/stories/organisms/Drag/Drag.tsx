@@ -5,12 +5,9 @@ import { DragPosition } from '../../../types/Drag'
 import { DragProvider } from './DragProvider'
 import { v4 as uuidv4 } from 'uuid'
 import { useOnClickOutside } from '../../../hooks'
+import { Selection } from 'src/types/Selection'
 
-interface DragProps {
-  setOption: (option: string) => void
-}
-
-export const Drag = ({ setOption }: DragProps) => {
+export const Drag = ({ setOption }: Omit<Selection<string>, 'data'>) => {
   const pages = useSelector((state: RootState) => state.drag.pages)
   const ref = useRef(null)
   useOnClickOutside(ref, () => {

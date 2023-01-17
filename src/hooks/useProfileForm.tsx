@@ -4,12 +4,9 @@ import { useNavigate } from 'react-router-dom'
 import { RootState, useAppDispatch } from 'src/store'
 import { sendUpdateProfile } from 'src/stories/pages/DocumentList/documentList.slice'
 import { HttpStatus } from 'src/types/HttpStatus'
+import { Selection } from 'src/types/Selection'
 
-interface UseProfileFormProps {
-  closeForm: () => void
-}
-
-export const useProfileForm = ({ closeForm }: UseProfileFormProps) => {
+export const useProfileForm = ({ action }: Pick<Selection<unknown>, 'action'>) => {
   const profile = useSelector((state: RootState) => state.document.resume.profile)
   const {
     register,
@@ -29,7 +26,7 @@ export const useProfileForm = ({ closeForm }: UseProfileFormProps) => {
           navigate('/')
         }
       })
-    closeForm()
+    if (action) action()
   })
 
   const renderProfileForm = () => {

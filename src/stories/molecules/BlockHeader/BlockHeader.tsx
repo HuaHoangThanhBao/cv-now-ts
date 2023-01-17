@@ -1,9 +1,5 @@
-import React from 'react'
+import { BlockChildren } from 'src/types/Block'
 
-export interface BlockHeaderProps {
-  children?: JSX.Element | JSX.Element[]
-}
-
-export const BlockHeader = ({ children }: BlockHeaderProps) => {
+export const BlockHeader = ({ children }: BlockChildren) => {
   return <div className="block-header">{children}</div>
 }

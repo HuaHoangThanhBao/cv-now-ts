@@ -1,0 +1,30 @@
+@use '../../../styles/variables';
+
+.setting {
+  background-color: variables.$lightColor;
+  padding: 1rem;
+  color: variables.$whiteColor;
+  max-width: 800px;
+  min-width: 400px;
+  &-item {
+    width: 50%;
+    float: left;
+    &:nth-child(3),
+    &:nth-child(4) {
+      margin-top: 1rem;
+    }
+  }
+  &-checkbox {
+    width: 0.75rem;
+    height: 0.75rem;
+    margin-right: 0.25rem;
+  }
+  &-text {
+    font-size: 0.9rem;
+  }
+  &::after {
+    content: '';
+    clear: left;
+    display: block;
+  }
+}

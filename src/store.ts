@@ -2,7 +2,10 @@ import { combineReducers, configureStore, PreloadedState } from '@reduxjs/toolki
 import { useDispatch } from 'react-redux'
 import blockReducer from './stories/organisms/Block/block.slice'
 import dragReducer from './stories/organisms/Drag/drag.slice'
+import fontReducer from './stories/organisms/Font/font.slice'
+import settingReducer from './stories/organisms/Setting/setting.slice'
 import templateReducer from './stories/organisms/Template/template.slice'
+import themeReducer from './stories/organisms/Theme/theme.slice'
 import documentReducer from './stories/pages/DocumentList/documentList.slice'
 import userReducer from './user.slice'
 
@@ -12,7 +15,10 @@ export const store = configureStore({
     drag: dragReducer,
     document: documentReducer,
     template: templateReducer,
-    user: userReducer
+    user: userReducer,
+    theme: themeReducer,
+    font: fontReducer,
+    setting: settingReducer
   }
 })
 
@@ -22,7 +28,10 @@ const rootReducer = combineReducers({
   drag: dragReducer,
   document: documentReducer,
   template: templateReducer,
-  user: userReducer
+  user: userReducer,
+  theme: themeReducer,
+  font: fontReducer,
+  setting: settingReducer
 })
 
 export function setupStore(preloadedState?: PreloadedState<RootState>) {

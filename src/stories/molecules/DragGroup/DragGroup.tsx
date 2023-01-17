@@ -1,12 +1,12 @@
+import { BlockChildren } from 'src/types/Block'
 import { DragColumnPosition } from '../../../types/Drag'
 import { useDrag } from '../../organisms/Drag/DragProvider'
 import './dragGroup.scss'
 
-export interface DragGroupProps extends DragColumnPosition {
+export interface DragGroupProps extends DragColumnPosition, BlockChildren {
   className?: string
   page: string[][]
   pageI: number
-  children?: JSX.Element | JSX.Element[]
 }
 
 export const DragGroup = ({ children, page, pageI, className }: DragGroupProps) => {

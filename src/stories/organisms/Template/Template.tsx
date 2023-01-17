@@ -2,19 +2,15 @@ import { useRef } from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { HttpStatus } from 'src/types/HttpStatus'
-import { templates } from '../../../contants'
 import { useOnClickOutside } from '../../../hooks'
 import { RootState, useAppDispatch } from '../../../store'
 import { Resume } from '../../templates/Resume'
 import { onMovingBlock } from '../Block/block.slice'
 import { sendUpdateCurrentTemplate, TemplateState, updateCurrentTemplate } from './template.slice'
+import { Selection } from 'src/types/Selection'
 import './template.scss'
 
-interface TemplateProps {
-  setOption: (option: string) => void
-}
-
-export const Template = ({ setOption }: TemplateProps) => {
+export const Template = ({ data, setOption }: Selection<string>) => {
   const ref = useRef(null)
   const blockState = useSelector((state: RootState) => state.block)
   const resume = useSelector((state: RootState) => state.document.resume)
@@ -43,7 +39,7 @@ export const Template = ({ setOption }: TemplateProps) => {
 
   return (
     <div className="template" ref={ref}>
-      {Object.keys(templates).map((template: string) => (
+      {data.map((template: string) => (
         <div
           className="preview"
           key={template}
@@ -67,6 +63,8 @@ export const Template = ({ setOption }: TemplateProps) => {
                 template={template}
                 profile={resume.profile}
                 avatar={resume.avatar}
+                theme={resume.theme}
+                font={resume.font}
               />
             </div>
             <div className="preview-overlay"></div>

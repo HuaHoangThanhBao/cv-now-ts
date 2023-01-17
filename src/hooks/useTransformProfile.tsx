@@ -1,8 +1,6 @@
 import { useState } from 'react'
-import { useSelector } from 'react-redux'
 import { Modal } from 'src/stories/organisms/Modal'
 import { AvatarState, ProfileState } from 'src/stories/pages/DocumentList/documentList.slice'
-import { RootState } from '../store'
 import { Avatar } from '../stories/atoms/Avatar/Avatar'
 import { ProfileInfo } from '../stories/molecules/ProfileInfo'
 import { ProfileSocial } from '../stories/molecules/ProfileSocial'
@@ -15,6 +13,7 @@ interface TransformProfileProps {
   profile: ProfileState
   avatar: AvatarState
   template: string
+  isOneColumn: boolean
   profileAvatarRef: React.RefObject<HTMLDivElement>
   profileInfoRef: React.RefObject<HTMLDivElement>
   profileSocialRef: React.RefObject<HTMLDivElement>
@@ -25,12 +24,12 @@ export const useTransformProfile = ({
   profile,
   avatar,
   template,
+  isOneColumn,
   profileAvatarRef,
   profileInfoRef,
   profileSocialRef,
   profileContainerRef
 }: TransformProfileProps) => {
-  const isOneColumn = useSelector((state: RootState) => state.block.isOneColumn)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const {
     isShowImageCrop,
@@ -101,7 +100,7 @@ export const useTransformProfile = ({
 
   const renderModal = () => {
     return (
-      <Modal isOpen={isModalOpen} onClick={showModal}>
+      <Modal isOpen={isModalOpen} action={showModal}>
         {renderProfileForm()}
       </Modal>
     )
@@ -109,13 +108,13 @@ export const useTransformProfile = ({
 
   const renderImageCropModal = () => {
     return (
-      <Modal isOpen={isShowImageCrop} onClick={disableShowImageCrop}>
+      <Modal isOpen={isShowImageCrop} action={disableShowImageCrop}>
         {renderProfileCropForm()}
       </Modal>
     )
   }
 
-  const { renderProfileForm } = useProfileForm({ closeForm: showModal })
+  const { renderProfileForm } = useProfileForm({ action: showModal })
   return {
     renderProfileAvatar,
     renderProfileInfo,

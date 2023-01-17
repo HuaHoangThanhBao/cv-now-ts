@@ -1,3 +1,5 @@
+import { ReactNode } from 'react'
+
 export type IdObjectMongoose = {
   _id: string
 }
@@ -155,6 +157,10 @@ export interface Detail extends GlobalIterator {
 interface IObjectKeys {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [key: string]: any
+}
+
+export interface BlockChildren {
+  children?: JSX.Element | JSX.Element[] | JSX.Element[][] | ReactNode | ReactNode[]
 }
 
 export type GlobalIterator = IObjectKeys

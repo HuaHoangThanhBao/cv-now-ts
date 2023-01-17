@@ -1,0 +1,66 @@
+@use '../../../styles/variables';
+.theme {
+  max-width: 1200px;
+  display: flex;
+  &-color {
+    padding: 2rem;
+    background-color: variables.$whiteColor;
+    box-shadow: variables.$boxShadow;
+  }
+  &-background {
+    max-height: 370px;
+    overflow: auto;
+    padding: 2rem;
+    margin-left: 1rem;
+    background-color: variables.$lightColor;
+    box-shadow: variables.$boxShadow;
+  }
+  &-list {
+    width: calc(500px + 1rem);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    &::after {
+      content: '';
+      clear: left;
+      display: block;
+    }
+  }
+  &-title {
+    color: variables.$whiteColor;
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+  }
+  &-item {
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-color: variables.$whiteColor;
+    border-radius: 0.25rem;
+    width: 250px;
+    height: 50px;
+    border: 2px solid transparent;
+    cursor: pointer;
+    &.basic_theme {
+      background-image: none;
+    }
+    &.triangle_theme {
+      background-image: url('../../assets/triangle.png');
+    }
+    &.graph_theme {
+      background-image: url('../../assets/graph.png');
+    }
+    &.graph_dot_theme {
+      background-image: url('../../assets/graph-dot.png');
+    }
+    &.hex_circuit_theme {
+      background-image: url('../../assets/hex-circuit.png');
+    }
+    &.line_theme {
+      background-image: url('../../assets/line.png');
+    }
+    &.wave_theme {
+      background-image: url('../../assets/wave.png');
+    }
+  }
+}

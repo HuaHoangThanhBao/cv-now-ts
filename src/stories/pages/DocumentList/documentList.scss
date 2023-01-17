@@ -1,5 +1,7 @@
 .document-list {
   padding: 5rem;
+  max-width: 1920px;
+  margin: 0 auto;
   &-container {
     margin-top: 2rem;
     display: flex;
@@ -43,5 +45,6 @@
     bottom: 0;
     background-color: #999ea3;
     opacity: 0.35;
+    cursor: pointer;
   }
 }

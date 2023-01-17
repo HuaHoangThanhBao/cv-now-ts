@@ -58,10 +58,10 @@ import MediumIconBlack from '../../assets/medium-black.png'
 import InstagramIconBlack from '../../assets/instagram-black.png'
 
 import { profileInitialState } from 'src/stories/pages/DocumentList/documentList.slice'
-import './icon.scss'
 import { useSelector } from 'react-redux'
 import { RootState } from 'src/store'
 import { TemplateType } from 'src/types/Template'
+import './icon.scss'
 
 interface IconProps {
   className?: string

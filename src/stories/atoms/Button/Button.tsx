@@ -1,12 +1,12 @@
 import React from 'react'
+import { BlockChildren } from 'src/types/Block'
 import './button.scss'
 
-interface ButtonProps {
+interface ButtonProps extends BlockChildren {
   icon?: React.ReactNode
   className?: string
   backgroundColor?: string
   text?: string
-  children?: React.ReactNode
   onClick?: () => void
 }
 
