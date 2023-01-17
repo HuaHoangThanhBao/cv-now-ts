@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux'
 import blockReducer from './stories/organisms/Block/block.slice'
 import dragReducer from './stories/organisms/Drag/drag.slice'
 import fontReducer from './stories/organisms/Font/font.slice'
+import settingReducer from './stories/organisms/Setting/setting.slice'
 import templateReducer from './stories/organisms/Template/template.slice'
 import themeReducer from './stories/organisms/Theme/theme.slice'
 import documentReducer from './stories/pages/DocumentList/documentList.slice'
@@ -16,7 +17,8 @@ export const store = configureStore({
     template: templateReducer,
     user: userReducer,
     theme: themeReducer,
-    font: fontReducer
+    font: fontReducer,
+    setting: settingReducer
   }
 })
 
@@ -28,7 +30,8 @@ const rootReducer = combineReducers({
   template: templateReducer,
   user: userReducer,
   theme: themeReducer,
-  font: fontReducer
+  font: fontReducer,
+  setting: settingReducer
 })
 
 export function setupStore(preloadedState?: PreloadedState<RootState>) {

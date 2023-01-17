@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { FontState } from 'src/stories/organisms/Font/font.slice'
+import { SettingState } from 'src/stories/organisms/Setting/setting.slice'
 import { ThemeState } from 'src/stories/organisms/Theme/theme.slice'
 import { IdObjectMongoose } from 'src/types/Block'
 import { FontSize, FontStyle } from 'src/types/Font'
@@ -28,6 +29,7 @@ export interface DocumentRes extends PageState {
   avatar: AvatarState
   theme: ThemeState
   font: FontState
+  setting: SettingState
 }
 
 export type DocumentCreateReq = Pick<
@@ -103,6 +105,13 @@ const resumeInitialData: DocumentRes = {
     _id: '',
     currentFontFamily: FontStyle.roboto,
     currentFontSize: FontSize.medium
+  },
+  setting: {
+    _id: '',
+    isShowAvatar: true,
+    isShowCreationDate: true,
+    isShowPageNumbers: true,
+    isShowIcons: false
   }
 }
 

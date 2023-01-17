@@ -15,7 +15,7 @@ export const Header = ({ setOption, action }: Omit<Selection<unknown>, 'data'>) 
       <Button text="Theme" icon={<ThemeIcon />} onClick={() => setOption('theme')} />
       <Button text="Template" icon={<TemplateIcon />} onClick={() => setOption('template')} />
       <Button text="Layout" icon={<LayoutIcon />} onClick={() => setOption('layout')} />
-      <Button text="Setting" icon={<SettingIcon />} />
+      <Button text="Setting" icon={<SettingIcon />} onClick={() => setOption('setting')} />
       <Button text="Download" className={'download'} icon={<DownloadIcon />} onClick={action} />
     </header>
   )

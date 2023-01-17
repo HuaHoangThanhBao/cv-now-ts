@@ -9,7 +9,7 @@ import {
   PageState,
   updateSelectedBlock
 } from '../../organisms/Block/block.slice'
-import { useTransformBlock, useEventListener, useTransformProfile } from '../../../hooks'
+import { useTransformBlock, useEventListener, useTransformProfile, useFooter } from '../../../hooks'
 import { TemplateType } from '../../../types/Template'
 import { maxHeight } from '../../../contants'
 import { AvatarState, ProfileState } from 'src/stories/pages/DocumentList/documentList.slice'
@@ -84,6 +84,7 @@ export const Resume = forwardRef<ForwardRefProps, ResumeProps>((props: ResumePro
     profileContainerRef
   })
   const { renderTheme } = useTheme({ currentTheme: theme.currentTheme })
+  const { renderFooter } = useFooter()
 
   useImperativeHandle(ref, () => panelsRef)
 
@@ -116,6 +117,7 @@ export const Resume = forwardRef<ForwardRefProps, ResumeProps>((props: ResumePro
           {renderProfile(pageI)}
           {renderTheme()}
           {renderBlocks(page, pageI)}
+          {renderFooter(pageI, _pages.length)}
         </Panel>
       ))
     } else return <></>

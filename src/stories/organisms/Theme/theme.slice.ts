@@ -19,7 +19,6 @@ const initialState: ThemeState = {
 export const sendUpdateCurrentTheme = createAsyncThunk(
   'themes/updateTheme',
   async ({ id, body }: { id: string; body: ThemeState }, thunkAPI) => {
-    console.log('id:', id)
     const response = await http.put<ThemeState>(`themes/${id}`, body, {
       signal: thunkAPI.signal
     })

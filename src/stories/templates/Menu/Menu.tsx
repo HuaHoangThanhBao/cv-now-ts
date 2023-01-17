@@ -8,6 +8,7 @@ import { templates } from '../../../contants'
 import { Selection } from 'src/types/Selection'
 import { ThemeType } from 'src/types/Theme'
 import { FontStyle } from 'src/types/Font'
+import { Setting } from 'src/stories/organisms/Setting'
 import './menu.scss'
 
 export const Menu = ({ action }: Omit<Selection<unknown>, 'setOption' | 'data'>) => {
@@ -20,6 +21,7 @@ export const Menu = ({ action }: Omit<Selection<unknown>, 'setOption' | 'data'>)
         {option === 'template' && <Template data={Object.keys(templates)} setOption={setOption} />}
         {option === 'theme' && <Theme data={Object.keys(ThemeType)} setOption={setOption} />}
         {option === 'font' && <Font data={Object.keys(FontStyle)} setOption={setOption} />}
+        {option === 'setting' && <Setting />}
       </div>
     </div>
   )

@@ -1,10 +1,11 @@
+@use '../../../styles/variables';
 @use '../../../styles/font';
 
 .panel {
   width: 1200px;
   min-height: 1500px; //1320 + 180 = 1500
   // padding-bottom: 180px;
-  background-color: white;
+  background-color: variables.$whiteColor;
   margin: 0 auto;
   position: relative;
   &:not(:first-of-type) {
@@ -42,6 +43,21 @@
     }
     &:nth-child(2) {
       bottom: 0;
+    }
+  }
+  &-footer {
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    padding: 2rem;
+    pointer-events: none;
+    z-index: 3;
+    &-col {
+      width: 50%;
+      float: left;
+      &:nth-child(2) {
+        text-align: right;
+      }
     }
   }
   &.roboto {
@@ -84,7 +100,7 @@
     //   fill: #313c4e !important;
     // }
     .block {
-      color: white;
+      color: variables.$whiteColor;
     }
   }
   .odd {
@@ -96,6 +112,9 @@
     &-container {
       background-color: white;
     }
+  }
+  .panel-footer-col:first-of-type {
+    color: variables.$whiteColor;
   }
 }
 

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
 import { updateCurrentFont } from 'src/stories/organisms/Font/font.slice'
+import { updateCurrentSetting } from 'src/stories/organisms/Setting/setting.slice'
 import { updateCurrentTemplate } from 'src/stories/organisms/Template/template.slice'
 import { updateCurrentTheme } from 'src/stories/organisms/Theme/theme.slice'
 import { HttpStatus } from 'src/types/HttpStatus'
@@ -40,6 +41,7 @@ export const useFetchDocumentFromParam = () => {
       dispatch(updateCurrentTemplate(resume.template.currentTemplate))
       dispatch(updateCurrentTheme(resume.theme))
       dispatch(updateCurrentFont(resume.font))
+      dispatch(updateCurrentSetting(resume.setting))
       dispatch(
         updateNoNeeds({
           noNeedsOneColumn: resume.noNeedsOneColumn,
