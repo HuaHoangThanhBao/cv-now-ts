@@ -1,7 +1,9 @@
+@use '../../../styles/variables';
+
 .field {
   word-break: break-word;
   // display: none !important;
-  font-size: 1.2rem;
+  // font-size: 1.2rem;
   &.disable {
     display: none;
   }
@@ -11,10 +13,10 @@
     outline: none;
     width: 100%;
     word-break: break-word;
-    border-bottom: 1px solid lightgray;
+    border-bottom: 1px solid variables.$lightGreyColor;
     border-bottom-style: dashed;
     &:focus {
-      border-bottom: 1px solid #00c8aa;
+      border-bottom: 1px solid variables.$secondaryColor;
     }
     u {
       text-decoration: none;
@@ -28,7 +30,7 @@
     }
     &[placeholder]:empty:before {
       content: attr(placeholder);
-      color: #888;
+      color: variables.$lightGreyColor;
       font-style: italic;
     }
     &.detail {

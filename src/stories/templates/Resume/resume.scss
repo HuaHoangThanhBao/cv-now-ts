@@ -153,12 +153,12 @@
 //
 .combined {
   .profile-content {
-    background-color: #313c4e;
+    background-color: currentColor;
     border-radius: 0.75rem;
-    color: white;
   }
   .profile-info {
     padding: 2rem 10rem 2rem 2rem;
+    color: white;
   }
   .avatar {
     top: 5rem;
@@ -194,8 +194,10 @@
 
 .simple {
   .profile-social {
-    background-color: #313c4e;
-    color: white;
+    background-color: currentColor;
+    .btn {
+      color: white;
+    }
   }
 }
 
@@ -210,8 +212,10 @@
   }
   .profile-social {
     padding: 2rem;
-    background-color: #313c4e;
-    color: white;
+    background-color: currentColor;
+    .btn {
+      color: white;
+    }
   }
 }
 
@@ -231,10 +235,12 @@
   }
   .profile-social {
     padding: 2rem;
-    background-color: #313c4e;
-    color: white;
+    background-color: currentColor;
     border-radius: 0.5rem;
     width: 30%;
+    .btn {
+      color: white;
+    }
   }
   .profile-content {
     padding-left: 2rem;
@@ -269,9 +275,11 @@
   }
   .profile-info-container {
     min-height: 7rem;
-    background-color: #313c4e;
-    color: white;
+    background-color: currentColor;
     padding: 3rem 2rem;
+    .field-input {
+      color: white;
+    }
   }
 }
 
@@ -320,11 +328,13 @@
   .profile-social-container {
     padding-top: 0;
     padding-bottom: 0;
-    background-color: #313c4e;
-    color: white;
+    background-color: currentColor;
     border-radius: 0.5rem;
     padding: 1rem;
     @extend %clearFloat;
+    .btn {
+      color: white;
+    }
   }
   @extend %profileSocial;
 }

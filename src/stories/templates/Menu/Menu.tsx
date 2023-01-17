@@ -5,9 +5,9 @@ import { Header } from '../../molecules/Header'
 import { Drag } from '../../organisms/Drag'
 import { Template } from '../../organisms/Template'
 import { templates } from '../../../contants'
-import { themes } from 'src/contants/themes'
-import { fonts } from 'src/contants/font'
 import { Selection } from 'src/types/Selection'
+import { ThemeType } from 'src/types/Theme'
+import { FontStyle } from 'src/types/Font'
 import './menu.scss'
 
 export const Menu = ({ action }: Omit<Selection<unknown>, 'setOption' | 'data'>) => {
@@ -18,8 +18,8 @@ export const Menu = ({ action }: Omit<Selection<unknown>, 'setOption' | 'data'>)
       <div className="menu-panel">
         {option === 'layout' && <Drag setOption={setOption} />}
         {option === 'template' && <Template data={Object.keys(templates)} setOption={setOption} />}
-        {option === 'theme' && <Theme data={Object.keys(themes)} setOption={setOption} />}
-        {option === 'font' && <Font data={Object.keys(fonts)} setOption={setOption} />}
+        {option === 'theme' && <Theme data={Object.keys(ThemeType)} setOption={setOption} />}
+        {option === 'font' && <Font data={Object.keys(FontStyle)} setOption={setOption} />}
       </div>
     </div>
   )

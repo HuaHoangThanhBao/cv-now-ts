@@ -12,6 +12,7 @@ import {
 import { Common, DetailDetail } from '../../../types/Block'
 import { KeyEvent } from '../../../types/KeyEvent'
 import { RootState } from '../../../store'
+import { FontSize } from 'src/types/Font'
 import './input.scss'
 
 export interface InputProps {
@@ -43,6 +44,7 @@ export const Input = ({
   const placeHolder = useRef(placeHolderVal)
   const { handleShowBlockContentBar, handleShowBlockHeaderBar, selectedBlock } = useBlock()
   const block = useSelector((state: RootState) => state.block)
+  const fontSize = useSelector((state: RootState) => state.font.currentFontSize)
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -109,8 +111,29 @@ export const Input = ({
     return ''
   }
 
+  const getFontSize = () => {
+    let fontS = ''
+    switch (fontSize) {
+      case FontSize.small:
+        fontS = '1rem'
+        break
+      case FontSize.large:
+        fontS = '1.4rem'
+        break
+      case FontSize.medium:
+      default:
+        fontS = '1.2rem'
+        break
+    }
+    return fontS
+  }
+
   return (
-    <div className={`field${title ? ' title' : ''}${getFieldStatus()}`} onFocus={onFocus}>
+    <div
+      className={`field${title ? ' title' : ''}${getFieldStatus()}`}
+      style={{ fontSize: getFontSize() }}
+      onFocus={onFocus}
+    >
       {title && title}
       {type === InputType.CONTENT_BULLET && <span className="field-bullet"></span>}
       <ContentEditable

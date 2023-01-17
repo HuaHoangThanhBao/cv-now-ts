@@ -63,6 +63,8 @@ export const Template = ({ data, setOption }: Selection<string>) => {
                 template={template}
                 profile={resume.profile}
                 avatar={resume.avatar}
+                theme={resume.theme}
+                font={resume.font}
               />
             </div>
             <div className="preview-overlay"></div>

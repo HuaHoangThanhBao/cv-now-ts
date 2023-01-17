@@ -1,6 +1,10 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { FontState } from 'src/stories/organisms/Font/font.slice'
+import { ThemeState } from 'src/stories/organisms/Theme/theme.slice'
 import { IdObjectMongoose } from 'src/types/Block'
+import { FontSize, FontStyle } from 'src/types/Font'
 import { TemplateType } from 'src/types/Template'
+import { ThemeType } from 'src/types/Theme'
 import { http } from '../../../utils'
 import {
   blockInitialState,
@@ -22,6 +26,8 @@ export interface DocumentRes extends PageState {
   template: TemplateState
   profile: ProfileState
   avatar: AvatarState
+  theme: ThemeState
+  font: FontState
 }
 
 export type DocumentCreateReq = Pick<
@@ -86,6 +92,17 @@ const resumeInitialData: DocumentRes = {
   avatar: {
     _id: '',
     url: ''
+  },
+  theme: {
+    _id: '',
+    currentTheme: ThemeType.basic_theme,
+    color: '',
+    iconColor: ''
+  },
+  font: {
+    _id: '',
+    currentFontFamily: FontStyle.roboto,
+    currentFontSize: FontSize.medium
   }
 }
 

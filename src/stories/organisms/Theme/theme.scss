@@ -8,6 +8,8 @@
     box-shadow: variables.$boxShadow;
   }
   &-background {
+    max-height: 370px;
+    overflow: auto;
     padding: 2rem;
     margin-left: 1rem;
     background-color: variables.$lightColor;

@@ -116,6 +116,8 @@ export const DocumentList = () => {
                     template={document.template.currentTemplate}
                     profile={document.profile}
                     avatar={document.avatar}
+                    theme={document.theme}
+                    font={document.font}
                   />
                 )}
               </div>

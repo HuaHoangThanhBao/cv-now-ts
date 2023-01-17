@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
+import { updateCurrentFont } from 'src/stories/organisms/Font/font.slice'
 import { updateCurrentTemplate } from 'src/stories/organisms/Template/template.slice'
+import { updateCurrentTheme } from 'src/stories/organisms/Theme/theme.slice'
 import { HttpStatus } from 'src/types/HttpStatus'
 import { RootState, useAppDispatch } from '../store'
 import { resetBlockState, updateState } from '../stories/organisms/Block/block.slice'
@@ -36,6 +38,8 @@ export const useFetchDocumentFromParam = () => {
       setIsUpdated(false)
       dispatch(updateState(resume))
       dispatch(updateCurrentTemplate(resume.template.currentTemplate))
+      dispatch(updateCurrentTheme(resume.theme))
+      dispatch(updateCurrentFont(resume.font))
       dispatch(
         updateNoNeeds({
           noNeedsOneColumn: resume.noNeedsOneColumn,

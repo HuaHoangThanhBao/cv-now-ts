@@ -12,6 +12,8 @@ export const MyDocument: React.FC = () => {
   const profile = useSelector((state: RootState) => state.document.resume.profile)
   const avatar = useSelector((state: RootState) => state.document.resume.avatar)
   const template = useSelector((state: RootState) => state.template.currentTemplate)
+  const theme = useSelector((state: RootState) => state.theme)
+  const font = useSelector((state: RootState) => state.font)
   const { isUpdated } = useFetchDocumentFromParam()
   const downloadRef = useRef<HTMLDivElement[]>(null)
   const { generatePDF } = useDownloadResume()
@@ -31,6 +33,8 @@ export const MyDocument: React.FC = () => {
           ref={downloadRef}
           profile={profile}
           avatar={avatar}
+          theme={theme}
+          font={font}
         />
       )}
     </>

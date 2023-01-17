@@ -33,9 +33,7 @@ interface TransformBlockProps extends PageState {
   isOnPreview?: boolean
 }
 
-export const useTransformBlock = (
-  props: TransformBlockProps
-): [string[][][], (status: boolean) => void] => {
+export const useTransformBlock = (props: TransformBlockProps) => {
   const {
     pages,
     state,
@@ -352,5 +350,5 @@ export const useTransformBlock = (
     }
   }, [dispatch, isOnPreview, pages])
 
-  return [pagesD, callMovingBlock]
+  return { pagesD, callMovingBlock }
 }

@@ -42,4 +42,7 @@
       line-height: 0;
     }
   }
+  .active {
+    color: variables.$secondaryColor;
+  }
 }

@@ -13,6 +13,9 @@ import { useTransformBlock, useEventListener, useTransformProfile } from '../../
 import { TemplateType } from '../../../types/Template'
 import { maxHeight } from '../../../contants'
 import { AvatarState, ProfileState } from 'src/stories/pages/DocumentList/documentList.slice'
+import { ThemeState } from 'src/stories/organisms/Theme/theme.slice'
+import { FontState } from 'src/stories/organisms/Font/font.slice'
+import { useTheme } from 'src/hooks/useTheme'
 import './resume.scss'
 
 interface ResumeProps extends PageState {
@@ -24,6 +27,8 @@ interface ResumeProps extends PageState {
   template: string
   profile: ProfileState
   avatar: AvatarState
+  theme: ThemeState
+  font: FontState
 }
 type ForwardRefProps = GlobalIterator
 
@@ -37,7 +42,9 @@ export const Resume = forwardRef<ForwardRefProps, ResumeProps>((props: ResumePro
     isOnPreview,
     template,
     profile,
-    avatar
+    avatar,
+    theme,
+    font
   } = props
   const panelsRef = useRef<HTMLDivElement[]>([])
   const blocksRef = useRef([])
@@ -46,7 +53,7 @@ export const Resume = forwardRef<ForwardRefProps, ResumeProps>((props: ResumePro
   const profileSocialRef = useRef<HTMLDivElement>(null)
   const profileContainerRef = useRef<HTMLDivElement>(null)
   const dispatch = useDispatch()
-  const [pagesD] = useTransformBlock({
+  const { pagesD } = useTransformBlock({
     pages,
     state,
     isOneColumn,
@@ -76,6 +83,7 @@ export const Resume = forwardRef<ForwardRefProps, ResumeProps>((props: ResumePro
     profileSocialRef,
     profileContainerRef
   })
+  const { renderTheme } = useTheme({ currentTheme: theme.currentTheme })
 
   useImperativeHandle(ref, () => panelsRef)
 
@@ -102,8 +110,11 @@ export const Resume = forwardRef<ForwardRefProps, ResumeProps>((props: ResumePro
           key={page.length + pageI}
           className={`${template}` + (!isOneColumn ? ' two-column' : ' one-column')}
           ref={panelsRef}
+          color={theme.color}
+          fontFamily={font.currentFontFamily}
         >
           {renderProfile(pageI)}
+          {renderTheme()}
           {renderBlocks(page, pageI)}
         </Panel>
       ))
