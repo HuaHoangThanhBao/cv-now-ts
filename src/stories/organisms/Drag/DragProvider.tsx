@@ -8,6 +8,7 @@ import { DragGroup, DragGroupProps } from '../../molecules/DragGroup/DragGroup'
 import { addNewItem, removeItem, updateDragPages } from './drag.slice'
 import { countTotalChildOfColumn } from '../../../utils/moving'
 import { BlockChildren } from 'src/types/Block'
+import classNames from 'classnames'
 import './drag.scss'
 
 const dragItemDefaultVal = {
@@ -221,7 +222,11 @@ const DragProvider = (props: DragComposition) => {
   return (
     <DragContext.Provider value={value} {...props}>
       <div className="drag">
-        <div className={`drag-n-drop ${blockState.isOneColumn ? 'one-column' : ''}`}>
+        <div
+          className={classNames('drag-n-drop', {
+            'one-column': blockState.isOneColumn
+          })}
+        >
           {props.children}
         </div>
         <div className="option">

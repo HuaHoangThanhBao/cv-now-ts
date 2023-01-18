@@ -8,6 +8,7 @@ import { getUser, sendLogin, sendToUpdateRefreshToken } from 'src/user.slice'
 import { TokenType } from 'src/types/Token'
 import { HttpStatus } from 'src/types/HttpStatus'
 import { useSelector } from 'react-redux'
+import classNames from 'classnames'
 
 export const useGoogleLogin = () => {
   const user = useSelector((state: RootState) => state.user)
@@ -53,7 +54,7 @@ export const useGoogleLogin = () => {
           cookiePolicy={'single_host_origin'}
           render={(renderProps) => (
             <button
-              className={`${externalClassName} btn-lp highlight-btn`}
+              className={classNames(`${externalClassName}`, 'btn-lp', 'highlight-btn')}
               onClick={renderProps.onClick}
               disabled={renderProps.disabled}
             >
@@ -65,7 +66,7 @@ export const useGoogleLogin = () => {
     } else {
       return (
         <button
-          className={`${externalClassName} btn-lp highlight-btn`}
+          className={classNames(`${externalClassName}`, 'btn-lp', 'highlight-btn')}
           onClick={() => goToMyDocumentPage(user.userId)}
         >
           {text.toLowerCase() === 'login' ? 'My documents' : text}

@@ -54,12 +54,12 @@ export const useTheme = ({ currentTheme }: useThemeProps) => {
       <React.Fragment>
         {themeTop && (
           <div className="panel-theme-container">
-            <img src={themeTop} className={`panel-theme ${currentTheme}`} alt="" />
+            <img src={themeTop} className="panel-theme" alt="" />
           </div>
         )}
         {themeBottom && (
           <div className="panel-theme-container">
-            <img src={themeBottom} className={`panel-theme ${currentTheme}`} alt="" />
+            <img src={themeBottom} className="panel-theme" alt="" />
           </div>
         )}
       </React.Fragment>

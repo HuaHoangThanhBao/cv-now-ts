@@ -13,6 +13,7 @@ import { Common, DetailDetail } from '../../../types/Block'
 import { KeyEvent } from '../../../types/KeyEvent'
 import { RootState } from '../../../store'
 import { FontSize } from 'src/types/Font'
+import classNames from 'classnames'
 import './input.scss'
 
 export interface InputProps {
@@ -130,16 +131,18 @@ export const Input = ({
 
   return (
     <div
-      className={`field${title ? ' title' : ''}${getFieldStatus()}`}
+      className={classNames('field', `${getFieldStatus()}`, {
+        title: title
+      })}
       style={{ fontSize: getFontSize() }}
       onFocus={onFocus}
     >
       {title && title}
       {type === InputType.CONTENT_BULLET && <span className="field-bullet"></span>}
       <ContentEditable
-        className={`field-input ${type}${className ? ` ${className}` : ''}${
-          type === InputType.CONTENT_BULLET ? ` detail` : ''
-        }`}
+        className={classNames('field-input', `${type}`, `${className || ''}`, {
+          detail: type === InputType.CONTENT_BULLET
+        })}
         aria-label="field-input"
         innerRef={ref}
         html={html.current}

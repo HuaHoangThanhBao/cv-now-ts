@@ -5,6 +5,7 @@ import { RootState, useAppDispatch } from 'src/store'
 import { FontSize } from 'src/types/Font'
 import { Selection } from 'src/types/Selection'
 import { FontState, sendUpdateCurrentFont } from './font.slice'
+import classNames from 'classnames'
 import './font.scss'
 
 export const Font = ({ data, setOption }: Selection<string>) => {
@@ -41,7 +42,9 @@ export const Font = ({ data, setOption }: Selection<string>) => {
             onKeyDown={() => onChooseFontFamily(family)}
             role={'button'}
             tabIndex={0}
-            className={family === font.currentFontFamily ? 'active' : ''}
+            className={classNames({
+              active: family === font.currentFontFamily
+            })}
           >
             {family}
           </div>

@@ -1,5 +1,6 @@
 import { forwardRef } from 'react'
 import { BlockChildren } from 'src/types/Block'
+import classNames from 'classnames'
 import './panel.scss'
 
 interface PanelProps extends BlockChildren {
@@ -15,7 +16,7 @@ export const Panel = forwardRef((props: PanelProps, ref: any) => {
   const { pageI, backgroundColor, className, children, color, fontFamily } = props
   return (
     <div
-      className={`panel ${className} ${fontFamily}`}
+      className={classNames('panel', `${className || ''}`, `${fontFamily || ''}`)}
       style={{ backgroundColor, color }}
       ref={(el) => (ref.current[pageI] = el)}
     >

@@ -61,6 +61,7 @@ import { profileInitialState } from 'src/stories/pages/DocumentList/documentList
 import { useSelector } from 'react-redux'
 import { RootState } from 'src/store'
 import { TemplateType } from 'src/types/Template'
+import classNames from 'classnames'
 import './icon.scss'
 
 interface IconProps {
@@ -222,7 +223,7 @@ export const Icon = (props: IconProps) => {
 
   return (
     <div
-      className={`icon ${iconType} ${getSocialStyle()} ${className || ''}`}
+      className={classNames('icon', `${iconType}`, `${getSocialStyle()}`, `${className || ''}`)}
       style={{ backgroundColor: `${iconColorHex}` }}
       onClick={onClick}
       onKeyDown={onClick}

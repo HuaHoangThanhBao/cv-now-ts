@@ -3,6 +3,7 @@ import { Common, DetailDetail } from '../../../types/Block'
 import { InputType } from '../../../types/Input'
 // import { Icon } from '../../atoms/Icon'
 import { BlockProvider } from './BlockProvider'
+import classNames from 'classnames'
 
 interface BlockProps {
   data: Common
@@ -25,7 +26,9 @@ export const Block = React.memo(
     return (
       <BlockProvider blockRootData={data}>
         <div
-          className={`block ${className || ''} ${blockChildIndex > 0 ? 'is-child' : ''}`}
+          className={classNames('block', `${className || ''}`, {
+            'is-child': blockChildIndex > 0
+          })}
           ref={(el: HTMLDivElement) => update(el)}
         >
           <BlockProvider.Header>

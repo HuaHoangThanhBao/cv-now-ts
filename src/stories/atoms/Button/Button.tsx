@@ -1,5 +1,6 @@
 import React from 'react'
 import { BlockChildren } from 'src/types/Block'
+import classNames from 'classnames'
 import './button.scss'
 
 interface ButtonProps extends BlockChildren {
@@ -20,7 +21,7 @@ export const Button = ({
 }: ButtonProps) => {
   return (
     <button
-      className={`btn ${className ? className : ''}`}
+      className={classNames('btn', `${className || ''}`)}
       style={{ backgroundColor }}
       onClick={onClick}
     >

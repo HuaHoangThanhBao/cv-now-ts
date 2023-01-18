@@ -2,6 +2,7 @@ import React, { useRef, useState } from 'react'
 import { useOnClickOutside } from 'src/hooks'
 import { Button } from '../Button'
 import { Icon } from '../Icon'
+import classNames from 'classnames'
 import './avatar.scss'
 
 interface AvatarProps {
@@ -42,7 +43,9 @@ export const Avatar = React.forwardRef<HTMLDivElement, AvatarProps>(
         >
           <img className="avatar-img" src={bindingImage()} alt="" />
           <Button
-            className={`btn avatar-upload ${showUpload ? 'active' : ''}`}
+            className={classNames('avatar-upload', {
+              active: showUpload
+            })}
             text={'Upload Photo'}
             icon={<Icon iconType={'upload'} />}
           >

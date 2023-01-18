@@ -16,6 +16,7 @@ import { AvatarState, ProfileState } from 'src/stories/pages/DocumentList/docume
 import { ThemeState } from 'src/stories/organisms/Theme/theme.slice'
 import { FontState } from 'src/stories/organisms/Font/font.slice'
 import { useTheme } from 'src/hooks/useTheme'
+import classNames from 'classnames'
 import './resume.scss'
 
 interface ResumeProps extends PageState {
@@ -109,7 +110,10 @@ export const Resume = forwardRef<ForwardRefProps, ResumeProps>((props: ResumePro
         <Panel
           pageI={pageI}
           key={page.length + pageI}
-          className={`${template}` + (!isOneColumn ? ' two-column' : ' one-column')}
+          className={classNames(`${template}`, {
+            'one-column': isOneColumn,
+            'two-column': !isOneColumn
+          })}
           ref={panelsRef}
           color={theme.color}
           fontFamily={font.currentFontFamily}
