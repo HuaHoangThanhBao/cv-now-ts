@@ -118,6 +118,10 @@ export interface BlockCreateState {
   blockCreateId: string
 }
 
+export interface BlockRemoveState {
+  isRemoving: boolean
+}
+
 export interface BlockBulletCreateState extends BlockCreateState {
   blockBulletUid: string
   blockBulletStatus: BlockContentControlType
@@ -153,7 +157,7 @@ export const blockRootData: BlockState = {
   reference: [referenceMetaData]
 }
 
-export const blockInitialState: BlockInitialState & BlockRequestState = {
+export const blockInitialState: BlockInitialState & BlockRequestState & BlockRemoveState = {
   loading: false,
   currentRequestId: '-1',
   pages: [
@@ -170,6 +174,7 @@ export const blockInitialState: BlockInitialState & BlockRequestState = {
   isOneColumn: false,
   blockMovingId: '-1',
   isMovingBlock: false,
+  isRemoving: false,
   blockCreateId: '-1',
   blockBulletUid: '-1',
   selectedBlock: {
@@ -435,10 +440,25 @@ const blockSlice = createSlice({
     doneCreateBlock(state) {
       state.blockCreateId = '-1'
     },
+    doneRemoveBlock(state) {
+      state.isRemoving = false
+    },
+    removeBlock(state, action: PayloadAction<BlockSelectState>) {
+      state.isRemoving = true
+      const { blockId = '', blockUid = '', blockChildIndex = -1 } = action.payload.selectedBlock
+      if (blockChildIndex <= 0) return
+      const blocks: Common[] = convert(blockId, state)
+      const foundIndex = blocks.findIndex((block) => block.uid === blockUid)
+      if (foundIndex !== -1) {
+        blocks.splice(foundIndex, 1)
+      }
+    },
     controlBlockBullet(state, action: PayloadAction<BlockBulletCreateState>) {
-      const blockId = action.payload.blockCreateId
-      const blockBulletUid = action.payload.blockBulletUid
-      const controlStatus = action.payload.blockBulletStatus
+      const {
+        blockCreateId: blockId,
+        blockBulletUid,
+        blockBulletStatus: controlStatus
+      } = action.payload
       const blocks: Common[] = convert(blockId, state)
       for (let i = 0; i < blocks.length; i++) {
         const block = blocks[i]
@@ -576,7 +596,9 @@ export const {
   updateBlock,
   updateState,
   resetBlockState,
-  doneCreateBlock
+  doneCreateBlock,
+  removeBlock,
+  doneRemoveBlock
 } = blockSlice.actions
 const blockReducer = blockSlice.reducer
 

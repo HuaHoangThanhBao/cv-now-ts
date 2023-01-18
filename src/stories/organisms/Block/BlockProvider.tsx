@@ -9,7 +9,13 @@ import { BlockBarProps } from '../../molecules/BlockBar/BlockBar'
 import { BlockBottom, BlockBottomProps } from '../../molecules/BlockBottom/BlockBottom'
 import { BlockContent, BlockContentProps } from '../../molecules/BlockContent/BlockContent'
 import { BlockHeader } from '../../molecules/BlockHeader'
-import { BlockSelectState, createBlock, onMovingBlock, updateSelectedBlock } from './block.slice'
+import {
+  BlockSelectState,
+  createBlock,
+  onMovingBlock,
+  removeBlock,
+  updateSelectedBlock
+} from './block.slice'
 import './block.scss'
 
 interface IBlockContext {
@@ -31,6 +37,7 @@ interface IBlockContext {
   ) => void
   handleDisableBlockHeaderBar: () => void
   handleCreateBlock: (blockId: string) => void
+  handleRemoveBlock: () => void
 }
 
 interface BlockComposition extends BlockChildren {
@@ -57,7 +64,8 @@ const BlockContext = createContext<IBlockContext>({
   handleDisableBlockContentBar: () => undefined,
   handleShowBlockHeaderBar: () => undefined,
   handleDisableBlockHeaderBar: () => undefined,
-  handleCreateBlock: () => undefined
+  handleCreateBlock: () => undefined,
+  handleRemoveBlock: () => undefined
 })
 
 const BlockProvider = (props: BlockComposition) => {
@@ -148,6 +156,11 @@ const BlockProvider = (props: BlockComposition) => {
     dispatch(createBlock({ blockCreateId: blockId }))
   }
 
+  const handleRemoveBlock = () => {
+    dispatch(removeBlock({ selectedBlock }))
+    dispatch(onMovingBlock(true))
+  }
+
   const value = {
     selectedBlock: {
       selectedBlock: selectedBlock
@@ -158,7 +171,8 @@ const BlockProvider = (props: BlockComposition) => {
     handleDisableBlockContentBar,
     handleShowBlockHeaderBar,
     handleDisableBlockHeaderBar,
-    handleCreateBlock
+    handleCreateBlock,
+    handleRemoveBlock
   }
 
   //when we click outside the block

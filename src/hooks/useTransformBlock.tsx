@@ -7,6 +7,7 @@ import {
   BlockInitialState,
   blockRootData,
   doneCreateBlock,
+  doneRemoveBlock,
   onMovingBlock,
   PageState,
   PageTransformState
@@ -48,6 +49,7 @@ export const useTransformBlock = (props: TransformBlockProps) => {
     isOnPreview
   } = props
   const isMovingBlock = useSelector((state: RootState) => state.block.isMovingBlock)
+  const isRemoving = useSelector((state: RootState) => state.block.isRemoving)
   const blockCreateId = useSelector((state: RootState) => state.block.blockCreateId)
   const template = useSelector((state: RootState) => state.template.currentTemplate)
   const [pagesD, setPagesD] = useState(pages)
@@ -313,6 +315,14 @@ export const useTransformBlock = (props: TransformBlockProps) => {
       dispatch(doneCreateBlock())
     }
   }, [blockCreateId, send, dispatch])
+
+  //if selected block is removed, call update to api
+  useEffect(() => {
+    if (isRemoving) {
+      send()
+      dispatch(doneRemoveBlock())
+    }
+  }, [isRemoving, send, dispatch])
 
   //if we done transform, we call update pages data to api
   useEffect(() => {

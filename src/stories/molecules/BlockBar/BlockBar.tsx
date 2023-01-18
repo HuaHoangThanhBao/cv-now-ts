@@ -26,38 +26,45 @@ export const BlockBar = ({ block, blockId, blockChildIndex }: BlockBarProps) => 
     handleDisableBlockHeaderBar,
     handleDisableBlockContentBar,
     selectedBlock,
-    handleCreateBlock
+    handleCreateBlock,
+    handleRemoveBlock
   } = useBlock()
   const blockState = useSelector((state: RootState) => state.block)
   const dispatch = useDispatch()
   const blocks: Common[] = convert(blockId, blockState)
+
   const moveBlockUp = () => {
     handleDisableBlockHeaderBar()
     handleDisableBlockContentBar()
     dispatch(onMovingBlock(true))
     dispatch(movingBlock({ blockMovingId: blockId, blockMoveType: BlockMoveType.UP }))
   }
+
   const moveBlockDown = () => {
     handleDisableBlockHeaderBar()
     handleDisableBlockContentBar()
     dispatch(onMovingBlock(true))
     dispatch(movingBlock({ blockMovingId: blockId, blockMoveType: BlockMoveType.DOWN }))
   }
+
   const moveContentUp = () => {
-    console.log('block content to move up:', block)
     handleDisableBlockContentBar()
     dispatch(onMovingBlock(true))
     dispatch(movingBlockContentUp(block))
   }
+
   const moveContentDown = () => {
-    console.log('block content to move down:', block)
     handleDisableBlockContentBar()
     dispatch(onMovingBlock(true))
     dispatch(movingBlockContentDown(block))
   }
 
-  const onCreateBlock = () => {
+  const createBlock = () => {
     handleCreateBlock(blockId)
+  }
+
+  const removeBlock = () => {
+    handleRemoveBlock()
   }
 
   if (
@@ -68,7 +75,7 @@ export const BlockBar = ({ block, blockId, blockChildIndex }: BlockBarProps) => 
   if (showBlockContentBar) {
     return (
       <div className="block-bar">
-        <Icon iconType={'add'} className={'block-bar-icon'} onClick={onCreateBlock} />
+        <Icon iconType={'add'} className={'block-bar-icon'} onClick={createBlock} />
         <Icon iconType={'bold'} className={'block-bar-icon'} />
         <Icon iconType={'italic'} className={'block-bar-icon'} />
         <Icon iconType={'underline'} className={'block-bar-icon'} />
@@ -78,7 +85,9 @@ export const BlockBar = ({ block, blockId, blockChildIndex }: BlockBarProps) => 
         {blockChildIndex < blocks.length - 1 && (
           <Icon iconType={'move-down'} className={'block-bar-icon'} onClick={moveContentDown} />
         )}
-        <Icon iconType={'trash'} className={'block-bar-icon'} />
+        {blockChildIndex !== 0 && (
+          <Icon iconType={'trash'} className={'block-bar-icon'} onClick={removeBlock} />
+        )}
       </div>
     )
   } else if (showBlockHeaderBar) {
@@ -89,7 +98,9 @@ export const BlockBar = ({ block, blockId, blockChildIndex }: BlockBarProps) => 
         <Icon iconType={'underline'} className={'block-bar-icon'} />
         <Icon iconType={'move-up'} className={'block-bar-icon'} onClick={moveBlockUp} />
         <Icon iconType={'move-down'} className={'block-bar-icon'} onClick={moveBlockDown} />
-        <Icon iconType={'trash'} className={'block-bar-icon'} />
+        {blockChildIndex !== 0 && (
+          <Icon iconType={'trash'} className={'block-bar-icon'} onClick={removeBlock} />
+        )}
       </div>
     )
   }
