@@ -1,4 +1,5 @@
 import axios, { AxiosInstance } from 'axios'
+import { HttpStatus } from 'src/types/HttpStatus'
 import { TokenErrorType, TokenType } from 'src/types/Token'
 import { baseURL } from '../contants'
 
@@ -24,9 +25,11 @@ class Http {
         return config.data
       },
       (error) => {
-        const { status } = error.response.data.error
-        const { name } = error.response.data.error.error
-        if (status === 401 && name === TokenErrorType.EXPIRED_ACCESS_TOKEN) {
+        //if we get error we try to refresh token
+        if (
+          error.response.status === HttpStatus.UNAUTHORIZED &&
+          error.response.data.name === TokenErrorType.EXPIRED_ACCESS_TOKEN
+        ) {
           this.refreshTokenRequest = this.refreshTokenRequest
             ? this.refreshTokenRequest
             : refreshToken().finally(() => {
@@ -42,9 +45,6 @@ class Http {
             .catch((refreshTokenErr: unknown) => {
               throw refreshTokenErr
             })
-        } else if (status === 401 && name === TokenErrorType.EXPIRED_REFRESH_TOKEN) {
-          //When refresh token expired we do logout
-          localStorage.clear()
         }
         return Promise.reject(error)
       }
@@ -61,8 +61,10 @@ const refreshToken = async () => {
     const { accessToken } = res.data
     localStorage.setItem(TokenType.ACCESS_TOKEN, accessToken)
     return accessToken
-  } catch (err: unknown) {
-    return Promise.reject(err)
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (err: any) {
+    localStorage.clear()
+    throw err.response
   }
 }
 

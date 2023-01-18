@@ -326,11 +326,8 @@ export const useTransformBlock = (props: TransformBlockProps) => {
 
   //if we done transform, we call update pages data to api
   useEffect(() => {
-    const promise = isDoneTransform && !isOnPreview ? sendUpdateDocument() : null
+    isDoneTransform && !isOnPreview && sendUpdateDocument()
     if (!isOnPreview) transformBlocks()
-    return () => {
-      promise?.abort()
-    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isDoneTransform, sendUpdateDocument])
 
