@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
+import { cvBottomPadding } from 'src/contants/resume'
 import { HttpStatus } from 'src/types/HttpStatus'
 import { RootState, useAppDispatch } from '../store'
 import {
@@ -86,7 +87,6 @@ export const useTransformBlock = (props: TransformBlockProps) => {
 
   const getInitalSum = useCallback(
     (pageI: number, isFirstColumn: boolean) => {
-      const cvBottomPadding = 180
       if (pageI <= 0) {
         if (profileContainerRef.current) {
           return profileContainerRef.current.offsetHeight + cvBottomPadding

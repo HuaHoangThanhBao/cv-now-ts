@@ -361,7 +361,7 @@
     padding: 2rem;
   }
   .profile-info {
-    margin-left: 2rem;
+    margin-left: 5.999rem;
     padding-top: 2rem;
     width: calc(100% - 18.997rem);
     &-container {
@@ -371,6 +371,30 @@
   }
   @extend %profileSocial;
   .profile-social {
-    padding-top: 0;
+    padding-top: 2rem;
+    padding-bottom: 0;
+  }
+}
+
+.one-column.skilled_based {
+  .profile-social {
+    padding-top: 2rem;
+    padding-bottom: 0;
+  }
+}
+
+.one-column.minimalist {
+  .profile-info {
+    margin-left: 5.999rem;
+    padding-top: 3rem;
+    width: calc(100% - 18.997rem);
+    &-container {
+      min-height: 8rem;
+      padding-bottom: 2rem;
+    }
+  }
+  .profile-social {
+    padding-top: 2rem;
+    padding-bottom: 0;
   }
 }
