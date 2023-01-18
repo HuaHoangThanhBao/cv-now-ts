@@ -452,6 +452,16 @@ const blockSlice = createSlice({
       if (foundIndex !== -1) {
         blocks.splice(foundIndex, 1)
       }
+      //reset all blockIds
+      blocks.map((block, index) => (block.id = index > 0 ? blockId + '/' + index : blockId))
+      //reset selected block
+      state.selectedBlock = {
+        blockType: '',
+        blockId: '-1',
+        blockUid: '-1',
+        blockChildIndex: -1,
+        selectedElement: ''
+      }
     },
     controlBlockBullet(state, action: PayloadAction<BlockBulletCreateState>) {
       const {
