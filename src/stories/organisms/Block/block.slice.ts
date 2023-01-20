@@ -157,6 +157,14 @@ export const blockRootData: BlockState = {
   reference: [referenceMetaData]
 }
 
+export const selectedBlockInitialState = {
+  blockType: '',
+  blockId: '-1',
+  blockUid: '-1',
+  blockChildIndex: -1,
+  selectedElement: ''
+}
+
 export const blockInitialState: BlockInitialState & BlockRequestState & BlockRemoveState = {
   loading: false,
   currentRequestId: '-1',
@@ -177,13 +185,7 @@ export const blockInitialState: BlockInitialState & BlockRequestState & BlockRem
   isRemoving: false,
   blockCreateId: '-1',
   blockBulletUid: '-1',
-  selectedBlock: {
-    blockType: '',
-    blockId: '-1',
-    blockUid: '-1',
-    blockChildIndex: -1,
-    selectedElement: ''
-  },
+  selectedBlock: selectedBlockInitialState,
   selectedBulletBlock: {
     blockBulletUid: '-1',
     blockId: '-1'

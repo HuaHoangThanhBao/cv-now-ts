@@ -9,13 +9,7 @@ import { BlockBarProps } from '../../molecules/BlockBar/BlockBar'
 import { BlockBottom, BlockBottomProps } from '../../molecules/BlockBottom/BlockBottom'
 import { BlockContent, BlockContentProps } from '../../molecules/BlockContent/BlockContent'
 import { BlockHeader } from '../../molecules/BlockHeader'
-import {
-  BlockSelectState,
-  createBlock,
-  onMovingBlock,
-  removeBlock,
-  updateSelectedBlock
-} from './block.slice'
+import { BlockSelectState, createBlock, removeBlock, updateSelectedBlock } from './block.slice'
 import './block.scss'
 
 interface IBlockContext {
@@ -99,19 +93,8 @@ const BlockProvider = (props: BlockComposition) => {
   }
 
   const handleDisableBlockContentBar = useCallback(() => {
-    dispatch(
-      updateSelectedBlock({
-        selectedBlock: {
-          blockId: '-1',
-          blockType: '',
-          blockUid: '-1',
-          blockChildIndex: -1,
-          selectedElement: ''
-        }
-      })
-    )
     setShowBlockContentBar(false)
-  }, [dispatch])
+  }, [setShowBlockContentBar])
 
   const handleShowBlockHeaderBar = (
     type: string,
@@ -152,13 +135,11 @@ const BlockProvider = (props: BlockComposition) => {
 
   const handleCreateBlock = (blockId: string) => {
     handleDisableBlockContentBar()
-    dispatch(onMovingBlock(true))
     dispatch(createBlock({ blockCreateId: blockId }))
   }
 
   const handleRemoveBlock = () => {
     dispatch(removeBlock({ selectedBlock }))
-    dispatch(onMovingBlock(true))
   }
 
   const value = {
@@ -191,7 +172,6 @@ const BlockProvider = (props: BlockComposition) => {
         console.log('update block because has changed')
         //when block changed, we update new data to old block
         setBlockRoot(props.blockRootData)
-        dispatch(onMovingBlock(true))
 
         //call update api
         send()

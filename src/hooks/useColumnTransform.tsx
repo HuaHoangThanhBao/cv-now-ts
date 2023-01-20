@@ -1,6 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '../store'
-import { onMovingBlock } from '../stories/organisms/Block/block.slice'
 import { updateDragPages } from '../stories/organisms/Drag/drag.slice'
 import { moveChildBlockToParentBlock } from '../utils'
 import { useTransformPages } from './useTransformPages'
@@ -29,7 +28,6 @@ export const useColumnTransform = () => {
     newPagesTransform = moveChildBlockToParentBlock(newPagesTransform, blockState)
     /**/
     callTransformPages(newPagesTransform, newPagesTransform, status)
-    dispatch(onMovingBlock(true))
     dispatch(updateDragPages({ pages: newPagesTransform }))
     return newPagesTransform
   }

@@ -5,8 +5,7 @@ import {
   BlockMoveType,
   movingBlock,
   movingBlockContentDown,
-  movingBlockContentUp,
-  onMovingBlock
+  movingBlockContentUp
 } from '../../organisms/Block/block.slice'
 import { convert } from '../../../utils'
 import { RootState } from '../../../store'
@@ -36,26 +35,22 @@ export const BlockBar = ({ block, blockId, blockChildIndex }: BlockBarProps) => 
   const moveBlockUp = () => {
     handleDisableBlockHeaderBar()
     handleDisableBlockContentBar()
-    dispatch(onMovingBlock(true))
     dispatch(movingBlock({ blockMovingId: blockId, blockMoveType: BlockMoveType.UP }))
   }
 
   const moveBlockDown = () => {
     handleDisableBlockHeaderBar()
     handleDisableBlockContentBar()
-    dispatch(onMovingBlock(true))
     dispatch(movingBlock({ blockMovingId: blockId, blockMoveType: BlockMoveType.DOWN }))
   }
 
   const moveContentUp = () => {
     handleDisableBlockContentBar()
-    dispatch(onMovingBlock(true))
     dispatch(movingBlockContentUp(block))
   }
 
   const moveContentDown = () => {
     handleDisableBlockContentBar()
-    dispatch(onMovingBlock(true))
     dispatch(movingBlockContentDown(block))
   }
 

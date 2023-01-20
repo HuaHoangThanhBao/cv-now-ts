@@ -2,12 +2,7 @@ import { useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
 import { HttpStatus } from 'src/types/HttpStatus'
 import { RootState, useAppDispatch } from '../store'
-import {
-  BlockInitialState,
-  onMovingBlock,
-  PageState,
-  updatePages
-} from '../stories/organisms/Block/block.slice'
+import { BlockInitialState, PageState, updatePages } from '../stories/organisms/Block/block.slice'
 import { NoNeedRequestState, sendUpdateNoNeeds } from '../stories/organisms/Drag/drag.slice'
 import { moveChildBlockToParentBlock } from '../utils'
 import { useTransformPages } from './useTransformPages'
@@ -71,7 +66,6 @@ export const useMoveChild = ({
     }
 
     dispatch(updatePages({ pages: [..._pages] }))
-    dispatch(onMovingBlock(true))
     return _pages
   }
 
