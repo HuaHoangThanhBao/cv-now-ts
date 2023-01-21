@@ -11,23 +11,6 @@ import themeReducer from './stories/organisms/Theme/theme.slice'
 import documentReducer from './stories/pages/DocumentList/documentList.slice'
 import userReducer from './user.slice'
 
-export const sagaMiddleware = createSagaMiddleware()
-
-export const store = configureStore({
-  reducer: {
-    block: blockReducer,
-    drag: dragReducer,
-    document: documentReducer,
-    template: templateReducer,
-    user: userReducer,
-    theme: themeReducer,
-    font: fontReducer,
-    setting: settingReducer
-  },
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(sagaMiddleware)
-})
-
-/*Set up for uni test*/
 const rootReducer = combineReducers({
   block: blockReducer,
   drag: dragReducer,
@@ -39,6 +22,14 @@ const rootReducer = combineReducers({
   setting: settingReducer
 })
 
+export const sagaMiddleware = createSagaMiddleware()
+
+export const store = configureStore({
+  reducer: rootReducer,
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(sagaMiddleware)
+})
+
+/*Set up for uni test*/
 export function setupStore(preloadedState?: PreloadedState<RootState>) {
   return configureStore({
     reducer: rootReducer,

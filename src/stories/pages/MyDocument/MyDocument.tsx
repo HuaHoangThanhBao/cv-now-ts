@@ -14,29 +14,27 @@ export const MyDocument: React.FC = () => {
   const template = useSelector((state: RootState) => state.template.currentTemplate)
   const theme = useSelector((state: RootState) => state.theme)
   const font = useSelector((state: RootState) => state.font)
-  const { isUpdated } = useFetchDocumentFromParam()
   const downloadRef = useRef<HTMLDivElement[]>(null)
   const { generatePDF } = useDownloadResume()
   useGoogleLogin()
+  useFetchDocumentFromParam()
 
   return (
     <>
       <Menu action={generatePDF} />
-      {isUpdated && (
-        <Resume
-          pages={rootBlockState.pages}
-          state={rootBlockState}
-          isOneColumn={rootBlockState.isOneColumn || false}
-          pagesOneColumn={rootBlockState.pagesOneColumn}
-          pagesTwoColumn={rootBlockState.pagesTwoColumn}
-          template={template}
-          ref={downloadRef}
-          profile={profile}
-          avatar={avatar}
-          theme={theme}
-          font={font}
-        />
-      )}
+      <Resume
+        pages={rootBlockState.pages}
+        state={rootBlockState}
+        isOneColumn={rootBlockState.isOneColumn || false}
+        pagesOneColumn={rootBlockState.pagesOneColumn}
+        pagesTwoColumn={rootBlockState.pagesTwoColumn}
+        template={template}
+        ref={downloadRef}
+        profile={profile}
+        avatar={avatar}
+        theme={theme}
+        font={font}
+      />
     </>
   )
 }

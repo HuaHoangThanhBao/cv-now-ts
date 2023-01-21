@@ -1,19 +1,47 @@
-import { takeLatest, put, take, call } from 'redux-saga/effects'
+import { PayloadAction } from '@reduxjs/toolkit'
+import { takeLatest, put, take, call, select } from 'redux-saga/effects'
+import blockApi from 'src/api/blockApi'
 import {
+  BlockCreateState,
   createBlock,
+  doneCreateBlock,
   movingBlock,
   movingBlockContentDown,
   movingBlockContentUp,
   onMovingBlock,
   removeBlock,
+  selectBlock,
   selectedBlockInitialState,
   sendUpdateBlock,
   transformPages,
   updatePages,
-  updateSelectedBlock
+  updateSelectedBlock,
+  BlockState,
+  doneRemoveBlock
 } from 'src/stories/organisms/Block/block.slice'
+import { DocumentRes, selectResume } from 'src/stories/pages/DocumentList/documentList.slice'
 
-function* handleCreateBlock() {
+function* handleSendUpdateBlock() {
+  const block: BlockState = yield select(selectBlock)
+  const resume: DocumentRes = yield select(selectResume)
+  yield call(blockApi.put, { id: resume.block._id || '-1', body: block })
+}
+
+function* handleCreateBlock(action: PayloadAction<BlockCreateState>) {
+  yield* handleSendUpdateBlock()
+  if (action.payload.blockCreateId !== '-1') {
+    yield put(doneCreateBlock())
+  }
+  yield* handleMovingBlock()
+}
+
+function* handleRemoveBlock() {
+  yield* handleSendUpdateBlock()
+  yield put(doneRemoveBlock())
+  yield* handleMovingBlock()
+}
+
+function* handleMovingBlock() {
   yield put(onMovingBlock(true))
   yield put(
     updateSelectedBlock({
@@ -22,16 +50,12 @@ function* handleCreateBlock() {
   )
 }
 
-function* handleMovingBlock() {
-  yield put(onMovingBlock(true))
-}
-
 export function* blockSaga() {
   console.log('watch create block...')
   yield takeLatest(createBlock.toString(), handleCreateBlock)
 
   console.log('watch remove block...')
-  yield takeLatest(removeBlock.toString(), handleMovingBlock)
+  yield takeLatest(removeBlock.toString(), handleRemoveBlock)
 
   console.log('watch update page...')
   yield takeLatest(updatePages.toString(), handleMovingBlock)

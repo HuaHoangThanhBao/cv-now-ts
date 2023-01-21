@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { RootState } from 'src/store'
 import { FontState } from 'src/stories/organisms/Font/font.slice'
 import { SettingState } from 'src/stories/organisms/Setting/setting.slice'
 import { ThemeState } from 'src/stories/organisms/Theme/theme.slice'
@@ -214,6 +215,10 @@ const documentSlice = createSlice({
   }
 })
 
+//selectors
+export const selectResume = (state: RootState) => state.document.resume
+
+//actions
 export const { getSelectedDocument, resetResume } = documentSlice.actions
 const documentReducer = documentSlice.reducer
 

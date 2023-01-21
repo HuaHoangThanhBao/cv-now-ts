@@ -6,9 +6,6 @@ import { HttpStatus } from 'src/types/HttpStatus'
 import { RootState, useAppDispatch } from '../store'
 import {
   BlockInitialState,
-  blockRootData,
-  doneCreateBlock,
-  doneRemoveBlock,
   onMovingBlock,
   PageState,
   PageTransformState
@@ -17,7 +14,6 @@ import { updateDragPages } from '../stories/organisms/Drag/drag.slice'
 import { sendUpdatePages } from '../stories/pages/DocumentList/documentList.slice'
 import { GlobalIterator } from '../types/Block'
 import { TemplateType } from '../types/Template'
-import { useCompareBlock } from './useCompareBlock'
 import { useEffectOnce } from './useEffectOnce'
 import { useMoveChild } from './useMoveChild'
 import { useTransformPages } from './useTransformPages'
@@ -50,15 +46,12 @@ export const useTransformBlock = (props: TransformBlockProps) => {
     isOnPreview
   } = props
   const isMovingBlock = useSelector((state: RootState) => state.block.isMovingBlock)
-  const isRemoving = useSelector((state: RootState) => state.block.isRemoving)
-  const blockCreateId = useSelector((state: RootState) => state.block.blockCreateId)
   const template = useSelector((state: RootState) => state.template.currentTemplate)
   const [pagesD, setPagesD] = useState(pages)
   const [isDoneTransform, setIsDoneTransform] = useState(false)
   const [isMovingBlockD, setIsMovingBlockD] = useState(isMovingBlock || false)
   const { callTransformPages } = useTransformPages({ isOneColumn, pagesOneColumn, pagesTwoColumn })
-  const [, moveChildAfter] = useMoveChild({ pages: pagesD, state })
-  const { send } = useCompareBlock(blockRootData.education[0])
+  const { moveChildAfter } = useMoveChild({ pages: pagesD, state })
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const params = useParams()
@@ -302,27 +295,9 @@ export const useTransformBlock = (props: TransformBlockProps) => {
   useEffectOnce(() => {
     if (!isOnPreview) {
       callMovingBlock(true)
-      dispatch(onMovingBlock(true))
       callTransformPages()
     }
   })
-
-  //if new block content is created, call update to api
-  useEffect(() => {
-    if (blockCreateId !== '-1') {
-      send()
-      // callMovingBlock(true);
-      dispatch(doneCreateBlock())
-    }
-  }, [blockCreateId, send, dispatch])
-
-  //if selected block is removed, call update to api
-  useEffect(() => {
-    if (isRemoving) {
-      send()
-      dispatch(doneRemoveBlock())
-    }
-  }, [isRemoving, send, dispatch])
 
   //if we done transform, we call update pages data to api
   useEffect(() => {

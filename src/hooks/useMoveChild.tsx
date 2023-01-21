@@ -11,10 +11,7 @@ interface MoveChild extends PageState {
   state: BlockInitialState
 }
 
-export const useMoveChild = ({
-  pages,
-  state
-}: MoveChild): [() => string[][][], () => string[][][]] => {
+export const useMoveChild = ({ pages, state }: MoveChild) => {
   const blockState = useSelector((state: RootState) => state.block)
   const noNeedsOneColumn = useSelector((state: RootState) => state.drag.noNeedsOneColumn)
   const noNeedsTwoColumn = useSelector((state: RootState) => state.drag.noNeedsTwoColumn)
@@ -80,5 +77,5 @@ export const useMoveChild = ({
     return _pages
   }
 
-  return [moveChildBefore, moveChildAfter]
+  return { moveChildBefore, moveChildAfter }
 }

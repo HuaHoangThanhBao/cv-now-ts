@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { RootState } from 'src/store'
 import { FulfilledAction, PendingAction, RejectedAction } from 'src/types/AsyncThunk'
 import { v4 as uuidv4 } from 'uuid'
 import { pagesOneColumn, pagesTwoColumn } from '../../../contants/ColumnFormat'
@@ -595,6 +596,10 @@ const blockSlice = createSlice({
   }
 })
 
+//selectors
+export const selectBlock = (state: RootState) => state.block
+
+//actions
 export const {
   transformPages,
   movingBlock,
