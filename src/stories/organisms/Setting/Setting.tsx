@@ -1,14 +1,23 @@
 import { useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 import { RootState, useAppDispatch } from 'src/store'
-import './setting.scss'
+import { HttpStatus } from 'src/types/HttpStatus'
 import { sendUpdateCurrentSetting, SettingState } from './setting.slice'
+import './setting.scss'
 
 export const Setting = () => {
   const setting = useSelector((state: RootState) => state.setting)
+  const navigate = useNavigate()
   const dispatch = useAppDispatch()
 
   const updateSetting = (updatedSetting: SettingState) => {
     dispatch(sendUpdateCurrentSetting({ id: setting._id, body: updatedSetting }))
+      .unwrap()
+      .catch((error) => {
+        if (error.message.includes(HttpStatus.UNAUTHORIZED)) {
+          navigate('/')
+        }
+      })
   }
 
   const updateAvatarSetting = (status: boolean) => {

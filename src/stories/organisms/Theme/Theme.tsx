@@ -5,11 +5,14 @@ import { RootState, useAppDispatch } from 'src/store'
 import { Selection } from 'src/types/Selection'
 import { Color } from '../Color'
 import { sendUpdateCurrentTheme, ThemeState } from './theme.slice'
+import { useNavigate } from 'react-router-dom'
+import { HttpStatus } from 'src/types/HttpStatus'
 import './theme.scss'
 
 export const Theme = ({ data, setOption }: Selection<string>) => {
   const ref = useRef(null)
   const theme = useSelector((state: RootState) => state.theme)
+  const navigate = useNavigate()
   const dispatch = useAppDispatch()
 
   useOnClickOutside(ref, () => {
@@ -18,6 +21,12 @@ export const Theme = ({ data, setOption }: Selection<string>) => {
 
   const updateTheme = (updatedTheme: ThemeState) => {
     dispatch(sendUpdateCurrentTheme({ id: theme._id, body: updatedTheme }))
+      .unwrap()
+      .catch((error) => {
+        if (error.message.includes(HttpStatus.UNAUTHORIZED)) {
+          navigate('/')
+        }
+      })
   }
 
   const onChooseTheme = (_theme: string) => {

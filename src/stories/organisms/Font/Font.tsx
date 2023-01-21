@@ -1,3 +1,4 @@
+import classNames from 'classnames'
 import { useRef } from 'react'
 import { useSelector } from 'react-redux'
 import { useOnClickOutside } from 'src/hooks'
@@ -5,12 +6,14 @@ import { RootState, useAppDispatch } from 'src/store'
 import { FontSize } from 'src/types/Font'
 import { Selection } from 'src/types/Selection'
 import { FontState, sendUpdateCurrentFont } from './font.slice'
-import classNames from 'classnames'
+import { HttpStatus } from 'src/types/HttpStatus'
+import { useNavigate } from 'react-router-dom'
 import './font.scss'
 
 export const Font = ({ data, setOption }: Selection<string>) => {
   const ref = useRef(null)
   const font = useSelector((state: RootState) => state.font)
+  const navigate = useNavigate()
   const dispatch = useAppDispatch()
 
   useOnClickOutside(ref, () => {
@@ -19,6 +22,12 @@ export const Font = ({ data, setOption }: Selection<string>) => {
 
   const updateFont = (fontUpdated: FontState) => {
     dispatch(sendUpdateCurrentFont({ id: font._id, body: fontUpdated }))
+      .unwrap()
+      .catch((error) => {
+        if (error.message.includes(HttpStatus.UNAUTHORIZED)) {
+          navigate('/')
+        }
+      })
   }
 
   const onChooseFontFamily = (family: string) => {
