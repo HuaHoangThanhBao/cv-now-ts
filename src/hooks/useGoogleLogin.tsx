@@ -1,4 +1,4 @@
-import { GoogleLogin } from 'react-google-login'
+// import { GoogleLogin } from 'react-google-login'
 import { gapi } from 'gapi-script'
 import { useEffectOnce } from './useEffectOnce'
 import { useNavigate } from 'react-router-dom'
@@ -45,22 +45,23 @@ export const useGoogleLogin = () => {
   const googleLoginButton = (externalClassName: string, text: string) => {
     if (!isLoggedIn()) {
       return (
-        <GoogleLogin
-          clientId={googleClientId}
-          onSuccess={handleSucsess}
-          onFailure={handleFailure}
-          buttonText="Login"
-          cookiePolicy={'single_host_origin'}
-          render={(renderProps) => (
-            <button
-              className={`${externalClassName} btn-lp highlight-btn`}
-              onClick={renderProps.onClick}
-              disabled={renderProps.disabled}
-            >
-              {text}
-            </button>
-          )}
-        />
+        <button>Login with google</button>
+        // <GoogleLogin
+        //   clientId={googleClientId}
+        //   onSuccess={handleSucsess}
+        //   onFailure={handleFailure}
+        //   buttonText="Login"
+        //   cookiePolicy={'single_host_origin'}
+        //   render={(renderProps) => (
+        //     <button
+        //       className={`${externalClassName} btn-lp highlight-btn`}
+        //       onClick={renderProps.onClick}
+        //       disabled={renderProps.disabled}
+        //     >
+        //       {text}
+        //     </button>
+        //   )}
+        // />
       )
     } else {
       return (
