@@ -45,7 +45,7 @@ jobs:
         run: echo ${{ steps.docker_build.outputs.digest }}
 
   build:
-    name: Deploy
+    name: Deploy to DigitalOcean
     needs: docker
     runs-on: ubuntu-22.04
     steps:
