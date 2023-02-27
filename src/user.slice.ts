@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { http } from 'src/utils'
 import { DocumentRes } from './stories/pages/DocumentList/documentList.slice'
 import { IdObjectMongoose } from './types/Block'
+import { UserGoogleSend } from './types/UserGoogle'
 
 export interface UserState extends IdObjectMongoose {
   userId: string
@@ -35,7 +36,7 @@ export const sendLogin = createAsyncThunk(
       body,
       callback
     }: {
-      body: Partial<UserState>
+      body: UserGoogleSend
       callback: (userId: string, accessToken: string, refreshToken: string) => void
     },
     thunkAPI
