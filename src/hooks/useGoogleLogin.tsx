@@ -1,11 +1,11 @@
-// import { GoogleLogin } from 'react-google-login'
-import { gapi } from 'gapi-script'
+import jwt_decode from 'jwt-decode'
+import { GoogleLogin } from '@react-oauth/google'
 import { useEffectOnce } from './useEffectOnce'
 import { useNavigate } from 'react-router-dom'
-import { googleClientId } from 'src/contants/url'
 import { RootState, useAppDispatch } from 'src/store'
-import { getUser, sendLogin, sendToUpdateRefreshToken } from 'src/user.slice'
+import { getUser, sendLogin, sendToUpdateRefreshToken, UserState } from 'src/user.slice'
 import { TokenType } from 'src/types/Token'
+import { UserGoogle } from 'src/types/UserGoogle'
 import { HttpStatus } from 'src/types/HttpStatus'
 import { useSelector } from 'react-redux'
 
@@ -36,32 +36,31 @@ export const useGoogleLogin = () => {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars
   const handleSucsess = (googleData: any) => {
-    console.log(googleData)
-    const { tokenId, profileObj } = googleData
-    const { email } = profileObj
-    dispatch(sendLogin({ body: { email, tokenId }, callback: callbackAfterLogin }))
+    const { credential } = googleData
+    const decodedToken: UserGoogle = jwt_decode(credential)
+    const { email, name, family_name, given_name } = decodedToken
+    const userData: Pick<UserState, "email" | "name" | "familyName" | "givenName"> = {
+      email,
+      name,
+      familyName: family_name,
+      givenName: given_name
+    }
+    dispatch(sendLogin({ body: { userData, credential }, callback: callbackAfterLogin }))
   }
 
   const googleLoginButton = (externalClassName: string, text: string) => {
     if (!isLoggedIn()) {
       return (
-        <button>Login with google</button>
-        // <GoogleLogin
-        //   clientId={googleClientId}
-        //   onSuccess={handleSucsess}
-        //   onFailure={handleFailure}
-        //   buttonText="Login"
-        //   cookiePolicy={'single_host_origin'}
-        //   render={(renderProps) => (
-        //     <button
-        //       className={`${externalClassName} btn-lp highlight-btn`}
-        //       onClick={renderProps.onClick}
-        //       disabled={renderProps.disabled}
-        //     >
-        //       {text}
-        //     </button>
-        //   )}
-        // />
+        <GoogleLogin
+          onSuccess={credentialResponse => {
+            console.log(credentialResponse);
+            handleSucsess(credentialResponse)
+          }}
+          onError={() => {
+            console.log('Login Failed');
+            handleFailure('')
+          }}
+        />
       )
     } else {
       return (
@@ -75,13 +74,6 @@ export const useGoogleLogin = () => {
     }
   }
 
-  const initGoogleClient = () => {
-    gapi.client.init({
-      client_id: process.env.REACT_APP_GOOGLE_CLIENT_ID,
-      scope: ''
-    })
-  }
-
   const isLoggedIn = () => {
     const accessToken = localStorage.getItem(TokenType.ACCESS_TOKEN) || ''
     const refreshToken = localStorage.getItem(TokenType.REFRESH_TOKEN) || ''
@@ -89,7 +81,6 @@ export const useGoogleLogin = () => {
   }
 
   useEffectOnce(() => {
-    if (!isLoggedIn()) gapi.load('client:auth2', initGoogleClient)
     const promise = dispatch(
       sendToUpdateRefreshToken({
         body: { refreshToken: localStorage.getItem(TokenType.REFRESH_TOKEN) || '' }
