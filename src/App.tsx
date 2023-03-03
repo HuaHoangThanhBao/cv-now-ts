@@ -19,6 +19,14 @@ function App() {
       element: <DocumentList />
     }
   ])
+  document.addEventListener("message", (event: any) => {
+    const message = event.data;
+ 
+    handleMessages(message);
+  })
+  function handleMessages(message: any) {
+    alert(`Received message from native app: ${message}`)
+  }
 
   return <div className="App">{elements}</div>
 }

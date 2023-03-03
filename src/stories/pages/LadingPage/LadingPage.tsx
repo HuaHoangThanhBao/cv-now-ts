@@ -26,14 +26,6 @@ export const LandingPage = () => {
     console.log('result:', result)
     return !result ? 'browser': 'mobile'
   }
-  document.addEventListener("message", (event: any) => {
-    const message = event.data;
- 
-    handleMessages(message);
- })
-  function handleMessages(message: any) {
-    alert(`Received message from native app: ${message}`)
-  }
   return (
     <div className="body-lp">
       <header className="header-l">
