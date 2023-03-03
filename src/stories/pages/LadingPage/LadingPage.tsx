@@ -27,7 +27,7 @@ export const LandingPage = () => {
     return !result ? 'browser': 'mobile'
   }
   const postMessage = () => {
-    let w: any = window
+    const w: any = window
     w.ReactNativeWebView.postMessage("Hello!")
   }
   return (
