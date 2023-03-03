@@ -26,12 +26,16 @@ export const LandingPage = () => {
     console.log('result:', result)
     return !result ? 'browser': 'mobile'
   }
-  const postMessage = () => {
-    window.postMessage({
-      type: 'button-click',
-      message: 'Received message event from reactjs',
-    },
-    '*')
+  const postMessage = (e: any) => {
+    e.preventDefault();
+    if (window && window.parent) {
+      alert('send post message to react native successfully')
+      window.parent.postMessage({
+        type: 'button-click',
+        message: 'Received message event from reactjs',
+      },
+      '*')
+    }
   }
   return (
     <div className="body-lp">
