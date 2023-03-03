@@ -53,7 +53,6 @@ export const useGoogleLogin = () => {
       return (
         <GoogleLogin
           onSuccess={credentialResponse => {
-            console.log(credentialResponse);
             handleSucsess(credentialResponse)
           }}
           onError={() => {
@@ -75,8 +74,8 @@ export const useGoogleLogin = () => {
   }
 
   const isLoggedIn = () => {
-    const accessToken = localStorage.getItem(TokenType.ACCESS_TOKEN) || ''
-    const refreshToken = localStorage.getItem(TokenType.REFRESH_TOKEN) || ''
+    const accessToken = localStorage.getItem(TokenType.ACCESS_TOKEN)
+    const refreshToken = localStorage.getItem(TokenType.REFRESH_TOKEN)
     return !!accessToken && !!refreshToken
   }
 
