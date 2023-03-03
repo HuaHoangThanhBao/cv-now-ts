@@ -26,6 +26,13 @@ export const LandingPage = () => {
     console.log('result:', result)
     return !result ? 'browser': 'mobile'
   }
+  const postMessage = () => {
+    window.postMessage({
+      type: 'button-click',
+      message: 'Received message event from reactjs',
+    },
+    '*')
+  }
   return (
     <div className="body-lp">
       <header className="header-l">
@@ -58,7 +65,8 @@ export const LandingPage = () => {
                 <p>{window.navigator.userAgent}</p>
                 <br />
                 <p>Device: {detectDevice()}</p>
-                
+                <button onClick={postMessage}>Post message</button>
+
                 <div className="hero-group">{googleLoginButton('', 'Get started')}</div>
               </div>
               <div className="hero-banner">
