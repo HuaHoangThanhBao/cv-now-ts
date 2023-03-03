@@ -21,6 +21,11 @@ import '../../../styles/landing-page/app.scss'
 
 export const LandingPage = () => {
   const { googleLoginButton } = useGoogleLogin()
+  const detectDevice = () => {
+    const result = /Android|iPhone/i.test(navigator.userAgent)
+    console.log('result:', result)
+    return !result ? 'browser': 'mobile'
+  }
   return (
     <div className="body-lp">
       <header className="header-l">
@@ -49,6 +54,11 @@ export const LandingPage = () => {
                   Increase productivity with a simple cv builder app for managing your personal
                   documents.
                 </p>
+                
+                <p>{window.navigator.userAgent}</p>
+                <br />
+                <p>Device: {detectDevice()}</p>
+                
                 <div className="hero-group">{googleLoginButton('', 'Get started')}</div>
               </div>
               <div className="hero-banner">
