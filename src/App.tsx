@@ -1,4 +1,4 @@
-import { useRoutes } from 'react-router-dom'
+import { useNavigate, useRoutes } from 'react-router-dom'
 import { DocumentList } from './stories/pages/DocumentList'
 import { MyDocument } from './stories/pages/MyDocument'
 import { LandingPage } from './stories/pages/LadingPage'
@@ -6,6 +6,7 @@ import { useEffectOnce } from './hooks'
 import './App.scss'
 
 function App() {
+  const navigate = useNavigate()
   const elements = useRoutes([
     {
       path: '/',
@@ -28,6 +29,9 @@ function App() {
     })
     function handleMessages(message: any) {
       const { from, event, data } = JSON.parse(message)
+      if (event === 'login') {
+        navigate('/my-documents')
+      }
       alert(`Received message from native app: ${from}-${event}-${data}`)
     }
   })

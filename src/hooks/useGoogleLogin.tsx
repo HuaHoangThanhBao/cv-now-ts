@@ -8,9 +8,11 @@ import { TokenType } from 'src/types/Token'
 import { UserGoogle } from 'src/types/UserGoogle'
 import { HttpStatus } from 'src/types/HttpStatus'
 import { useSelector } from 'react-redux'
+import { useDevice } from './useDevice'
 
 export const useGoogleLogin = () => {
   const user = useSelector((state: RootState) => state.user)
+  const { device } = useDevice()
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
 
@@ -80,6 +82,7 @@ export const useGoogleLogin = () => {
   }
 
   useEffectOnce(() => {
+    if (device === 'mobile') return
     const promise = dispatch(
       sendToUpdateRefreshToken({
         body: { refreshToken: localStorage.getItem(TokenType.REFRESH_TOKEN) || '' }
