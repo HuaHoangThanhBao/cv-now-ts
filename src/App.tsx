@@ -30,6 +30,7 @@ function App() {
     })
     function handleMessages(message: any) {
       const { from, event, data } = JSON.parse(message)
+      alert(`Received message from native app: ${from}-${event}-${data}`)
       if (event === 'login') {
         const d = JSON.parse(data)
         alert(`d: ${d}`)
@@ -39,7 +40,6 @@ function App() {
           alert(`error getuserbyemail: ${e}`)
         })
       }
-      alert(`Received message from native app: ${from}-${event}-${data}`)
     }
   })
 
