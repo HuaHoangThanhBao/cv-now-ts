@@ -32,9 +32,9 @@ function App() {
       const { from, event, data } = JSON.parse(message)
       alert(`Received message from native app: ${from}-${event}-${data}`)
       if (event === 'login') {
-        const d = JSON.parse(data)
-        alert(`d: ${d}`)
-        http.get(`users/getuserbyemail/${d.email}`).then((res: any) => {
+        const { email } = JSON.parse(JSON.stringify(data))
+        alert(`email: ${email}`)
+        http.get(`users/getuserbyemail/${email}`).then((res: any) => {
           navigate(`/my-documents/${res._id}`)
         }).catch((e) => {
           alert(`error getuserbyemail: ${e}`)
