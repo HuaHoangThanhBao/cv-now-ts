@@ -30,8 +30,8 @@ function App() {
     })
     function handleMessages(message: any) {
       const { from, event, data } = JSON.parse(message)
-      alert(`Received message from native app: ${from}-${event}-${data}`)
       if (event === 'login') {
+        alert(`data: ${data}`)
         const { email } = data
         alert(`email: ${email}`)
         http.get(`users/getuserbyemail/${email}`).then((res: any) => {
