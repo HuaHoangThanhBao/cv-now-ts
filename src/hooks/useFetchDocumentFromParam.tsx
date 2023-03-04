@@ -24,6 +24,7 @@ export const useFetchDocumentFromParam = () => {
 
   useEffectOnce(() => {
     const promise = dispatch(getResume({ documentId: documentId || '-1' }))
+    alert(`resume: ${resume}`)
     alert(`documentId: ${documentId}`)
     if (device !== 'mobile') {
       promise.unwrap().catch((error) => {
