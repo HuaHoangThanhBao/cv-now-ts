@@ -82,17 +82,18 @@ export const useGoogleLogin = () => {
   }
 
   useEffectOnce(() => {
-    if (device === 'mobile') return
     const promise = dispatch(
       sendToUpdateRefreshToken({
         body: { refreshToken: localStorage.getItem(TokenType.REFRESH_TOKEN) || '' }
       })
     )
-    promise.unwrap().catch((error) => {
-      if (error.message.includes(HttpStatus.UNAUTHORIZED)) {
-        navigate('/')
-      }
-    })
+    if (device !== 'mobile') {
+      promise.unwrap().catch((error) => {
+        if (error.message.includes(HttpStatus.UNAUTHORIZED)) {
+          navigate('/')
+        }
+      })
+    }
     const promiseUser = dispatch(getUser())
     return () => {
       promise.abort()
