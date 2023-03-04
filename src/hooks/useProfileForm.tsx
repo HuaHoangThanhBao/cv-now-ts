@@ -21,15 +21,15 @@ export const useProfileForm = ({ action }: Pick<Selection<unknown>, 'action'>) =
   const navigate = useNavigate()
 
   const onSave = handleSubmit((data) => {
-    if (device !== 'mobile') {
-      dispatch(sendUpdateProfile({ id: profile._id || '-1', body: data }))
-        .unwrap()
-        .catch((error) => {
-          if (error.message.includes(HttpStatus.UNAUTHORIZED)) {
+    dispatch(sendUpdateProfile({ id: profile._id || '-1', body: data }))
+      .unwrap()
+      .catch((error) => {
+        if (error.message.includes(HttpStatus.UNAUTHORIZED)) {
+          if (device !== 'mobile') {
             navigate('/')
           }
-        })
-    }
+        }
+      })
     if (action) action()
   })
 

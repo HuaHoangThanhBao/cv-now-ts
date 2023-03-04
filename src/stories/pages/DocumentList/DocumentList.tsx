@@ -63,16 +63,16 @@ export const DocumentList = () => {
       noNeedsTwoColumn: []
     }
     setIsOnCreating(true)
-    if (device !== 'mobile') {
-      dispatch(createNewResume({ body: newResume, callback: doNavigate }))
-        .unwrap()
-        .catch((error) => {
-          console.log(error)
-          if (error.message.includes(HttpStatus.UNAUTHORIZED)) {
+    dispatch(createNewResume({ body: newResume, callback: doNavigate }))
+      .unwrap()
+      .catch((error) => {
+        console.log(error)
+        if (error.message.includes(HttpStatus.UNAUTHORIZED)) {
+          if (device !== 'mobile') {
             navigate('/')
           }
-        })
-    }
+        }
+      })
   }
 
   const refetchUser = () => {
@@ -88,15 +88,15 @@ export const DocumentList = () => {
   }
 
   const deleteDocument = (document: DocumentRes) => {
-    if (device !== 'mobile') {
-      dispatch(deleteResume({ id: document._id, callback: refetchUser }))
-        .unwrap()
-        .catch((error) => {
-          if (error.message.includes(HttpStatus.UNAUTHORIZED)) {
+    dispatch(deleteResume({ id: document._id, callback: refetchUser }))
+      .unwrap()
+      .catch((error) => {
+        if (error.message.includes(HttpStatus.UNAUTHORIZED)) {
+          if (device !== 'mobile') {
             navigate('/')
           }
-        })
-    }
+        }
+      })
   }
 
   return (

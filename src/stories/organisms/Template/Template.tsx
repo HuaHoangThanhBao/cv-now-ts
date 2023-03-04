@@ -29,15 +29,15 @@ export const Template = ({ data, setOption }: Selection<string>) => {
       currentTemplate: template
     }
     dispatch(updateCurrentTemplate(template))
-    if (device !== 'mobile') {
-      dispatch(sendUpdateCurrentTemplate({ id: resume.template._id || '-1', body: updateTemplate }))
-        .unwrap()
-        .catch((error) => {
+    dispatch(sendUpdateCurrentTemplate({ id: resume.template._id || '-1', body: updateTemplate }))
+      .unwrap()
+      .catch((error) => {
           if (error.message.includes(HttpStatus.UNAUTHORIZED)) {
+            if (device !== 'mobile') {
             navigate('/')
           }
-        })
-    }
+        }
+      })
     dispatch(onMovingBlock(true))
   }
 

@@ -80,15 +80,15 @@ export const useCompareBlock = (blockRoot: Common) => {
       softSkill: blockState.softSkill,
       reference: blockState.reference
     }
-    if (device !== 'mobile') {
-      dispatch(sendUpdateBlock({ id: documentState.resume.block._id || '-1', body: updatedBlock }))
-        .unwrap()
-        .catch((error) => {
-          if (error.message.includes(HttpStatus.UNAUTHORIZED)) {
-            navigate('/')
+    dispatch(sendUpdateBlock({ id: documentState.resume.block._id || '-1', body: updatedBlock }))
+      .unwrap()
+      .catch((error) => {
+        if (error.message.includes(HttpStatus.UNAUTHORIZED)) {
+          if (device !== 'mobile') {
+                navigate('/')
           }
-        })
-    }
+        }
+      })
     return updatedBlock
   }
 

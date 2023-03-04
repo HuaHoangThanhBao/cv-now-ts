@@ -46,23 +46,23 @@ export const useUploadAvatar = ({ avatar }: Pick<DocumentRes, 'avatar'>) => {
   }
 
   const cropImgCallback = (base64: string) => {
-    if (device !== 'mobile') {
-      dispatch(
-        sendUpdateAvatar({
-          id: avatar._id || '-1',
-          body: {
-            ...avatar,
-            url: base64
-          }
-        })
-      )
-        .unwrap()
-        .catch((error) => {
-          if (error.message.includes(HttpStatus.UNAUTHORIZED)) {
+    dispatch(
+      sendUpdateAvatar({
+        id: avatar._id || '-1',
+        body: {
+          ...avatar,
+          url: base64
+        }
+      })
+    )
+      .unwrap()
+      .catch((error) => {
+        if (error.message.includes(HttpStatus.UNAUTHORIZED)) {
+          if (device !== 'mobile') {
             navigate('/')
           }
-        })
-    }
+        }
+      })
   }
 
   const showCroppedImage = async () => {

@@ -63,15 +63,15 @@ export const useMoveChild = ({
         pagesTwoColumn: !state.isOneColumn ? _pages : state.pagesTwoColumn
       }
       // console.log('request:', request);
-      if (device !== 'mobile') {
-        dispatch(sendUpdateNoNeeds({ id: documentId, body: request }))
-          .unwrap()
-          .catch((error) => {
-            if (error.message.includes(HttpStatus.UNAUTHORIZED)) {
+      dispatch(sendUpdateNoNeeds({ id: documentId, body: request }))
+        .unwrap()
+        .catch((error) => {
+          if (error.message.includes(HttpStatus.UNAUTHORIZED)) {
+            if (device !== 'mobile') {
               navigate('/')
             }
-          })
-        }
+          }
+        })
       }
 
     dispatch(updatePages({ pages: [..._pages] }))
