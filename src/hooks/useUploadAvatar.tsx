@@ -6,6 +6,7 @@ import { DocumentRes, sendUpdateAvatar } from 'src/stories/pages/DocumentList/do
 import { HttpStatus } from 'src/types/HttpStatus'
 import getCroppedImg from 'src/utils/cropImage'
 import AvatarImg from '../stories/assets/avatar.png'
+import { useDevice } from './useDevice'
 
 export const useUploadAvatar = ({ avatar }: Pick<DocumentRes, 'avatar'>) => {
   const [avatarSrc, setAvatarSrc] = useState('')
@@ -21,6 +22,7 @@ export const useUploadAvatar = ({ avatar }: Pick<DocumentRes, 'avatar'>) => {
     height: 0
   })
   const [isShowImageCrop, setIsShowImageCrop] = useState(false)
+  const { device } = useDevice()
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
 
@@ -44,21 +46,23 @@ export const useUploadAvatar = ({ avatar }: Pick<DocumentRes, 'avatar'>) => {
   }
 
   const cropImgCallback = (base64: string) => {
-    dispatch(
-      sendUpdateAvatar({
-        id: avatar._id || '-1',
-        body: {
-          ...avatar,
-          url: base64
-        }
-      })
-    )
-      .unwrap()
-      .catch((error) => {
-        if (error.message.includes(HttpStatus.UNAUTHORIZED)) {
-          navigate('/')
-        }
-      })
+    if (device !== 'mobile') {
+      dispatch(
+        sendUpdateAvatar({
+          id: avatar._id || '-1',
+          body: {
+            ...avatar,
+            url: base64
+          }
+        })
+      )
+        .unwrap()
+        .catch((error) => {
+          if (error.message.includes(HttpStatus.UNAUTHORIZED)) {
+            navigate('/')
+          }
+        })
+    }
   }
 
   const showCroppedImage = async () => {

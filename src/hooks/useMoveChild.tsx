@@ -10,6 +10,7 @@ import {
 } from '../stories/organisms/Block/block.slice'
 import { NoNeedRequestState, sendUpdateNoNeeds } from '../stories/organisms/Drag/drag.slice'
 import { moveChildBlockToParentBlock } from '../utils'
+import { useDevice } from './useDevice'
 import { useTransformPages } from './useTransformPages'
 
 interface MoveChild extends PageState {
@@ -25,6 +26,7 @@ export const useMoveChild = ({
   const noNeedsTwoColumn = useSelector((state: RootState) => state.drag.noNeedsTwoColumn)
   const noNeeds = !blockState.isOneColumn ? noNeedsTwoColumn : noNeedsOneColumn
 
+  const { device } = useDevice()
   const navigate = useNavigate()
   const params = useParams()
   const { documentId } = params
@@ -61,14 +63,16 @@ export const useMoveChild = ({
         pagesTwoColumn: !state.isOneColumn ? _pages : state.pagesTwoColumn
       }
       // console.log('request:', request);
-      dispatch(sendUpdateNoNeeds({ id: documentId, body: request }))
-        .unwrap()
-        .catch((error) => {
-          if (error.message.includes(HttpStatus.UNAUTHORIZED)) {
-            navigate('/')
-          }
-        })
-    }
+      if (device !== 'mobile') {
+        dispatch(sendUpdateNoNeeds({ id: documentId, body: request }))
+          .unwrap()
+          .catch((error) => {
+            if (error.message.includes(HttpStatus.UNAUTHORIZED)) {
+              navigate('/')
+            }
+          })
+        }
+      }
 
     dispatch(updatePages({ pages: [..._pages] }))
     dispatch(onMovingBlock(true))

@@ -5,6 +5,7 @@ import { RootState, useAppDispatch } from 'src/store'
 import { sendUpdateProfile } from 'src/stories/pages/DocumentList/documentList.slice'
 import { HttpStatus } from 'src/types/HttpStatus'
 import { Selection } from 'src/types/Selection'
+import { useDevice } from './useDevice'
 
 export const useProfileForm = ({ action }: Pick<Selection<unknown>, 'action'>) => {
   const profile = useSelector((state: RootState) => state.document.resume.profile)
@@ -15,17 +16,20 @@ export const useProfileForm = ({ action }: Pick<Selection<unknown>, 'action'>) =
   } = useForm({
     defaultValues: { ...profile }
   })
+  const { device } = useDevice()
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
 
   const onSave = handleSubmit((data) => {
-    dispatch(sendUpdateProfile({ id: profile._id || '-1', body: data }))
-      .unwrap()
-      .catch((error) => {
-        if (error.message.includes(HttpStatus.UNAUTHORIZED)) {
-          navigate('/')
-        }
-      })
+    if (device !== 'mobile') {
+      dispatch(sendUpdateProfile({ id: profile._id || '-1', body: data }))
+        .unwrap()
+        .catch((error) => {
+          if (error.message.includes(HttpStatus.UNAUTHORIZED)) {
+            navigate('/')
+          }
+        })
+    }
     if (action) action()
   })
 

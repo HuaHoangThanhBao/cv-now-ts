@@ -7,6 +7,7 @@ import { BlockState, sendUpdateBlock } from '../stories/organisms/Block/block.sl
 import { Common } from '../types/Block'
 import { InputType } from '../types/Input'
 import { convert } from '../utils'
+import { useDevice } from './useDevice'
 
 export const useCompareBlock = (blockRoot: Common) => {
   const currentBlock = useRef<{ blockId: string; blockUid: string }>({
@@ -15,6 +16,7 @@ export const useCompareBlock = (blockRoot: Common) => {
   })
   const blockState = useSelector((state: RootState) => state.block)
   const documentState = useSelector((state: RootState) => state.document)
+  const { device } = useDevice()
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
 
@@ -78,13 +80,15 @@ export const useCompareBlock = (blockRoot: Common) => {
       softSkill: blockState.softSkill,
       reference: blockState.reference
     }
-    dispatch(sendUpdateBlock({ id: documentState.resume.block._id || '-1', body: updatedBlock }))
-      .unwrap()
-      .catch((error) => {
-        if (error.message.includes(HttpStatus.UNAUTHORIZED)) {
-          navigate('/')
-        }
-      })
+    if (device !== 'mobile') {
+      dispatch(sendUpdateBlock({ id: documentState.resume.block._id || '-1', body: updatedBlock }))
+        .unwrap()
+        .catch((error) => {
+          if (error.message.includes(HttpStatus.UNAUTHORIZED)) {
+            navigate('/')
+          }
+        })
+    }
     return updatedBlock
   }
 

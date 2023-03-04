@@ -10,6 +10,7 @@ import { RootState, useAppDispatch } from '../store'
 import { resetBlockState, updateState } from '../stories/organisms/Block/block.slice'
 import { updateNoNeeds } from '../stories/organisms/Drag/drag.slice'
 import { getResume, resetResume } from '../stories/pages/DocumentList/documentList.slice'
+import { useDevice } from './useDevice'
 import { useEffectOnce } from './useEffectOnce'
 
 export const useFetchDocumentFromParam = () => {
@@ -17,16 +18,19 @@ export const useFetchDocumentFromParam = () => {
   const { documentId } = params
   const [isUpdated, setIsUpdated] = useState(false)
   const resume = useSelector((state: RootState) => state.document.resume)
+  const { device } = useDevice()
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
 
   useEffectOnce(() => {
     const promise = dispatch(getResume({ documentId: documentId || '-1' }))
-    promise.unwrap().catch((error) => {
-      if (error.message.includes(HttpStatus.UNAUTHORIZED)) {
-        navigate('/')
-      }
-    })
+    if (device !== 'mobile') {
+      promise.unwrap().catch((error) => {
+        if (error.message.includes(HttpStatus.UNAUTHORIZED)) {
+          navigate('/')
+        }
+      })
+    }
     return () => {
       dispatch(resetResume())
       dispatch(resetBlockState())

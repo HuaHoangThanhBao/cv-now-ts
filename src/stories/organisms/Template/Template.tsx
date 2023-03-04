@@ -9,11 +9,13 @@ import { onMovingBlock } from '../Block/block.slice'
 import { sendUpdateCurrentTemplate, TemplateState, updateCurrentTemplate } from './template.slice'
 import { Selection } from 'src/types/Selection'
 import './template.scss'
+import { useDevice } from 'src/hooks/useDevice'
 
 export const Template = ({ data, setOption }: Selection<string>) => {
   const ref = useRef(null)
   const blockState = useSelector((state: RootState) => state.block)
   const resume = useSelector((state: RootState) => state.document.resume)
+  const { device } = useDevice()
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
 
@@ -27,13 +29,15 @@ export const Template = ({ data, setOption }: Selection<string>) => {
       currentTemplate: template
     }
     dispatch(updateCurrentTemplate(template))
-    dispatch(sendUpdateCurrentTemplate({ id: resume.template._id || '-1', body: updateTemplate }))
-      .unwrap()
-      .catch((error) => {
-        if (error.message.includes(HttpStatus.UNAUTHORIZED)) {
-          navigate('/')
-        }
-      })
+    if (device !== 'mobile') {
+      dispatch(sendUpdateCurrentTemplate({ id: resume.template._id || '-1', body: updateTemplate }))
+        .unwrap()
+        .catch((error) => {
+          if (error.message.includes(HttpStatus.UNAUTHORIZED)) {
+            navigate('/')
+          }
+        })
+    }
     dispatch(onMovingBlock(true))
   }
 

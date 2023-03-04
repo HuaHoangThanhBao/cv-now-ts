@@ -19,11 +19,11 @@ import { pagesOneColumn, pagesTwoColumn } from '../../../contants/ColumnFormat'
 import { getUser } from 'src/user.slice'
 import { HttpStatus } from 'src/types/HttpStatus'
 import './documentList.scss'
+import { useDevice } from 'src/hooks/useDevice'
 
 export const DocumentList = () => {
   const [isOnCreating, setIsOnCreating] = useState(false)
   const documents = useSelector((state: RootState) => state.user.documents)
-  alert(`documents: ${JSON.stringify(documents)}`)
   const { callTransformPages } = useTransformPages({
     isOneColumn: false,
     pagesOneColumn: [],
@@ -31,6 +31,7 @@ export const DocumentList = () => {
   })
   useGoogleLogin()
 
+  const { device } = useDevice()
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
 
@@ -62,34 +63,40 @@ export const DocumentList = () => {
       noNeedsTwoColumn: []
     }
     setIsOnCreating(true)
-    dispatch(createNewResume({ body: newResume, callback: doNavigate }))
-      .unwrap()
-      .catch((error) => {
-        console.log(error)
-        if (error.message.includes(HttpStatus.UNAUTHORIZED)) {
-          navigate('/')
-        }
-      })
+    if (device !== 'mobile') {
+      dispatch(createNewResume({ body: newResume, callback: doNavigate }))
+        .unwrap()
+        .catch((error) => {
+          console.log(error)
+          if (error.message.includes(HttpStatus.UNAUTHORIZED)) {
+            navigate('/')
+          }
+        })
+    }
   }
 
   const refetchUser = () => {
     const p = dispatch(getUser())
-    p.unwrap().catch((error) => {
-      if (error.message.includes(HttpStatus.UNAUTHORIZED)) {
-        navigate('/')
-      }
-    })
-    return p
-  }
-
-  const deleteDocument = (document: DocumentRes) => {
-    dispatch(deleteResume({ id: document._id, callback: refetchUser }))
-      .unwrap()
-      .catch((error) => {
+    if (device !== 'mobile') {
+      p.unwrap().catch((error) => {
         if (error.message.includes(HttpStatus.UNAUTHORIZED)) {
           navigate('/')
         }
       })
+    }
+    return p
+  }
+
+  const deleteDocument = (document: DocumentRes) => {
+    if (device !== 'mobile') {
+      dispatch(deleteResume({ id: document._id, callback: refetchUser }))
+        .unwrap()
+        .catch((error) => {
+          if (error.message.includes(HttpStatus.UNAUTHORIZED)) {
+            navigate('/')
+          }
+        })
+    }
   }
 
   return (
