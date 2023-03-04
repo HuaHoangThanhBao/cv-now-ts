@@ -5,9 +5,13 @@ import { LandingPage } from './stories/pages/LadingPage'
 import './App.scss'
 import { http } from './utils'
 import { useEffect } from 'react'
+import { useAppDispatch } from './store'
+import { getUserByEmail } from './user.slice'
 
 function App() {
   const navigate = useNavigate()
+  const dispatch = useAppDispatch()
+  
   const elements = useRoutes([
     {
       path: '/',
@@ -23,19 +27,17 @@ function App() {
     }
   ])
 
+  const navigateToDocumentList = (id: string) => {
+    navigate(`/my-documents/${id}`)
+  }
+
   function handleMessages(message: any) {
     const { from, event, data } = JSON.parse(message)
     if (event === 'login') {
       alert(`data: ${data}`)
       const { email } = data
       alert(`email: ${email}`)
-      http.get(`users/getuserbyemail/${email}`).then((res: any) => {
-        alert(`res: ${res}`)
-        alert(`res id: ${res.data._id}`)
-        navigate(`/my-documents/${res.data._id}`)
-      }).catch((e) => {
-        alert(`error getuserbyemail: ${e}`)
-      })
+      dispatch(getUserByEmail({email, callback: navigateToDocumentList}))
     }
   }
 

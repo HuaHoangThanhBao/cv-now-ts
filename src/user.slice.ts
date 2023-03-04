@@ -67,6 +67,21 @@ export const getUser = createAsyncThunk('user/getUserById', async (_, thunkAPI) 
   return response.data
 })
 
+export const getUserByEmail = createAsyncThunk('user/getUserByEmail', async ({
+    email,
+    callback
+  }: {
+    email: string
+    callback: (id: string) => void
+  }, thunkAPI) => {
+  const response = await http.get<UserState>(`users/getuserbyemail/${email}`, {
+    signal: thunkAPI.signal
+  })
+  const { _id } = response.data
+  callback(_id)
+  return response.data
+})
+
 const userSlice = createSlice({
   name: 'user',
   initialState,
@@ -91,6 +106,14 @@ const userSlice = createSlice({
       state.refreshToken = action.payload.refreshToken
     })
     builder.addCase(getUser.fulfilled, (state, action) => {
+      state.userId = action.payload._id || ''
+      state.email = action.payload.email
+      state.familyName = action.payload.familyName
+      state.givenName = action.payload.givenName
+      state.name = action.payload.name
+      state.documents = action.payload.documents
+    })
+    builder.addCase(getUserByEmail.fulfilled, (state, action) => {
       state.userId = action.payload._id || ''
       state.email = action.payload.email
       state.familyName = action.payload.familyName
