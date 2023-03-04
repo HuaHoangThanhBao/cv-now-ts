@@ -28,6 +28,7 @@ function App() {
   ])
 
   const navigateToDocumentList = (id: string) => {
+    alert(`go to document list with id: ${id}`)
     navigate(`/my-documents/${id}`)
   }
 
