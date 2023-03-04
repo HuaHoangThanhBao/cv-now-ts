@@ -28,16 +28,16 @@ function App() {
   ])
 
   const navigateToDocumentList = (id: string) => {
-    alert(`go to document list with id: ${id}`)
+    // alert(`go to document list with id: ${id}`)
     navigate(`/my-documents/${id}`)
   }
 
   function handleMessages(message: any) {
     const { from, event, data } = JSON.parse(message)
     if (event === 'login') {
-      alert(`data: ${data}`)
+      // alert(`data: ${data}`)
       const { email } = data
-      alert(`email: ${email}`)
+      // alert(`email: ${email}`)
       dispatch(getUserByEmail({email, callback: navigateToDocumentList}))
     }
   }

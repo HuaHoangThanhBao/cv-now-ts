@@ -9,7 +9,7 @@ import {
   PageState,
   updateSelectedBlock
 } from '../../organisms/Block/block.slice'
-import { useTransformBlock, useEventListener, useTransformProfile, useFooter } from '../../../hooks'
+import { useTransformBlock, useEventListener, useTransformProfile, useFooter, useEffectOnce } from '../../../hooks'
 import { TemplateType } from '../../../types/Template'
 import { maxHeight } from '../../../contants'
 import { AvatarState, ProfileState } from 'src/stories/pages/DocumentList/documentList.slice'
@@ -86,7 +86,11 @@ export const Resume = forwardRef<ForwardRefProps, ResumeProps>((props: ResumePro
   const { renderTheme } = useTheme({ currentTheme: theme.currentTheme })
   const { renderFooter } = useFooter()
 
-  alert(`pagesD: ${JSON.stringify(pagesD)}`)
+  useEffectOnce(() => {
+    alert(`pagesD resume: ${JSON.stringify(pagesD)}`)
+    alert(`pages resume: ${JSON.stringify(pages)}`)
+    alert(`profile resume: ${JSON.stringify(profile)}`)
+  })
 
   useImperativeHandle(ref, () => panelsRef)
 
