@@ -24,6 +24,7 @@ export const useFetchDocumentFromParam = () => {
 
   useEffectOnce(() => {
     const promise = dispatch(getResume({ documentId: documentId || '-1' }))
+    alert(`documentId: ${documentId}`)
     if (device !== 'mobile') {
       promise.unwrap().catch((error) => {
         if (error.message.includes(HttpStatus.UNAUTHORIZED)) {
@@ -40,6 +41,7 @@ export const useFetchDocumentFromParam = () => {
 
   useEffect(() => {
     if (resume && resume._id !== '-1') {
+      alert(`resume: ${resume._id}`)
       setIsUpdated(false)
       dispatch(updateState(resume))
       dispatch(updateCurrentTemplate(resume.template.currentTemplate))
