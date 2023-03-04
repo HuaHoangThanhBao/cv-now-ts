@@ -36,8 +36,8 @@ function App() {
         alert(`email: ${email}`)
         http.get(`users/getuserbyemail/${email}`).then((res: any) => {
           alert(`res: ${res}`)
-          alert(`res id: ${res._id}`)
-          navigate(`/my-documents/${res._id}`)
+          alert(`res id: ${res.data._id}`)
+          navigate(`/my-documents/${res.data._id}`)
         }).catch((e) => {
           alert(`error getuserbyemail: ${e}`)
         })
