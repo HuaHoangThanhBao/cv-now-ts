@@ -18,14 +18,11 @@ import UIImg from '../../assets/landing-page/ui.png'
 import ComputerImg from '../../assets/landing-page/computer.png'
 import CustomerServiceImg from '../../assets/landing-page/customer-service.png'
 import '../../../styles/landing-page/app.scss'
+import { useDevice } from 'src/hooks/useDevice'
 
 export const LandingPage = () => {
   const { googleLoginButton } = useGoogleLogin()
-  const detectDevice = () => {
-    const result = /Android|iPhone/i.test(navigator.userAgent)
-    console.log('result:', result)
-    return !result ? 'browser': 'mobile'
-  }
+  const { device } = useDevice()
   const postMessage = () => {
     const w: any = window
     w.ReactNativeWebView.postMessage("Hello!")
@@ -61,7 +58,7 @@ export const LandingPage = () => {
                 
                 <p>{window.navigator.userAgent}</p>
                 <br />
-                <p>Device: {detectDevice()}</p>
+                <p>Device: {device}</p>
                 <button onClick={postMessage}>Post message</button>
 
                 <div className="hero-group">{googleLoginButton('', 'Get started')}</div>

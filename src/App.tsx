@@ -27,7 +27,8 @@ function App() {
       handleMessages(message);
     })
     function handleMessages(message: any) {
-      alert(`Received message from native app: ${message}`)
+      const { from, event, data } = JSON.parse(message)
+      alert(`Received message from native app: ${from}-${event}-${data}`)
     }
   })
 
