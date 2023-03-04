@@ -24,7 +24,7 @@ export const useFetchDocumentFromParam = () => {
 
   useEffectOnce(() => {
     const promise = dispatch(getResume({ documentId: documentId || '-1' }))
-    alert(`resume: ${JSON.stringify(resume)}`)
+    alert(`resume 2: ${JSON.stringify(resume)}`)
     alert(`documentId: ${documentId}`)
     if (device !== 'mobile') {
       promise.unwrap().catch((error) => {
@@ -42,7 +42,7 @@ export const useFetchDocumentFromParam = () => {
 
   useEffect(() => {
     if (resume && resume._id !== '-1') {
-      alert(`resume: ${resume._id}`)
+      alert(`resume 1: ${resume._id}`)
       setIsUpdated(false)
       dispatch(updateState(resume))
       dispatch(updateCurrentTemplate(resume.template.currentTemplate))
