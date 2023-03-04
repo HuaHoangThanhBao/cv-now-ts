@@ -23,6 +23,7 @@ import './documentList.scss'
 export const DocumentList = () => {
   const [isOnCreating, setIsOnCreating] = useState(false)
   const documents = useSelector((state: RootState) => state.user.documents)
+  alert(`documents: ${JSON.stringify(documents)}`)
   const { callTransformPages } = useTransformPages({
     isOneColumn: false,
     pagesOneColumn: [],
