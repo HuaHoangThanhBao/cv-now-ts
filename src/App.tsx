@@ -35,6 +35,8 @@ function App() {
         const { email } = data
         alert(`email: ${email}`)
         http.get(`users/getuserbyemail/${email}`).then((res: any) => {
+          alert(`res: ${res}`)
+          alert(`res id: ${res._id}`)
           navigate(`/my-documents/${res._id}`)
         }).catch((e) => {
           alert(`error getuserbyemail: ${e}`)
