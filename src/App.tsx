@@ -4,6 +4,7 @@ import { MyDocument } from './stories/pages/MyDocument'
 import { LandingPage } from './stories/pages/LadingPage'
 import { useEffectOnce } from './hooks'
 import './App.scss'
+import { http } from './utils'
 
 function App() {
   const navigate = useNavigate()
@@ -30,7 +31,13 @@ function App() {
     function handleMessages(message: any) {
       const { from, event, data } = JSON.parse(message)
       if (event === 'login') {
-        navigate('/my-documents')
+        const d = JSON.parse(data)
+        alert(`d: ${d}`)
+        http.get(`users/getuserbyemail/${d.email}`).then((res: any) => {
+          navigate(`/my-documents/${res._id}`)
+        }).catch((e) => {
+          alert(`error getuserbyemail: ${e}`)
+        })
       }
       alert(`Received message from native app: ${from}-${event}-${data}`)
     }
