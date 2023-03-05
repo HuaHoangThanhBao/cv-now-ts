@@ -19,10 +19,6 @@ export const MyDocument: React.FC = () => {
   const { generatePDF } = useDownloadResume()
   useGoogleLogin()
 
-  useEffect(() => {
-    alert(`isUpdated in mydocument: ${isUpdated}`)
-  }, [isUpdated])
-
   return (
     <>
       <Menu action={generatePDF} />

@@ -36,9 +36,8 @@ export const DocumentList = () => {
   const navigate = useNavigate()
 
   const doNavigate = (documentId: string) => {
-    alert(`document id on navigate: ${documentId}`)
     if (!documentId) return
-    // dispatch(resetResume())
+    dispatch(resetResume())
     navigate(`/resume/${documentId}`)
   }
 

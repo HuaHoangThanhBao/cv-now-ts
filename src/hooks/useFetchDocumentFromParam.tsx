@@ -24,7 +24,6 @@ export const useFetchDocumentFromParam = () => {
 
   useEffectOnce(() => {
     const promise = dispatch(getResume({ documentId: documentId || '-1' }))
-    alert(`get resume !!!: ${documentId}`)
     promise.unwrap().catch((error) => {
       if (error.message.includes(HttpStatus.UNAUTHORIZED)) {
         if (device !== 'mobile') {
@@ -33,7 +32,6 @@ export const useFetchDocumentFromParam = () => {
       }
     })
     return () => {
-      alert('abort')
       dispatch(resetResume())
       dispatch(resetBlockState())
       promise.abort()
@@ -41,9 +39,7 @@ export const useFetchDocumentFromParam = () => {
   })
 
   useEffect(() => {
-    alert(`resume 0: ${JSON.stringify(resume)}`)
     if (resume && resume._id !== '-1') {
-      alert(`fetch resume successfully`)
       setIsUpdated(false)
       dispatch(updateState(resume))
       dispatch(updateCurrentTemplate(resume.template.currentTemplate))

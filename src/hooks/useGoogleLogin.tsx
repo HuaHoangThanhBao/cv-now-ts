@@ -81,7 +81,22 @@ export const useGoogleLogin = () => {
     return !!accessToken && !!refreshToken
   }
 
+  function handleMessages(message: any) {
+    const { from, event, data } = JSON.parse(message)
+    if (event === 'login') {
+      const { userData, credential } = data
+      alert(`user data: ${JSON.stringify(userData)}/ credential: ${credential}`)
+      dispatch(sendLogin({ body: { userData, credential }, callback: callbackAfterLogin }))
+    }
+  }
+
   useEffectOnce(() => {
+    //Handle post message from native app
+    document.addEventListener("message", (event: any) => {
+      const message = event.data;
+      handleMessages(message);
+    })
+
     const promise = dispatch(
       sendToUpdateRefreshToken({
         body: { refreshToken: localStorage.getItem(TokenType.REFRESH_TOKEN) || '' }
@@ -96,6 +111,7 @@ export const useGoogleLogin = () => {
     })
     const promiseUser = dispatch(getUser())
     return () => {
+      document.removeEventListener('message', handleMessages)
       promise.abort()
       promiseUser.abort()
     }

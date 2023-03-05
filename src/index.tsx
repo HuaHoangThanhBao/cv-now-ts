@@ -11,13 +11,13 @@ import './index.scss'
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 root.render(
   <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID || ''}>
-    {/* <React.StrictMode> */}
+    <React.StrictMode>
       <BrowserRouter>
         <Provider store={store}>
           <App />
         </Provider>
       </BrowserRouter>
-    {/* </React.StrictMode> */}
+    </React.StrictMode>
   </GoogleOAuthProvider>
 )
 
