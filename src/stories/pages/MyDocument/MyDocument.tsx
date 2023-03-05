@@ -1,8 +1,8 @@
-import React, { useRef } from 'react'
+import React, { useRef, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../../store'
 import { Resume } from '../../templates/Resume/Resume'
-import { useEffectOnce, useFetchDocumentFromParam, useGoogleLogin } from '../../../hooks'
+import { useFetchDocumentFromParam, useGoogleLogin } from '../../../hooks'
 import { Menu } from '../../templates/Menu'
 import { useDownloadResume } from '../../../hooks/useDownloadResume'
 import './myDocument.scss'
@@ -19,9 +19,9 @@ export const MyDocument: React.FC = () => {
   const { generatePDF } = useDownloadResume()
   useGoogleLogin()
 
-  useEffectOnce(() => {
+  useEffect(() => {
     alert(`isUpdated in mydocument: ${isUpdated}`)
-  })
+  }, [isUpdated])
 
   return (
     <>
