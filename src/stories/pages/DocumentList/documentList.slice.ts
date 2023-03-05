@@ -126,6 +126,7 @@ export const getResume = createAsyncThunk(
     const response = await http.get<DocumentRes>(`documents/${documentId}`, {
       signal: thunkAPI.signal
     })
+    alert(`get resume done!!!: ${JSON.stringify(response.data)}`)
     return response.data
   }
 )

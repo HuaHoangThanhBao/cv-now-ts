@@ -22,12 +22,9 @@ export const useFetchDocumentFromParam = () => {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
 
-  alert(`documentId: ${documentId}`)
-  alert(`resume 0: ${JSON.stringify(resume)}`)
-
   useEffectOnce(() => {
     const promise = dispatch(getResume({ documentId: documentId || '-1' }))
-    alert('get resume !!!')
+    alert(`get resume !!!: ${documentId}`)
     promise.unwrap().catch((error) => {
       if (error.message.includes(HttpStatus.UNAUTHORIZED)) {
         if (device !== 'mobile') {
@@ -44,6 +41,7 @@ export const useFetchDocumentFromParam = () => {
   })
 
   useEffect(() => {
+    alert(`resume 0: ${JSON.stringify(resume)}`)
     if (resume && resume._id !== '-1') {
       alert(`fetch resume successfully`)
       setIsUpdated(false)

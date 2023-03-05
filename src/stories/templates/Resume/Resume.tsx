@@ -86,12 +86,6 @@ export const Resume = forwardRef<ForwardRefProps, ResumeProps>((props: ResumePro
   const { renderTheme } = useTheme({ currentTheme: theme.currentTheme })
   const { renderFooter } = useFooter()
 
-  useEffectOnce(() => {
-    alert(`pagesD resume: ${JSON.stringify(pagesD)}`)
-    alert(`pages resume: ${JSON.stringify(pages)}`)
-    alert(`profile resume: ${JSON.stringify(profile)}`)
-  })
-
   useImperativeHandle(ref, () => panelsRef)
 
   const techHeightTemplateStyle = (pageI: number) => {
