@@ -27,14 +27,15 @@ export const useFetchDocumentFromParam = () => {
 
   useEffectOnce(() => {
     const promise = dispatch(getResume({ documentId: documentId || '-1' }))
-    if (device !== 'mobile') {
-      promise.unwrap().catch((error) => {
-        if (error.message.includes(HttpStatus.UNAUTHORIZED)) {
+    promise.unwrap().catch((error) => {
+      if (error.message.includes(HttpStatus.UNAUTHORIZED)) {
+        if (device !== 'mobile') {
           navigate('/')
         }
-      })
-    }
+      }
+    })
     return () => {
+      alert('abort')
       dispatch(resetResume())
       dispatch(resetBlockState())
       promise.abort()
