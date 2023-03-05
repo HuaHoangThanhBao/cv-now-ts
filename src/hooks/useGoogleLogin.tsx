@@ -87,13 +87,13 @@ export const useGoogleLogin = () => {
         body: { refreshToken: localStorage.getItem(TokenType.REFRESH_TOKEN) || '' }
       })
     )
-    if (device !== 'mobile') {
-      promise.unwrap().catch((error) => {
-        if (error.message.includes(HttpStatus.UNAUTHORIZED)) {
+    promise.unwrap().catch((error) => {
+      if (error.message.includes(HttpStatus.UNAUTHORIZED)) {
+        if (device !== 'mobile') {
           navigate('/')
         }
-      })
-    }
+      }
+    })
     const promiseUser = dispatch(getUser())
     return () => {
       promise.abort()

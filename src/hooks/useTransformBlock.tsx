@@ -283,13 +283,13 @@ export const useTransformBlock = (props: TransformBlockProps) => {
       console.log('update document request:', request)
       setIsDoneTransform(false)
       const promise = dispatch(sendUpdatePages({ id: documentId, body: request }))
-      if (device !== 'mobile') {
-        promise.unwrap().catch((error) => {
-          if (error.message.includes(HttpStatus.UNAUTHORIZED)) {
+      promise.unwrap().catch((error) => {
+        if (error.message.includes(HttpStatus.UNAUTHORIZED)) {
+          if (device !== 'mobile') {
             navigate('/')
           }
-        })
-      }
+        }
+      })
       return promise
     }
   }, [

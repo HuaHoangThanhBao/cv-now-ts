@@ -77,13 +77,13 @@ export const DocumentList = () => {
 
   const refetchUser = () => {
     const p = dispatch(getUser())
-    if (device !== 'mobile') {
-      p.unwrap().catch((error) => {
-        if (error.message.includes(HttpStatus.UNAUTHORIZED)) {
+    p.unwrap().catch((error) => {
+      if (error.message.includes(HttpStatus.UNAUTHORIZED)) {
+        if (device !== 'mobile') {
           navigate('/')
         }
-      })
-    }
+      }
+    })
     return p
   }
 

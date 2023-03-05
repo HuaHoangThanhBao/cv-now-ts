@@ -201,6 +201,7 @@ const documentSlice = createSlice({
     builder
       .addCase(getResume.fulfilled, (state, action) => {
         console.log('document by id:', action.payload)
+        alert(`document by id: ${action.payload}`)
         state.resume = action.payload
       })
       .addCase(sendUpdateProfile.fulfilled, (state, action) => {

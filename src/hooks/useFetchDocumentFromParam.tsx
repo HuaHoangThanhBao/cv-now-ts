@@ -27,6 +27,7 @@ export const useFetchDocumentFromParam = () => {
 
   useEffectOnce(() => {
     const promise = dispatch(getResume({ documentId: documentId || '-1' }))
+    alert('get resume !!!')
     promise.unwrap().catch((error) => {
       if (error.message.includes(HttpStatus.UNAUTHORIZED)) {
         if (device !== 'mobile') {
