@@ -42,7 +42,7 @@ export const useFetchDocumentFromParam = () => {
   })
 
   useEffect(() => {
-    if (resume && resume._id === '-1') {
+    if (resume && resume._id !== '-1') {
       alert(`fetch resume successfully`)
       setIsUpdated(false)
       dispatch(updateState(resume))
