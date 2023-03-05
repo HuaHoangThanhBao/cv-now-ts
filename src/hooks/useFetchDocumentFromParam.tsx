@@ -22,10 +22,11 @@ export const useFetchDocumentFromParam = () => {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
 
+  alert(`documentId: ${documentId}`)
+  alert(`resume 1: ${resume._id}`)
+
   useEffectOnce(() => {
     const promise = dispatch(getResume({ documentId: documentId || '-1' }))
-    alert(`resume 2: ${JSON.stringify(resume)}`)
-    alert(`documentId: ${documentId}`)
     if (device !== 'mobile') {
       promise.unwrap().catch((error) => {
         if (error.message.includes(HttpStatus.UNAUTHORIZED)) {
@@ -42,7 +43,7 @@ export const useFetchDocumentFromParam = () => {
 
   useEffect(() => {
     if (resume && resume._id !== '-1') {
-      alert(`resume 1: ${resume._id}`)
+      alert(`fetch resume successfully`)
       setIsUpdated(false)
       dispatch(updateState(resume))
       dispatch(updateCurrentTemplate(resume.template.currentTemplate))
