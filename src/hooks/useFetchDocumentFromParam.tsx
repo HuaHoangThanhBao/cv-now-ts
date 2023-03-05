@@ -23,7 +23,7 @@ export const useFetchDocumentFromParam = () => {
   const navigate = useNavigate()
 
   alert(`documentId: ${documentId}`)
-  alert(`resume 0: ${resume}`)
+  alert(`resume 0: ${JSON.stringify(resume)}`)
 
   useEffectOnce(() => {
     const promise = dispatch(getResume({ documentId: documentId || '-1' }))
