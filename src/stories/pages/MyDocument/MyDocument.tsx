@@ -20,7 +20,7 @@ export const MyDocument: React.FC = () => {
   useGoogleLogin()
 
   useEffectOnce(() => {
-    alert('isUpdated in mydocument:', isUpdated)
+    alert(`isUpdated in mydocument: ${isUpdated}`)
   })
 
   return (
