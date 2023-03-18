@@ -25,7 +25,7 @@ export const LandingPage = () => {
   const { device } = useDevice()
   const postMessage = () => {
     const w: any = window
-    w.ReactNativeWebView.postMessage("Hello!")
+    w.ReactNativeWebView.postMessage('Hello!')
   }
   return (
     <div className="body-lp">
@@ -48,14 +48,14 @@ export const LandingPage = () => {
                   <div className="hero-medal">
                     <img src={Medal} alt="" />
                   </div>
-                  <p>#1 Fastest CV Builder Ever</p>
+                  <p>#1 Fastest CV Builder</p>
                 </div>
                 <h1 className="hero-heading">Best app for your job application</h1>
                 <p className="hero-caption">
                   Increase productivity with a simple cv builder app for managing your personal
                   documents.
                 </p>
-                
+
                 <p>{window.navigator.userAgent}</p>
                 <br />
                 <p>Device: {device}</p>
