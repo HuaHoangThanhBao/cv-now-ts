@@ -72,7 +72,7 @@ export const useMoveChild = ({
             }
           }
         })
-      }
+    }
 
     dispatch(updatePages({ pages: [..._pages] }))
     dispatch(onMovingBlock(true))

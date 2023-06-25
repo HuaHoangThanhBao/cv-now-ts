@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react'
+import React, { useRef } from 'react'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../../store'
 import { Resume } from '../../templates/Resume/Resume'

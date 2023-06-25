@@ -9,7 +9,7 @@ export const useDownloadResume = () => {
       format: [maxWidth, maxHeight],
       compress: true
     })
-    const data = document.querySelectorAll('div.panel.two-column')
+    const data = document.querySelectorAll('div.panel')
     const pagesLength = data.length
     let i = 0
     for await (const panel of data) {

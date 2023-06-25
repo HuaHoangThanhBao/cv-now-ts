@@ -9,7 +9,7 @@ import {
   PageState,
   updateSelectedBlock
 } from '../../organisms/Block/block.slice'
-import { useTransformBlock, useEventListener, useTransformProfile, useFooter, useEffectOnce } from '../../../hooks'
+import { useTransformBlock, useEventListener, useTransformProfile, useFooter } from '../../../hooks'
 import { TemplateType } from '../../../types/Template'
 import { maxHeight } from '../../../contants'
 import { AvatarState, ProfileState } from 'src/stories/pages/DocumentList/documentList.slice'
@@ -84,7 +84,7 @@ export const Resume = forwardRef<ForwardRefProps, ResumeProps>((props: ResumePro
     profileContainerRef
   })
   const { renderTheme } = useTheme({ currentTheme: theme.currentTheme })
-  const { renderFooter } = useFooter()
+  const { renderFooter } = useFooter({ isOneColumn })
 
   useImperativeHandle(ref, () => panelsRef)
 
@@ -183,15 +183,19 @@ export const Resume = forwardRef<ForwardRefProps, ResumeProps>((props: ResumePro
     } else {
       return _pages.map((column: string[]) => {
         return column.map((block: string) => {
-          const blocks: Common[] = convert(block, state)
-          return blocks.map((item, index) => (
-            <Block
-              key={item.uid + index.toString()}
-              data={item}
-              blockChildIndex={index}
-              ref={blocksRef}
-            />
-          ))
+          const blocks: Common[] = convert(block.split('/')[0], state)
+          return blocks.map((item, index) => {
+            if (item.id === block) {
+              return (
+                <Block
+                  key={item.uid + index.toString()}
+                  data={item}
+                  blockChildIndex={index}
+                  ref={blocksRef}
+                />
+              )
+            } else return null
+          })
         })
       })
     }
