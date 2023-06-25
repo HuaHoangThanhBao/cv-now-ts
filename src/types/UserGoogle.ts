@@ -9,5 +9,5 @@ export type UserGoogle = {
 
 export type UserGoogleSend = {
   userData: Partial<UserState>
-  credential: string
+  credential: string | undefined
 }
