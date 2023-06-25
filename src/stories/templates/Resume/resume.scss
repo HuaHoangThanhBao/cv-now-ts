@@ -80,11 +80,6 @@
 .college {
   @extend %twoEqualColumn;
   @extend %btnRightAlign;
-  .profile {
-    display: flex;
-    min-height: 27rem;
-    padding: 2rem;
-  }
   .avatar {
     position: absolute;
     left: 50%;
@@ -94,6 +89,23 @@
     &:first-of-type {
       padding-top: 0;
     }
+  }
+}
+
+.combined {
+  .profile {
+    display: flex;
+    min-height: 27rem;
+    padding: 2rem;
+  }
+}
+
+.professional,
+.college {
+  .profile {
+    display: flex;
+    min-height: 20rem;
+    padding: 2rem;
   }
 }
 
@@ -303,6 +315,11 @@
     padding-bottom: 0;
   }
   @extend %profileSocial;
+  &.one-column {
+    .avatar {
+      width: 17rem;
+    }
+  }
 }
 
 //
@@ -356,12 +373,19 @@
   }
 }
 
+.one-column.skilled_based,
+.one-column.minimalist {
+  .profile-social {
+    padding-top: 2rem;
+  }
+}
+
 .one-column.functional {
   .avatar {
     padding: 2rem;
   }
   .profile-info {
-    margin-left: 2rem;
+    margin-left: 5rem;
     padding-top: 2rem;
     width: calc(100% - 18.997rem);
     &-container {
