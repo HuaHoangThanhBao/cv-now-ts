@@ -14,8 +14,10 @@ export const Modal = ({ isOpen, action, children }: ModalProps) => {
   if (isOpen)
     return (
       <div className="modal">
-        <div className="modal-wrapper" ref={ref}>
-          {children}
+        <div className="modal-wrapper">
+          <div className="modal-box" ref={ref}>
+            {children}
+          </div>
         </div>
       </div>
     )
