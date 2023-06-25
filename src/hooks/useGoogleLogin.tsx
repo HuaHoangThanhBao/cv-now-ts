@@ -41,7 +41,7 @@ export const useGoogleLogin = () => {
     const { credential } = googleData
     const decodedToken: UserGoogle = jwt_decode(credential)
     const { email, name, family_name, given_name } = decodedToken
-    const userData: Pick<UserState, "email" | "name" | "familyName" | "givenName"> = {
+    const userData: Pick<UserState, 'email' | 'name' | 'familyName' | 'givenName'> = {
       email,
       name,
       familyName: family_name,
@@ -54,11 +54,11 @@ export const useGoogleLogin = () => {
     if (!isLoggedIn()) {
       return (
         <GoogleLogin
-          onSuccess={credentialResponse => {
+          onSuccess={(credentialResponse) => {
             handleSucsess(credentialResponse)
           }}
           onError={() => {
-            console.log('Login Failed');
+            console.log('Login Failed')
             handleFailure('')
           }}
         />
@@ -81,22 +81,7 @@ export const useGoogleLogin = () => {
     return !!accessToken && !!refreshToken
   }
 
-  function handleMessages(message: any) {
-    const { from, event, data } = JSON.parse(message)
-    if (event === 'login') {
-      const { userData, credential } = data
-      alert(`user data: ${JSON.stringify(userData)}/ credential: ${credential}`)
-      dispatch(sendLogin({ body: { userData, credential }, callback: callbackAfterLogin }))
-    }
-  }
-
   useEffectOnce(() => {
-    //Handle post message from native app
-    document.addEventListener("message", (event: any) => {
-      const message = event.data;
-      handleMessages(message);
-    })
-
     const promise = dispatch(
       sendToUpdateRefreshToken({
         body: { refreshToken: localStorage.getItem(TokenType.REFRESH_TOKEN) || '' }
@@ -111,7 +96,6 @@ export const useGoogleLogin = () => {
     })
     const promiseUser = dispatch(getUser())
     return () => {
-      document.removeEventListener('message', handleMessages)
       promise.abort()
       promiseUser.abort()
     }

@@ -18,15 +18,9 @@ import UIImg from '../../assets/landing-page/ui.png'
 import ComputerImg from '../../assets/landing-page/computer.png'
 import CustomerServiceImg from '../../assets/landing-page/customer-service.png'
 import '../../../styles/landing-page/app.scss'
-import { useDevice } from 'src/hooks/useDevice'
 
 export const LandingPage = () => {
   const { googleLoginButton } = useGoogleLogin()
-  const { device } = useDevice()
-  const postMessage = () => {
-    const w: any = window
-    w.ReactNativeWebView.postMessage('Hello!')
-  }
   return (
     <div className="body-lp">
       <header className="header-l">
@@ -55,11 +49,6 @@ export const LandingPage = () => {
                   Increase productivity with a simple cv builder app for managing your personal
                   documents.
                 </p>
-
-                <p>{window.navigator.userAgent}</p>
-                <br />
-                <p>Device: {device}</p>
-                <button onClick={postMessage}>Post message</button>
 
                 <div className="hero-group">{googleLoginButton('', 'Get started')}</div>
               </div>

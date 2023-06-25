@@ -2,7 +2,11 @@ import { useSelector } from 'react-redux'
 import { RootState } from 'src/store'
 import { Month } from 'src/types/Date'
 
-export const useFooter = () => {
+type FooterProps = {
+  isOneColumn: boolean
+}
+
+export const useFooter = ({ isOneColumn }: FooterProps) => {
   const setting = useSelector((state: RootState) => state.setting)
   const getToday = () => {
     const today = new Date()
@@ -13,7 +17,7 @@ export const useFooter = () => {
   }
   const renderFooter = (pageI: number, totalPage: number) => {
     return (
-      <div className={`panel-footer`}>
+      <div className={`panel-footer ${isOneColumn ? 'one-column' : 'two-column'}`}>
         {setting.isShowCreationDate && <div className="panel-footer-col">{getToday()}</div>}
         {setting.isShowPageNumbers && (
           <div className="panel-footer-col">

@@ -8,8 +8,8 @@ import { Resume } from '../../templates/Resume'
 import { onMovingBlock } from '../Block/block.slice'
 import { sendUpdateCurrentTemplate, TemplateState, updateCurrentTemplate } from './template.slice'
 import { Selection } from 'src/types/Selection'
-import './template.scss'
 import { useDevice } from 'src/hooks/useDevice'
+import './template.scss'
 
 export const Template = ({ data, setOption }: Selection<string>) => {
   const ref = useRef(null)
@@ -32,8 +32,8 @@ export const Template = ({ data, setOption }: Selection<string>) => {
     dispatch(sendUpdateCurrentTemplate({ id: resume.template._id || '-1', body: updateTemplate }))
       .unwrap()
       .catch((error) => {
-          if (error.message.includes(HttpStatus.UNAUTHORIZED)) {
-            if (device !== 'mobile') {
+        if (error.message.includes(HttpStatus.UNAUTHORIZED)) {
+          if (device !== 'mobile') {
             navigate('/')
           }
         }

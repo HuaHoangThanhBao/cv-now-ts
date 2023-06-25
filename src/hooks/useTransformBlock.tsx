@@ -16,7 +16,6 @@ import { sendUpdatePages } from '../stories/pages/DocumentList/documentList.slic
 import { GlobalIterator } from '../types/Block'
 import { TemplateType } from '../types/Template'
 import { useCompareBlock } from './useCompareBlock'
-import { useDevice } from './useDevice'
 import { useEffectOnce } from './useEffectOnce'
 import { useMoveChild } from './useMoveChild'
 import { useTransformPages } from './useTransformPages'
@@ -57,7 +56,6 @@ export const useTransformBlock = (props: TransformBlockProps) => {
   const { callTransformPages } = useTransformPages({ isOneColumn, pagesOneColumn, pagesTwoColumn })
   const [, moveChildAfter] = useMoveChild({ pages: pagesD, state })
   const { send } = useCompareBlock(blockRootData.education[0])
-  const { device } = useDevice()
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const params = useParams()
@@ -285,9 +283,7 @@ export const useTransformBlock = (props: TransformBlockProps) => {
       const promise = dispatch(sendUpdatePages({ id: documentId, body: request }))
       promise.unwrap().catch((error) => {
         if (error.message.includes(HttpStatus.UNAUTHORIZED)) {
-          if (device !== 'mobile') {
-            navigate('/')
-          }
+          navigate('/')
         }
       })
       return promise

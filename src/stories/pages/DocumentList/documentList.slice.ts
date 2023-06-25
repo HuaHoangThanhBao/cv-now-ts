@@ -124,14 +124,11 @@ export const getResume = createAsyncThunk(
   'document/getResume',
   async ({ documentId }: { documentId: string }, thunkAPI) => {
     try {
-      alert(`get resume start!!!: ${documentId}`)
       const response = await http.get<DocumentRes>(`documents/${documentId}`, {
         signal: thunkAPI.signal
       })
-      alert(`get resume done!!!: ${JSON.stringify(response.data)}`)
       return response.data
-    } catch(e) {
-      alert(`get resume error: ${e}`)
+    } catch (e) {
       return resumeInitialData
     }
   }
@@ -208,7 +205,6 @@ const documentSlice = createSlice({
     builder
       .addCase(getResume.fulfilled, (state, action) => {
         console.log('document by id:', action.payload)
-        alert(`document by id: ${JSON.stringify(action.payload)}`)
         state.resume = action.payload
       })
       .addCase(sendUpdateProfile.fulfilled, (state, action) => {

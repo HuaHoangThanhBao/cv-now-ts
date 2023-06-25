@@ -67,20 +67,26 @@ export const getUser = createAsyncThunk('user/getUserById', async (_, thunkAPI) 
   return response.data
 })
 
-export const getUserByEmail = createAsyncThunk('user/getUserByEmail', async ({
-    email,
-    callback
-  }: {
-    email: string
-    callback: (id: string) => void
-  }, thunkAPI) => {
-  const response = await http.get<UserState>(`users/getuserbyemail/${email}`, {
-    signal: thunkAPI.signal
-  })
-  const { _id } = response.data
-  callback(_id)
-  return response.data
-})
+export const getUserByEmail = createAsyncThunk(
+  'user/getUserByEmail',
+  async (
+    {
+      email,
+      callback
+    }: {
+      email: string
+      callback: (id: string) => void
+    },
+    thunkAPI
+  ) => {
+    const response = await http.get<UserState>(`users/getuserbyemail/${email}`, {
+      signal: thunkAPI.signal
+    })
+    const { _id } = response.data
+    callback(_id)
+    return response.data
+  }
+)
 
 const userSlice = createSlice({
   name: 'user',
