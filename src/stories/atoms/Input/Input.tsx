@@ -145,7 +145,7 @@ export const Input = ({
         html={html.current}
         placeholder={placeHolder.current}
         onChange={handleChange}
-        onClick={onFocus}
+        // onClick={onFocus}
         onKeyDown={onKeyDown}
       />
     </div>
