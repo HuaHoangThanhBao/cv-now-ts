@@ -1,5 +1,5 @@
 import jwt_decode from 'jwt-decode'
-import { GoogleLogin } from '@react-oauth/google'
+import { CredentialResponse, GoogleLogin } from '@react-oauth/google'
 import { useEffectOnce } from './useEffectOnce'
 import { useNavigate } from 'react-router-dom'
 import { RootState, useAppDispatch } from 'src/store'
@@ -36,10 +36,9 @@ export const useGoogleLogin = () => {
     console.log(result)
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars
-  const handleSucsess = (googleData: any) => {
+  const handleSucsess = (googleData: CredentialResponse) => {
     const { credential } = googleData
-    const decodedToken: UserGoogle = jwt_decode(credential)
+    const decodedToken: UserGoogle = jwt_decode(credential || '')
     const { email, name, family_name, given_name } = decodedToken
     const userData: Pick<UserState, 'email' | 'name' | 'familyName' | 'givenName'> = {
       email,
@@ -47,14 +46,15 @@ export const useGoogleLogin = () => {
       familyName: family_name,
       givenName: given_name
     }
-    dispatch(sendLogin({ body: { userData, credential }, callback: callbackAfterLogin }))
+    const loginData = { userData, credential }
+    dispatch(sendLogin({ body: loginData, callback: callbackAfterLogin }))
   }
 
   const googleLoginButton = (externalClassName: string, text: string) => {
     if (!isLoggedIn()) {
       return (
         <GoogleLogin
-          onSuccess={(credentialResponse) => {
+          onSuccess={(credentialResponse: CredentialResponse) => {
             handleSucsess(credentialResponse)
           }}
           onError={() => {

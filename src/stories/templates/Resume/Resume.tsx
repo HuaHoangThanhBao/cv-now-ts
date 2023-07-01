@@ -212,7 +212,11 @@ export const Resume = forwardRef<ForwardRefProps, ResumeProps>((props: ResumePro
       dispatch(
         updateSelectedBlock({
           selectedBlock: {
-            selectedElement: element?.className ? element.className : 'none'
+            selectedElement: element?.className
+              ? element.className
+              : parentElement?.className
+              ? parentElement?.className
+              : 'none'
           }
         })
       )
