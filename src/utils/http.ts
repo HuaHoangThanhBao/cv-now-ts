@@ -21,7 +21,7 @@ class Http {
     })
     this.instance.interceptors.response.use(
       (config) => {
-        return config.data
+        return config.data//
       },
       (error) => {
         const { status } = error.response.data.error
